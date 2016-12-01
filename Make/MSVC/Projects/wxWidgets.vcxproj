@@ -1,0 +1,898 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\aboutdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\accel.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\access.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\activityindicator.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\addremovectrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\affinematrix2d.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\affinematrix2dbase.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\animate.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\any.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\anybutton.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\app.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\appprogress.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\apptrait.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\archive.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\arrstr.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\artprov.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\atomic.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\aui\auibar.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\aui\auibook.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\aui\dockart.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\aui\framemanager.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\aboutdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\accel.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\access.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\activityindicator.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\addremovectrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\affinematrix2d.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\affinematrix2dbase.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\afterstd.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\anidecod.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\animate.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\animdecod.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\any.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\anybutton.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\anystr.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\app.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\appprogress.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\apptrait.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\archive.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\arrstr.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\artprov.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\atomic.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\bannerwindow.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\base64.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\beforestd.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\bitmap.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\bmpbuttn.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\bmpcbox.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\bookctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\brush.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\buffer.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\build.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\busyinfo.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\button.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\calctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\caret.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\chartype.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\checkbox.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\checkeddelete.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\checklst.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\chkconf.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\choicdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\choice.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\choicebk.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\clipbrd.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\clntdata.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\clrpicker.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\cmdargs.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\cmdline.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\cmdproc.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\cmndata.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\collheaderctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\collpane.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\colordlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\colour.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\colourdata.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\combo.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\combobox.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\commandlinkbutton.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\compiler.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\compositewin.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\confbase.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\config.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\containr.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\control.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\convauto.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\cpp.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\cppunit.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\crt.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\cshelp.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\ctrlsub.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\cursor.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\custombgwin.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dataobj.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dataview.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\datectrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dateevt.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\datetime.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\datetimectrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\datstrm.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dc.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dcbuffer.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dcclient.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dcgraph.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dcmemory.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dcmirror.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dcprint.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dcps.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dcscreen.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dcsvg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dde.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\debug.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\debugrpt.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\defs.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dialog.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dialup.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dir.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dirctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dirdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\display.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\display_impl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dlimpexp.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dlist.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dnd.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\docmdi.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\docview.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dragimag.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dvrenderers.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dynarray.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dynlib.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\dynload.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\editlbox.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\effects.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\encconv.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\encinfo.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\event.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\eventfilter.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\evtloop.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\evtloopsrc.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\except.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\fdrepdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\features.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\ffile.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\file.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\fileconf.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\filectrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\filedlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\filefn.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\filehistory.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\filename.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\filepicker.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\filesys.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\flags.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\fmappriv.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\font.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\fontdata.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\fontdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\fontenc.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\fontenum.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\fontmap.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\fontpicker.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\fontutil.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\frame.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\fswatcher.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\fs_arc.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\fs_filter.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\fs_inet.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\fs_mem.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\fs_zip.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\gauge.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\gbsizer.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\gdicmn.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\gdiobj.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\geometry.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\gifdecod.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\glcanvas.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\graphics.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\grid.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\hash.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\hashmap.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\hashset.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\headercol.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\headerctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\help.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\helpbase.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\helphtml.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\helpwin.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\htmllbox.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\hyperlink.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\icon.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\iconbndl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\iconloc.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\imagbmp.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\image.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\imaggif.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\imagiff.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\imagjpeg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\imaglist.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\imagpcx.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\imagpng.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\imagpnm.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\imagtga.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\imagtiff.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\imagxpm.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\infobar.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\init.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\intl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\iosfwrap.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\ioswrap.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\ipc.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\ipcbase.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\itemid.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\joystick.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\kbdstate.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\language.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\layout.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\laywin.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\link.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\list.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\listbase.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\listbook.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\listbox.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\listctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\log.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\longlong.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\math.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\matrix.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\mdi.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\mediactrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\memconf.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\memory.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\memtext.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\menu.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\menuitem.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\metafile.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\mimetype.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\minifram.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\modalhook.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\module.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\mousemanager.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\mousestate.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\msgdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\msgout.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\msgqueue.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\mstream.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\nativewin.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\nonownedwnd.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\notebook.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\notifmsg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\numdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\numformatter.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\object.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\odcombo.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\overlay.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\ownerdrw.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\palette.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\panel.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\paper.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\pen.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\persist.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\pickerbase.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\platform.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\platinfo.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\popupwin.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\position.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\power.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\preferences.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\print.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\printdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\prntbase.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\process.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\progdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\propdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\ptr_scpd.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\ptr_shrd.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\quantize.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\radiobox.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\radiobut.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\range.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\rawbmp.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\rearrangectrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\recguard.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\regex.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\region.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\renderer.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\richmsgdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\richtooltip.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\rtti.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\sashwin.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\sckaddr.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\sckipc.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\sckstrm.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\scopedarray.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\scopedptr.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\scopeguard.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\scrolbar.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\scrolwin.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\selstore.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\settings.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\setup_inc.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\setup_redirect.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\sharedptr.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\simplebook.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\sizer.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\slider.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\snglinst.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\socket.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\sound.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\spinbutt.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\spinctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\splash.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\splitter.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\srchctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\sstream.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\stack.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\stackwalk.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\statbmp.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\statbox.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\statline.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\stattext.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\statusbr.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\stdpaths.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\stdstream.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\stockitem.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\stopwatch.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\strconv.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\stream.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\string.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\stringimpl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\stringops.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\strvararg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\sysopt.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\systhemectrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\tarstrm.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\taskbar.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\taskbarbutton.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\tbarbase.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\testing.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\textbuf.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\textcompleter.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\textctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\textdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\textentry.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\textfile.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\textwrapper.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\tglbtn.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\thread.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\time.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\timectrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\timer.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\tipdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\tipwin.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\tls.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\tokenzr.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\toolbar.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\toolbook.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\tooltip.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\toplevel.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\tracker.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\translation.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\treebase.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\treebook.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\treectrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\treelist.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\txtstrm.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\typeinfo.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\types.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\uiaction.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\unichar.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\uri.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\url.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\ustring.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\utils.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\valgen.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\validate.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\valnum.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\valtext.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\variant.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\variantbase.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\vector.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\version.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\versioninfo.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\vidmode.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\vlbox.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\vms_x_fix.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\volume.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\vscroll.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\weakref.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\webview.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\webviewarchivehandler.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\webviewfshandler.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\wfstream.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\window.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\windowid.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\windowptr.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\withimages.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\wizard.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\wrapsizer.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\wupdlock.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\wx.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\wxchar.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\wxcrt.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\wxcrtbase.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\wxcrtvararg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\wxhtml.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\wxprec.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\xlocale.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\xpmdecod.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\xpmhand.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\xti.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\xti2.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\xtictor.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\xtihandler.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\xtiprop.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\xtistrm.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\xtitypes.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\xtixml.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\zipstrm.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\include\wx\zstream.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\bannerwindow.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\base64.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\bitmap.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\bmpbuttn.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\bmpcbox.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\bookctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\brush.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\buffer.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\busyinfo.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\button.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\calctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\caret.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\chartype.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\checkbox.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\checklst.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\choicdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\choice.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\choicebk.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\clipbrd.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\clntdata.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\clrpicker.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\cmdline.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\cmdproc.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\cmndata.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\collheaderctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\collpane.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\colordlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\colour.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\colourdata.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\combo.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\combobox.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\commandlinkbutton.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\config.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\containr.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\control.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\convauto.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\cpp.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\cshelp.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\ctrlsub.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\cursor.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\custombgwin.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dataobj.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dataview.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\datectrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dateevt.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\datetime.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\datstrm.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dc.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dcbuffer.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dcclient.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dcgraph.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dcmemory.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dcmirror.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dcprint.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dcps.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dcscreen.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dcsvg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dde.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\debug.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\debugrpt.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\defs.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dialog.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dialup.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dir.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dirctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dirdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\display.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dnd.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\docmdi.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\docview.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dragimag.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dynarray.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\dynlib.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\editlbox.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\encconv.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\event.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\eventfilter.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\evtloop.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\fdrepdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\ffile.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\file.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\fileconf.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\filectrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\filedlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\filefn.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\filehistory.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\filename.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\filepicker.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\filesys.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\font.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\fontdata.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\fontdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\fontenum.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\fontmap.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\fontpicker.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\fontutil.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\frame.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\fswatcher.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\fs_arc.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\fs_filter.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\fs_inet.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\fs_mem.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\gauge.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\gbsizer.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\gdicmn.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\gdiobj.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\generic\aboutdlgg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\generic\helpext.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\geometry.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\glcanvas.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\graphics.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\grid.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\hash.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\hashmap.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\hashset.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\headercol.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\headerctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\help.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\htmllbox.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\html\helpctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\html\helpdata.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\html\helpdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\html\helpfrm.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\html\helpwnd.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\html\htmlcell.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\html\htmldefs.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\html\htmlfilt.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\html\htmlpars.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\html\htmltag.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\html\htmlwin.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\html\htmprint.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\html\webkit.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\html\winpars.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\hyperlink.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\icon.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\iconbndl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\iconloc.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\image.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\imaglist.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\infobar.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\init.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\intl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\ipc.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\ipcbase.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\joystick.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\kbdstate.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\language.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\layout.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\laywin.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\link.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\list.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\listbook.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\listbox.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\listctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\log.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\longlong.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\math.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\mdi.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\mediactrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\memory.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\menu.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\menuitem.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\metafile.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\mimetype.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\minifram.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\modalhook.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\module.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\mousemanager.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\mousestate.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\msgdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\msgout.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\msgqueue.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\mstream.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\msw\ole\activex.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\msw\ole\automtn.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\msw\regconf.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\msw\registry.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\nativewin.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\nonownedwnd.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\notebook.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\notifmsg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\numdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\numformatter.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\object.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\odcombo.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\overlay.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\palette.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\panel.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\pen.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\persist.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\persist\bookctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\persist\toplevel.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\persist\treebook.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\persist\window.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\pickerbase.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\platform.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\platinfo.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\popupwin.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\position.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\power.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\preferences.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\print.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\printdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\process.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\progdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\propdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\propgrid\editors.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\propgrid\manager.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\propgrid\property.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\propgrid\propgrid.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\propgrid\propgridiface.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\propgrid\propgridpagestate.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\protocol\ftp.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\protocol\http.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\protocol\log.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\protocol\protocol.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\quantize.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\radiobox.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\radiobut.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\rawbmp.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\rearrangectrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\recguard.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\regex.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\region.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\renderer.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\ribbon\art.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\ribbon\bar.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\ribbon\buttonbar.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\ribbon\control.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\ribbon\gallery.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\ribbon\page.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\ribbon\panel.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\ribbon\toolbar.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\richmsgdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\richtext\richtextbuffer.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\richtext\richtextctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\richtext\richtextformatdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\richtext\richtexthtml.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\richtext\richtextprint.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\richtext\richtextstyledlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\richtext\richtextstyles.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\richtext\richtextsymboldlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\richtext\richtextxml.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\richtooltip.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\sashwin.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\sckipc.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\sckstrm.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\scopedarray.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\scopedptr.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\scopeguard.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\scrolbar.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\scrolwin.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\settings.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\sharedptr.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\simplebook.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\sizer.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\slider.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\snglinst.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\socket.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\sound.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\spinbutt.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\spinctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\splash.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\splitter.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\srchctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\sstream.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\stack.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\stackwalk.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\statbmp.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\statbox.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\statline.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\stattext.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\statusbr.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\stc\stc.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\stdpaths.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\stdstream.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\stockitem.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\stopwatch.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\strconv.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\stream.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\string.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\sysopt.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\systhemectrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\tarstrm.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\taskbar.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\taskbarbutton.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\textcompleter.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\textctrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\textdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\textentry.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\textfile.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\textwrapper.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\tglbtn.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\thread.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\time.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\timectrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\timer.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\tipdlg.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\tipwin.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\tls.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\tokenzr.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\toolbar.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\toolbook.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\tooltip.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\toplevel.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\tracker.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\translation.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\treebase.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\treebook.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\treectrl.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\treelist.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\txtstrm.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\uiaction.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\unichar.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\uri.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\url.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\ustring.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\utils.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\valgen.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\validate.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\valnum.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\valtext.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\variant.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\vector.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\version.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\versioninfo.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\vidmode.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\vlbox.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\volume.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\vscroll.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\weakref.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\webview.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\webviewarchivehandler.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\webviewfshandler.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\wfstream.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\window.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\windowid.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\windowptr.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\withimages.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\wizard.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\wrapsizer.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\wupdlock.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\wxcrt.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\xlocale.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\xml\xml.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\xrc\xh_sizer.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\xrc\xmlres.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\zipstrm.h" />
+    <ClInclude Include="..\..\..\Code\External\wxWidgets\interface\zstream.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Code\External\wxWidgets\include\wx\arrimpl.cpp" />
+    <ClCompile Include="..\..\..\Code\External\wxWidgets\include\wx\listimpl.cpp" />
+    <ClCompile Include="..\..\..\Code\External\wxWidgets\include\wx\thrimpl.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B99B02A9-DF09-421B-A586-B43158416C54}</ProjectGuid>
+    <RootNamespace>wxWidgets</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)Build\Lib\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\Tmp\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)Build\Lib\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\Tmp\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\External\wxWidgets\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
