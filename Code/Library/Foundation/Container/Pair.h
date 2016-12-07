@@ -21,6 +21,8 @@ public:
 	Pair(const T1& rFirst, const T2& rSecond);	// not explicit to support initializer list ?
 	Pair(const Pair<T1, T2>& rPair) = default;
 	Pair& operator=(const Pair<T1, T2>& rOther) = default;
+	bool  operator==(const Pair& rOther) { return m_First == rOther.m_First && m_Second == rOther.m_Second; };
+	bool  operator!=(const Pair& rOther) { return m_First != rOther.m_First || m_Second != rOther.m_Second; };
 
 	inline T1& First() { return m_First; };
 	inline T2& Second() { return m_Second; };

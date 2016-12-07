@@ -22,6 +22,8 @@ private:
 };
 
 
+// RefPointerHolder class
+//------------------------------------------------------------------------------
 template<class T>
 class RefPointHolder: public Ref
 {

@@ -7,5 +7,6 @@
     <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestHashMap.cpp" />
     <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestArray.cpp" />
     <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestSmartPtr.cpp" />
+    <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestEvent.cpp" />
   </ItemGroup>
 </Project>

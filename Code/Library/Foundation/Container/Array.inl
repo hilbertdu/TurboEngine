@@ -226,6 +226,20 @@ void Array<T, Allocator>::Append(const U * begin, const U * end)
 	m_End += (end - begin);
 }
 
+// FindOrAppend
+//------------------------------------------------------------------------------
+template<class T, class Allocator>
+size_t Array<T, Allocator>::FindOrAppend(const T & item)
+{
+	const T* iter = Find(item);
+	if (!iter)
+	{
+		Append(item);
+		return m_End - m_Begin - 1;
+	}
+	return iter - m_Begin;
+}
+
 // Insert
 //------------------------------------------------------------------------------
 template<class T, class Allocator>
@@ -362,7 +376,7 @@ Array<T, Allocator> & Array<T, Allocator>::operator = (const Array<T, OtherAlloc
 // EraseSwap
 //-----------------------------------------------------------------------------
 template<class T, class Allocator>
-void Array<T, Allocator>::EraseSwap(T * const iter, size_t count)
+void Array<T, Allocator>::EraseSwapIndex(size_t index, size_t count)
 {
 	ASSERT(index <= GetSize());
 	ASSERT(index + count <= GetSize());

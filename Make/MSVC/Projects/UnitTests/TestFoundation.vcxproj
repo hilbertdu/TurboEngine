@@ -125,6 +125,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestArray.cpp" />
+    <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestEvent.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestHashMap.cpp" />
     <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestMem.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>

@@ -40,6 +40,9 @@
     <Filter Include="Env">
       <UniqueIdentifier>{315c33d2-a27b-426a-b35e-ce7ec8c65247}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Reflection">
+      <UniqueIdentifier>{832516e7-3038-42d6-9c73-2ad1e430b0e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Library\Foundation\Platform\Types.h">

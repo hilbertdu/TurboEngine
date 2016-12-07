@@ -15,6 +15,7 @@ int main(int, char *[])
 	REGISTER_TESTGROUP(TestHashMap)
 	REGISTER_TESTGROUP(TestMem)
 	REGISTER_TESTGROUP(TestSmartPtr)
+	REGISTER_TESTGROUP(TestDelegateEvent)
 
 	UnitTestManager utm;
 
@@ -22,5 +23,4 @@ int main(int, char *[])
 
 	return allPassed ? 0 : -1;
 }
-
 //------------------------------------------------------------------------------

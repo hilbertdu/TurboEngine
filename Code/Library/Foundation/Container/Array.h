@@ -74,6 +74,8 @@ public:
 	FORCE_INLINE const T &	operator [] (size_t index) const { ASSERT(index < GetSize()); return m_Begin[index]; }
 	FORCE_INLINE T &		Top() { ASSERT(m_Begin < m_End); return m_End[-1]; }
 	FORCE_INLINE const T &	Top() const { ASSERT(m_Begin < m_End); return m_End[-1]; }
+	FORCE_INLINE size_t     Index(const Iter iter) const { return iter - m_Begin; }
+	FORCE_INLINE size_t     Index(Iter iter) { return iter - m_Begin; }
 
 	// Capacity and size
 	void SetCapacity(size_t capacity);
@@ -99,12 +101,13 @@ public:
 	T * Find(const U & obj, bool(* equal)(const T &, const U &)) const;
 	template<class U>
 	size_t FindPos(const U & obj) const;
+	size_t FindOrAppend(const T & item);
 
 	// Add / Remove
 	void Append(const T & item, size_t count = 1);
 	template<class U>
 	void Append(const Array<U> & other);
-	template <class U>
+	template<class U>
 	void Append(const U * begin, const U * end);
 
 	void Insert(size_t index, const T & item, size_t count = 1);
@@ -126,9 +129,9 @@ public:
 	FORCE_INLINE bool	IsEmpty() const { return (m_Begin == m_End); }
 
 	// Quick operation to be implement
-	void EraseSwap(T * const iter, size_t count = 1);
+	void EraseSwapIndex(size_t index, size_t count = 1);
+	void EraseSwap(T * const iter, size_t count = 1) { EraseSwapIndex(iter - m_Begin, count); }
 	//void EraseSwap(const Iter iter, size_t count = 1) { EraseSwap(*iter, count); }
-	void EraseSwapIndex(size_t index, size_t count = 1) { EraseSwap(m_Begin + index, count); }
 
 	// Optimization
 	void Shrink();
