@@ -88,6 +88,9 @@ public:
 	SIZET FindPos(const U & obj) const;
 	SIZET FindOrAppend(const T & item);
 
+	template<class Functor>
+	T * FindIf(const Functor & cmp) const;
+
 	// Add / Remove
 	void Append(const T & item, SIZET count = 1);
 	template<class U>

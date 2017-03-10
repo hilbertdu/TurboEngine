@@ -384,14 +384,11 @@
     <ClCompile Include="..\..\..\Code\Library\Foundation\Memory\MemPool.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Memory\MemPoolBlock.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Memory\MemTracker.cpp" />
-    <ClCompile Include="..\..\..\Code\Library\Foundation\Pattern\Event.inl">
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Pattern\Event.inl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Library\Foundation\Pattern\Event2.inl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+      <FileType>Document</FileType>
+    </ClInclude>
     <ClCompile Include="..\..\..\Code\Library\Foundation\Platform\Assert.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Reflection\Reflection.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Time\Timer.cpp" />

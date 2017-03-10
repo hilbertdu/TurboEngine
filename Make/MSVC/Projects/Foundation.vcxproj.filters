@@ -397,6 +397,9 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Env\Assert.h">
       <Filter>Env</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Pattern\Event.inl">
+      <Filter>Pattern</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Library\Foundation\Memory\Allocator.cpp">
@@ -431,12 +434,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Library\Foundation\Container\List.inl">
       <Filter>Container</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Library\Foundation\Pattern\Event2.inl">
-      <Filter>Pattern</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Library\Foundation\Pattern\Event.inl">
-      <Filter>Pattern</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

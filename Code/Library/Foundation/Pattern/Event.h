@@ -7,6 +7,8 @@
 // Include
 //------------------------------------------------------------------------------
 #include "Foundation/Platform/Types.h"
+#include "Foundation/Memory/Allocator.h"
+#include "Foundation/Memory/Mem.h"
 
 
 // Macros
@@ -22,14 +24,35 @@ class DelegateStorage
 public:
 	DelegateStorage()
 		: m_Mem(nullptr)
+		, m_Size(0)
 	{}
 
-	DelegateStorage(DelegateStorage&& rOther)
+	DelegateStorage(const DelegateStorage & rOther)
+		: m_Mem(nullptr)
+		, m_Size(rOther.m_Size)
 	{
-		m_Allocator = rOther.m_Allocator;
-		m_Mem = rOther.m_Mem;
-		m_Size = rOther.m_Size;
-		rOther.m_Mem = nullptr;
+		if (m_Size > 0)
+		{
+			m_Mem = m_Allocator.Allocate(m_Size);
+			MemCopy(m_Mem, rOther.m_Mem, m_Size);
+		}
+	}
+
+	DelegateStorage(DelegateStorage&& rOther)
+		: m_Mem(nullptr)
+		, m_Size(rOther.m_Size)
+	{
+		if (m_Size > 0 && rOther.IsStackMem())
+		{
+			m_Mem = m_Allocator.Allocate(m_Size);
+			MemCopy(m_Mem, rOther.m_Mem, m_Size);
+		}
+		else
+		{
+			m_Mem = rOther.m_Mem;
+			m_Size = rOther.m_Size;
+			rOther.m_Mem = nullptr;
+		}
 	}
 
 	~DelegateStorage() { if (m_Mem) m_Allocator.Free(m_Mem); }
@@ -37,26 +60,30 @@ public:
 	void * GetStorage() const { return m_Mem; }
 	void * SetStorage(SIZET size) 
 	{
+		if (m_Mem)
+		{
+			m_Allocator.Free(m_Mem);
+		}
+
 		if (size > 0)
 		{
 			m_Mem = m_Allocator.Allocate(size); 
 		}
-		else if (m_Mem)
+		else
 		{
-			m_Allocator.Free(m_Mem);
 			m_Mem = nullptr;
 		}
+		m_Size = size;
+
 		return m_Mem;
 	}
 
-	bool operator == (const DelegateStorage& rOther)
-	{
-		return m_Allocator
-	}
+	bool IsStackMem() { return m_Allocator.IsInStack(m_Mem); }
 
 private:
 	StackAllocator<SIZE> m_Allocator;
 	void * m_Mem;
+	SIZET  m_Size;
 };
 
 
@@ -136,18 +163,21 @@ public:
 
 	void BindFunction(typename StaticFunction::StaticFunctionPtr function)
 	{
+		Unbind();
 		INPLACE_NEW(&m_Storage) StaticFunction(function);
 	}
 
 	template<class C>
 	void BindMethod(C* c, T(C::* method)(Args...))
 	{
+		Unbind();
 		INPLACE_NEW(&m_Storage) MethodFunction<C>(c, method);
 	}
 
 	template<class Functor>
 	void BindLambda(const Functor & function)
 	{
+		Unbind();
 		INPLACE_NEW(&m_Storage) LambdaFunction<Functor>(function);
 	}
 
@@ -183,8 +213,7 @@ private:
 
 // Event
 //-----------------------------------------------------------------------------
-template<typename T, typename... Args>
-class EventImpl<T(Args...)>;
+#include "Foundation/Pattern/Event.inl"
 
 template<typename T>
 class Event;
@@ -201,7 +230,7 @@ public:
 	void Signal(Args... args) const { m_Impl->Signal(args...); }
 
 private:
-	StrongPtr<EventImpl> m_Impl;
+	StrongPtr<EventImpl<T(Args...)>> m_Impl;
 };
 
 
@@ -216,7 +245,6 @@ class Signature<T(Args...)>
 public:
 	typedef Delegate<T(Args...)> Delegate;
 };
-
 
 //------------------------------------------------------------------------------
 #endif // FOUNDATION_PATTERN_EVENT_H

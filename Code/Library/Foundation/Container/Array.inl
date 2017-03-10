@@ -210,6 +210,23 @@ T * Array<T, Allocator>::FindDeref(const U & obj) const
 	return nullptr;
 }
 
+template<class T, class Allocator>
+template<class Functor>
+T * Array<T, Allocator>::FindIf(const Functor & cmp) const
+{
+	T * pos = m_Begin;
+	T * end = m_End;
+	while (pos < end)
+	{
+		if (cmp(*pos))
+		{
+			return pos - m_Begin;
+		}
+		pos++;
+	}
+	return m_End - m_Begin;
+}
+
 // Append
 //------------------------------------------------------------------------------
 template<class T, class Allocator>

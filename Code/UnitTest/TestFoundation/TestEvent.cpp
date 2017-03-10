@@ -9,6 +9,8 @@
 #include "Foundation/Logging/Logger.h"
 #include "Foundation/Pattern/Event.h"
 
+#include <functional>
+
 
 // TestMemPoolBlock
 //------------------------------------------------------------------------------
@@ -34,7 +36,9 @@ REGISTER_TESTS_END
 //------------------------------------------------------------------------------
 void Test1_0(int a)
 {
-	LOUTPUT("Test1_0: %d\n", a);
+	int32 b = a * 100;
+	int32 c = b * 20 + 2017;
+	//LOUTPUT("Test1_0: %d\n", a);
 }
 
 void Test1_1(int a)
@@ -157,6 +161,40 @@ void TestDelegateEvent::TestDelegate() const
 		delegate.Invoke(30);
 		delegate.Unbind();
 		TEST_ASSERT(!delegate.IsValid());
+	}
+	{
+		std::function<void(int)> func1 = &Test1_0;
+		Signature<void(int)>::Delegate delegate1;
+		delegate1.BindFunction(&Test1_0);
+
+		float time1(0.0f);
+		float time2(0.0f);
+		float time3(0.0f);
+
+		Timer t1;
+		for (uint32 idx = 0; idx < 1000000; ++idx)
+		{
+			func1(idx);
+		}
+		time1 = t1.GetElapsed();
+
+		Timer t2;
+		for (uint32 idx = 0; idx < 1000000; ++idx)
+		{
+			delegate1.Invoke(idx);
+		}
+		time2 = t2.GetElapsed();
+
+		Timer t3;
+		for (uint32 idx = 0; idx < 1000000; ++idx)
+		{
+			Test1_0(idx);
+		}
+		time3 = t3.GetElapsed();
+
+		LOUTPUT("std::function : %2.4fs\n", time2);
+		LOUTPUT("fast delegate : %2.4fs\n", time2);
+		LOUTPUT("raw function  : %2.4fs\n", time3);
 	}
 }
 

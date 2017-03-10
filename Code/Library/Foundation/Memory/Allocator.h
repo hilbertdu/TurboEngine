@@ -81,6 +81,8 @@ public:
 	virtual void Free(void* pMem);
 	virtual void FreeAligned(void* pMem);
 
+	bool IsInStack(void* pMem);
+
 private:
 	char	m_StackMem[RESERVED];
 	uint32	m_StackFreeIdx;
@@ -205,6 +207,12 @@ template<uint32 RESERVED, bool SUPPORT_OVERFLOW>
 /*virtual*/ void StackAllocator<RESERVED, SUPPORT_OVERFLOW>::FreeAligned(void* pMem)
 {
 	Free(pMem);
+}
+
+template<uint32 RESERVED, bool SUPPORT_OVERFLOW>
+bool StackAllocator<RESERVED, SUPPORT_OVERFLOW>::IsInStack(void* pMem)
+{
+	return (UINTPTR)pMem >= (UINTPTR)&m_StackMem && (UINTPTR)pMem <= (UINTPTR)&m_StackMem[RESERVED - 1];
 }
 
 
