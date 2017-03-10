@@ -19,22 +19,47 @@ public:
 		uint64   m_ID;
 		Delegate<T(Args...)> m_Delegate;
 
+		DelegateHandle() : m_ID(0) {}
+		DelegateHandle(uint64 id, const Delegate<T(Args...)>& d) : m_ID(id), m_Delegate(d) {}
+		DelegateHandle(const DelegateHandle& d) = default;
+
+		DelegateHandle& operator = (const DelegateHandle& rOther)
+		{
+			m_ID = rOther.m_ID;
+			m_Delegate = rOther.m_Delegate;
+			return *this;
+		}
+
+		DelegateHandle& operator = (DelegateHandle&& rOther)
+		{
+			m_ID = rOther.m_ID;
+			m_Delegate = rOther.m_Delegate;
+			return *this;
+		}
+
 		bool operator == (const DelegateHandle& handle)
 		{
 			return m_ID == handle.m_ID;
 		}
 	};
 
-	uint64 Bind(const Delegate & d)
+	uint64 Add(const Delegate<T(Args...)> & d)
 	{
-		m_Delegates.Append({ GenerateID(), d });
+		uint64 id = GenerateID();
+		m_Delegates.Append(DelegateHandle(id, d));
+		return id;
 	}
 
-	void Unbind(uint64 id)
+	void Remove(uint64 id)
 	{
-		m_Delegates::Iter iter = m_Delegates.FindIf([&id](const DelegateHandle& d) {
+		auto iter = m_Delegates.FindIf([&id](const DelegateHandle& d) {
 			return d.m_ID == id;
 		});
+
+		if (iter == nullptr)
+		{
+			return;
+		}
 
 		if (m_OrderSensitive)
 		{

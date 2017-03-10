@@ -220,11 +220,11 @@ T * Array<T, Allocator>::FindIf(const Functor & cmp) const
 	{
 		if (cmp(*pos))
 		{
-			return pos - m_Begin;
+			return pos;
 		}
 		pos++;
 	}
-	return m_End - m_Begin;
+	return nullptr;
 }
 
 // Append

@@ -48,9 +48,6 @@ public:
 	static const CharType * GetEmptyCStr() { return s_EmptyCStr; }
 
 	// Assignment
-	FORCE_INLINE String & operator = (const CharType * string) { Assign(string); return *this; }
-	template<typename OtherAllocator>
-	String & operator = (const String<CharType, OtherAllocator> & string) { Assign(string); return *this; }
 	void Assign(const CharType * string);
 	void Assign(const CharType * start, const CharType * end);
 	template<typename OtherAllocator>
@@ -60,7 +57,13 @@ public:
 	FORCE_INLINE size_t GetCapacity() const { return m_Capacity; }
 
 	// Overwrite default operator = !!!!
-	String & operator = (const String<CharType, Allocator> & string) { Assign(string); return *this; }
+	String & operator = (const CharType * string) { Assign(string); return *this; }
+	String & operator = (const String & string) { Assign(string); return *this; }
+	template<typename OtherAllocator>
+	String & operator = (const String<CharType, OtherAllocator> & string) { Assign(string); return *this; }
+
+	// C++ 11 [new]
+	String & operator = (String && string);
 
 	// Concatenation
 	String<CharType, Allocator> & operator += (CharType c);

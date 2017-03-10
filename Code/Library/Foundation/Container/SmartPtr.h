@@ -51,11 +51,13 @@ public:
 	explicit StrongPtr(T* pointer, const Deletor & d = Deletor());
 	explicit StrongPtr(const WeakPtr<T, Deletor>& pointer);
 
-	StrongPtr(const StrongPtr<T, Deletor>& rOther);
+	StrongPtr(const StrongPtr<T, Deletor>& other);
+	StrongPtr(StrongPtr<T, Deletor>&& rOther);
 
 	~StrongPtr();
 
-	StrongPtr& operator = (const StrongPtr<T, Deletor>& rOther);
+	StrongPtr& operator = (const StrongPtr<T, Deletor>& other);
+	StrongPtr& operator = (StrongPtr<T, Deletor>&& rOther);
 	StrongPtr& operator = (const WeakPtr<T, Deletor>& rOther);
 
 	T& operator* () const  { return *m_RefPointHolder->GetPointer(); };
@@ -85,11 +87,13 @@ public:
 	explicit WeakPtr();
 	explicit WeakPtr(const StrongPtr<T, Deletor>& ptr);
 
-	WeakPtr(const WeakPtr<T, Deletor>& rOther);
+	WeakPtr(const WeakPtr<T, Deletor>& other);
+	WeakPtr(WeakPtr<T, Deletor>&& rOther);
 
 	~WeakPtr();
 
 	WeakPtr& operator = (const WeakPtr<T, Deletor>& rOther);
+	WeakPtr& operator = (WeakPtr<T, Deletor>&& rOther);
 	WeakPtr& operator = (const StrongPtr<T, Deletor>& rOther);
 
 	T& operator* () const { return *m_RefPointHolder->GetPointer(); };
@@ -127,14 +131,24 @@ template<class T, class Deletor>
 
 template<class T, class Deletor>
 /*explicit*/ StrongPtr<T, Deletor>::StrongPtr(const WeakPtr<T, Deletor>& weakPtr)
+	: m_RefPointHolder(nullptr)
 {
 	AssignHolder(weakPtr.m_RefPointHolder);
 }
 
 template<class T, class Deletor>
 StrongPtr<T, Deletor>::StrongPtr(const StrongPtr<T, Deletor>& rOther)
+	: m_RefPointHolder(nullptr)
 {
 	AssignHolder(rOther.m_RefPointHolder);
+}
+
+template<class T, class Deletor>
+StrongPtr<T, Deletor>::StrongPtr(StrongPtr<T, Deletor>&& rOther)
+	: m_RefPointHolder(rOther.m_RefPointHolder)
+	, m_Deletor(rOther.m_Deletor)
+{
+	rOther.m_RefPointHolder = nullptr;
 }
 
 template<class T, class Deletor>
@@ -154,6 +168,15 @@ StrongPtr<T, Deletor>& StrongPtr<T, Deletor>::operator = (const StrongPtr<T, Del
 	{
 		AssignHolder(rOther.m_RefPointHolder);
 	}
+	return *this;
+}
+
+template<class T, class Deletor>
+StrongPtr<T, Deletor>& StrongPtr<T, Deletor>::operator = (StrongPtr<T, Deletor>&& rOther)
+{
+	m_RefPointHolder = rOther.m_RefPointHolder;
+	m_Deletor = rOther.m_Deletor;
+	rOther.m_RefPointHolder = nullptr;
 	return *this;
 }
 
@@ -231,14 +254,23 @@ template<class T, class Deletor>
 
 template<class T, class Deletor>
 /*explicit*/ WeakPtr<T, Deletor>::WeakPtr(const StrongPtr<T, Deletor>& ptr)
+	: m_RefPointHolder(nullptr)
 {
 	AssignHolder(ptr.m_RefPointHolder);
 }
 
 template<class T, class Deletor>
 WeakPtr<T, Deletor>::WeakPtr(const WeakPtr<T, Deletor>& rOther)
+	: m_RefPointHolder(nullptr)
 {
 	AssignHolder(rOther.m_RefPointHolder);
+}
+
+template<class T, class Deletor>
+WeakPtr<T, Deletor>::WeakPtr(WeakPtr<T, Deletor>&& rOther)
+	: m_RefPointHolder(rOther.m_RefPointHolder)
+{
+	rOther.m_RefPointHolder = nullptr;
 }
 
 template<class T, class Deletor>
@@ -252,6 +284,13 @@ WeakPtr<T, Deletor>& WeakPtr<T, Deletor>::operator = (const WeakPtr<T, Deletor>&
 {
 	AssignHolder(rOther.m_RefPointHolder);
 	return *this;
+}
+
+template<class T, class Deletor>
+WeakPtr<T, Deletor>& WeakPtr<T, Deletor>::operator = (WeakPtr<T, Deletor>&& rOther)
+{
+	m_RefPointHolder = rOther.m_RefPointHolder;
+	rOther.m_RefPointHolder = nullptr;
 }
 
 template<class T, class Deletor>

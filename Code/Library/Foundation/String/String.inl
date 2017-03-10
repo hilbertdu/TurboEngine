@@ -107,6 +107,19 @@ bool String<CharType, Allocator>::operator == (const String<CharType, OtherAlloc
 }
 
 template<typename CharType, typename Allocator>
+String<CharType, Allocator> & String<CharType, Allocator>::operator = (String && rOther)
+{
+	m_Contents = rOther.m_Contents;
+	m_Length = rOther.m_Length;
+	m_Capacity = rOther.m_Capacity;
+	m_AllocatorInst = rOther.m_AllocatorInst;
+	m_MemShared = rOther.m_MemShared;
+	rOther.m_Contents = const_cast<CharType*>(GetEmptyCStr<CharType>());
+	rOther.m_MemShared = true;
+	return *this;
+}
+
+template<typename CharType, typename Allocator>
 void String<CharType, Allocator>::Assign(const CharType * string)
 {
 	Assign(string, string + StrLen(string));

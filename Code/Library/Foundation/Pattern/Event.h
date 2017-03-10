@@ -27,33 +27,11 @@ public:
 		, m_Size(0)
 	{}
 
-	DelegateStorage(const DelegateStorage & rOther)
-		: m_Mem(nullptr)
-		, m_Size(rOther.m_Size)
-	{
-		if (m_Size > 0)
-		{
-			m_Mem = m_Allocator.Allocate(m_Size);
-			MemCopy(m_Mem, rOther.m_Mem, m_Size);
-		}
-	}
+	DelegateStorage(const DelegateStorage & other) : m_Mem(nullptr), m_Size(0) { Assign(other); }
+	DelegateStorage(DelegateStorage&& rOther) : m_Mem(nullptr), m_Size(0) { Assign(std::move(rOther)); }
 
-	DelegateStorage(DelegateStorage&& rOther)
-		: m_Mem(nullptr)
-		, m_Size(rOther.m_Size)
-	{
-		if (m_Size > 0 && rOther.IsStackMem())
-		{
-			m_Mem = m_Allocator.Allocate(m_Size);
-			MemCopy(m_Mem, rOther.m_Mem, m_Size);
-		}
-		else
-		{
-			m_Mem = rOther.m_Mem;
-			m_Size = rOther.m_Size;
-			rOther.m_Mem = nullptr;
-		}
-	}
+	DelegateStorage & operator = (const DelegateStorage & other) { Assign(other); return *this; }
+	DelegateStorage & operator = (DelegateStorage && other) { Assign(std::move(other)); return *this; }
 
 	~DelegateStorage() { if (m_Mem) m_Allocator.Free(m_Mem); }
 
@@ -78,9 +56,40 @@ public:
 		return m_Mem;
 	}
 
-	bool IsStackMem() { return m_Allocator.IsInStack(m_Mem); }
+	bool IsStackMem() const { return m_Allocator.IsInStack(m_Mem); }
 
 private:
+	void Assign(const DelegateStorage & other)
+	{
+		SetStorage(0);
+		if (other.m_Size > 0)
+		{
+			// copy
+			m_Size = other.m_Size;
+			m_Mem = m_Allocator.Allocate(m_Size);
+			MemCopy(m_Mem, other.m_Mem, m_Size);
+		}
+	}
+
+	void Assign(DelegateStorage && rOther)
+	{
+		SetStorage(0);
+		if (other.m_Size > 0 && other.IsStackMem())
+		{
+			// stack move
+			m_Size = other.m_Size;
+			m_Mem = m_Allocator.Allocate(m_Size);
+			MemCopy(m_Mem, other.m_Mem, m_Size);
+		}
+		else
+		{
+			// heap move
+			m_Size = other.m_Size;
+			m_Mem = other.m_Mem;
+			other.m_Mem = nullptr;
+		}
+	}
+
 	StackAllocator<SIZE> m_Allocator;
 	void * m_Mem;
 	SIZET  m_Size;
@@ -119,7 +128,7 @@ public:
 		virtual ~StaticFunction() {};
 		virtual void Destroy() { this->~StaticFunction(); };
 
-		T Invoke(Args... args) const { m_Function(args...); }
+		virtual T Invoke(Args... args) const { m_Function(args...); }
 	private:
 		StaticFunctionPtr m_Function;
 	};
@@ -136,7 +145,7 @@ public:
 		virtual ~MethodFunction() {};
 		virtual void Destroy() { this->~MethodFunction(); };
 
-		T Invoke(Args... args) const { (m_Instance->*m_Method)(args...); }
+		virtual T Invoke(Args... args) const { (m_Instance->*m_Method)(args...); }
 	private:
 		InstancePtr			m_Instance;
 		MemberFunctionPtr	m_Method;
@@ -149,17 +158,38 @@ public:
 		LambdaFunction(const Functor & functor)
 			: m_Functor(functor)
 		{}
+		LambdaFunction(Functor && functor)
+			: m_Functor(std::move(functor))
+		{}
 		virtual ~LambdaFunction() {};
 		virtual void Destroy() { this->~LambdaFunction(); };
 
-		T Invoke(Args... args) const { m_Functor(args...); }
+		virtual T Invoke(Args... args) const { m_Functor(args...); }
 	private:
 		Functor m_Functor;
 	};
 
 
-	Delegate() = default;
+	Delegate() {};
+	Delegate(typename StaticFunction::StaticFunctionPtr function)
+	{
+		INPLACE_NEW(&m_Storage) StaticFunction(function);
+	}
+	template<class C>
+	Delegate(C* c, T(C::* method)(Args...))
+	{
+		INPLACE_NEW(&m_Storage) MethodFunction<C>(c, method);
+	}
+	template<class Functor>
+	Delegate(const Functor & function)
+	{
+		INPLACE_NEW(&m_Storage) LambdaFunction<Functor>(function);
+	}
+	Delegate(const Delegate& d): m_Storage(d.m_Storage) {}
 	~Delegate() { Unbind(); }
+
+	Delegate & operator = (const Delegate & other) { m_Storage = other.m_Storage; return *this; }
+	Delegate & operator = (Delegate && rOther) { m_Storage = std::move(rOther.m_Storage); return *this; }
 
 	void BindFunction(typename StaticFunction::StaticFunctionPtr function)
 	{
@@ -179,6 +209,13 @@ public:
 	{
 		Unbind();
 		INPLACE_NEW(&m_Storage) LambdaFunction<Functor>(function);
+	}
+
+	template<class Functor>
+	void BindLambda(Functor && function)
+	{
+		Unbind();
+		INPLACE_NEW(&m_Storage) LambdaFunction<Functor>(std::move(function));
 	}
 
 	void Unbind()
@@ -201,11 +238,6 @@ public:
 		reinterpret_cast<IFunction*>(m_Storage.GetStorage())->Invoke(args...);
 	}
 
-	bool operator == (const Delegate & rOther)
-	{
-		return 
-	}
-
 private:
 	DelegateStorage<DELEGATE_DEFAULT_SIZE> m_Storage;
 };
@@ -222,12 +254,17 @@ template<typename T, typename... Args>
 class Event<T(Args...)>
 {
 public:
-	uint64 Bind(const Delegate & d) { return m_Impl->Bind(d); }
-	void   Unbind(uint64 id) { m_Impl->Unbind(id); }
+	Event() : m_Impl(TNEW(EventImpl<T(Args...)>())) {}
+	uint64 Add(const Delegate<T(Args...)> & d) { return m_Impl->Add(d); }
+	void   Remove(uint64 id) { m_Impl->Remove(id); }
 
 	void SetOrderSensitive(bool orderSensitive) { m_Impl->SetOrderSensitive(orderSensitive); }
 
-	void Signal(Args... args) const { m_Impl->Signal(args...); }
+	void Signal(Args... args) const
+	{
+		StrongPtr<EventImpl<T(Args...)>> temp = m_Impl;
+		temp->Signal(args...);
+	}
 
 private:
 	StrongPtr<EventImpl<T(Args...)>> m_Impl;
@@ -244,6 +281,7 @@ class Signature<T(Args...)>
 {
 public:
 	typedef Delegate<T(Args...)> Delegate;
+	typedef Event<T(Args...)>    Event;
 };
 
 //------------------------------------------------------------------------------

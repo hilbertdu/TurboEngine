@@ -181,7 +181,7 @@ void TestArray::ArrayAllocator() const
 		StackArray<int32, 20> stackArray1{ 1, 2, 3 };
 		StackArray<int32, 20> stackArray2{ 4, 5, 6 };
 		stackArray1 = stackArray2;
-		for (int32 idx = 0; idx < stackArray1.GetSize(); ++idx)
+		for (SIZET idx = 0; idx < stackArray1.GetSize(); ++idx)
 		{
 			TEST_ASSERT(idx + 4 == stackArray1[idx]);
 		}
