@@ -6,75 +6,49 @@
 
 // Includes
 //------------------------------------------------------------------------------
-#include "Foundation/Memory/Mem.h"
+#include "Foundation/Memory/Deletor.h"
 #include "Foundation/Container/Ref.h"
-
-// DefaultDeletor - free using "Free"
-//------------------------------------------------------------------------------
-class NewDeletor
-{
-public:
-	static inline void Delete(void * ptr) { TDELETE(ptr); }
-};
-
-class ArrayDeletor
-{
-public:
-	static inline void Delete(void * ptr) { TDELETE_ARRAY(ptr); }
-};
-
-class AllocDeletor
-{
-public:
-	static inline void Delete(void * ptr) { FREE(ptr); }
-};
-
-template<int BLOCK_SIZE, int ALIGNMENT = sizeof(void *)>
-class PoolDeletor
-{
-public:
-	static inline void Delete(void * ptr) { MemPool::GetPoolBlock(T_MEM_ALIGN_ARB(BLOCK_SIZE, ALIGNMENT))->Free(ptr); }
-};
 
 
 // AutoPtr
 //------------------------------------------------------------------------------
-template<class T, class Deletor = NewDeletor>
+template<class T, class Deletor = NewDeletor<T>>
 class AutoPtr
 {
 public:
-	explicit inline AutoPtr() : m_Pointer(nullptr) {}
-	explicit inline AutoPtr(T * ptr) : m_Pointer(ptr) {}
-	inline		   ~AutoPtr() { Deletor::Delete(m_Pointer); }
+	explicit inline AutoPtr(const Deletor & d = Deletor()) : m_Pointer(nullptr), m_Deletor(d) {}
+	explicit inline AutoPtr(T * ptr, const Deletor & d = Deletor()) : m_Pointer(ptr), m_Deletor(d) {}
+	inline		   ~AutoPtr() { m_Deletor.Delete(m_Pointer); }
 
 	// access the pointer
 	inline		 T * Get() { return m_Pointer; }
 	inline const T * Get() const { return m_Pointer; }
 
 	// acquire a new pointer
-	inline void operator = (T * newPtr) { Deletor::Delete(m_Pointer); m_Pointer = newPtr; }
+	inline void operator = (T * newPtr) { m_Deletor.Delete(m_Pointer); m_Pointer = newPtr; }
 
 	// manually initiate deletion
-	inline void Destroy() { Deletor::Delete(m_Pointer); m_Pointer = nullptr; }
+	inline void Destroy() { m_Deletor.Delete(m_Pointer); m_Pointer = nullptr; }
 
 	// free the pointer without deleting it
 	inline T * Release() { T * ptr = m_Pointer; m_Pointer = nullptr; return ptr; }
 private:
 	T * m_Pointer;
+	Deletor m_Deletor;
 };
 
-//std::shared_ptr
+
 // StrongPtr
 //------------------------------------------------------------------------------
 template<class T, class Deletor>
 class WeakPtr;
 
-template<class T, class Deletor = NewDeletor>
+template<class T, class Deletor = NewDeletor<T>>
 class StrongPtr
 {
 public:
-	explicit StrongPtr();
-	explicit StrongPtr(T* pointer);
+	explicit StrongPtr(const Deletor & d = Deletor());
+	explicit StrongPtr(T* pointer, const Deletor & d = Deletor());
 	explicit StrongPtr(const WeakPtr<T, Deletor>& pointer);
 
 	StrongPtr(const StrongPtr<T, Deletor>& rOther);
@@ -84,18 +58,19 @@ public:
 	StrongPtr& operator = (const StrongPtr<T, Deletor>& rOther);
 	StrongPtr& operator = (const WeakPtr<T, Deletor>& rOther);
 
-	T& operator* () const  { return m_RefPointHolder->GetPointer(); };
-	T* operator-> () const { return *(m_RefPointHolder->GetPointer()); };
+	T& operator* () const  { return *m_RefPointHolder->GetPointer(); };
+	T* operator-> () const { return m_RefPointHolder->GetPointer(); };
 
 	T*   Get() { return m_RefPointHolder->GetPointer(); };
 	void Set(T* pointer);
 
 private:
-	void AssignHolder(RefPointHolder<T>* ptrHolder, bool increment = true);
+	void AssignHolder(RefPointerHolder<T>* ptrHolder, bool increment = true);
 	void Release();
 	void ReleaseHolder();
 
-	RefPointHolder<T>* m_RefPointHolder;
+	RefPointerHolder<T>* m_RefPointHolder;
+	Deletor m_Deletor;
 
 	friend class WeakPtr<T, Deletor>;
 };
@@ -103,7 +78,7 @@ private:
 
 // WeakPtr
 //------------------------------------------------------------------------------
-template<class T, class Deletor = NewDeletor>
+template<class T, class Deletor = NewDeletor<T>>
 class WeakPtr
 {
 public:
@@ -117,8 +92,8 @@ public:
 	WeakPtr& operator = (const WeakPtr<T, Deletor>& rOther);
 	WeakPtr& operator = (const StrongPtr<T, Deletor>& rOther);
 
-	T& operator* () const { return m_RefPointHolder->GetPointer(); };
-	T* operator-> () const { return *(m_RefPointHolder->GetPointer()); };
+	T& operator* () const { return *m_RefPointHolder->GetPointer(); };
+	T* operator-> () const { return m_RefPointHolder->GetPointer(); };
 
 	T* Get() const { return m_RefPointHolder->GetPointer(); };
 
@@ -127,24 +102,26 @@ public:
 	StrongPtr<T, Deletor> Lock();
 
 private:
-	void AssignHolder(RefPointHolder<T>* ptrHolder);
+	void AssignHolder(RefPointerHolder<T>* ptrHolder);
 	void ReleaseHolder();
 
-	RefPointHolder<T>* m_RefPointHolder;
+	RefPointerHolder<T>* m_RefPointHolder;
 };
 
 
 // StrongPtr class implements
 //------------------------------------------------------------------------------
 template<class T, class Deletor>
-/*explicit*/ StrongPtr<T, Deletor>::StrongPtr()
+/*explicit*/ StrongPtr<T, Deletor>::StrongPtr(const Deletor & d)
 	: m_RefPointHolder(nullptr)
+	, m_Deletor(d)
 {
 }
 
 template<class T, class Deletor>
-/*explicit*/ StrongPtr<T, Deletor>::StrongPtr(T* pointer)
-	: m_RefPointHolder(TNEW(RefPointHolder<T>(pointer)))
+/*explicit*/ StrongPtr<T, Deletor>::StrongPtr(T* pointer, const Deletor & d)
+	: m_RefPointHolder(TNEW(RefPointerHolder<T>(pointer)))
+	, m_Deletor(d)
 {
 }
 
@@ -191,12 +168,12 @@ void StrongPtr<T, Deletor>::Set(T* pointer)
 {
 	if (!m_RefPointHolder || pointer != m_RefPointHolder->GetPointer())
 	{
-		AssignHolder(TNEW(RefPointHolder<T>(pointer)), false);
+		AssignHolder(TNEW(RefPointerHolder<T>(pointer)), false);
 	}
 }
 
 template<class T, class Deletor>
-void StrongPtr<T, Deletor>::AssignHolder(RefPointHolder<T>* ptrHolder, bool increment)
+void StrongPtr<T, Deletor>::AssignHolder(RefPointerHolder<T>* ptrHolder, bool increment)
 {
 	if (m_RefPointHolder)
 	{
@@ -225,7 +202,7 @@ void StrongPtr<T, Deletor>::Release()
 		T* pointer = m_RefPointHolder->GetPointer();
 		if (pointer)
 		{
-			Deletor::Delete(pointer);
+			m_Deletor.Delete(pointer);
 			m_RefPointHolder->SetPointer(nullptr);
 		}
 	}
@@ -306,7 +283,7 @@ StrongPtr<T, Deletor> WeakPtr<T, Deletor>::Lock()
 }
 
 template<class T, class Deletor>
-void WeakPtr<T, Deletor>::AssignHolder(RefPointHolder<T>* ptrHolder)
+void WeakPtr<T, Deletor>::AssignHolder(RefPointerHolder<T>* ptrHolder)
 {
 	if (m_RefPointHolder)
 	{

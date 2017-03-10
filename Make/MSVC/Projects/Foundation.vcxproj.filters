@@ -43,6 +43,24 @@
     <Filter Include="Reflection">
       <UniqueIdentifier>{832516e7-3038-42d6-9c73-2ad1e430b0e8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Reflection\Serialization">
+      <UniqueIdentifier>{736b4e4e-e4d1-48d5-9f37-425e9c1a502b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Reflection\Attributes">
+      <UniqueIdentifier>{6704a588-6c15-47ef-9c43-c55a0e31ae02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Reflection\Members">
+      <UniqueIdentifier>{22fa24f1-2973-485e-bd95-16a7f1ebadba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Reflection\MetaType">
+      <UniqueIdentifier>{4349ceba-19e2-44e7-9750-d6cf22d52c15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Reflection\Objects">
+      <UniqueIdentifier>{ffe89c27-3e83-4baf-9b70-22f3037fc0de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Template">
+      <UniqueIdentifier>{e15de667-c7cb-49ad-bc9b-162823b9b61d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Library\Foundation\Platform\Types.h">
@@ -315,9 +333,6 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Platform\Platform.h">
       <Filter>Platform</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Library\Foundation\Platform\Assert.h">
-      <Filter>Env</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Library\Foundation\PrecompileHeader.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\SmartPtr.h">
       <Filter>Container</Filter>
@@ -328,8 +343,59 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Pattern\Property.h">
       <Filter>Pattern</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Reflection.h">
+      <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\Type.h">
+      <Filter>Reflection\MetaType</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeDatabase.h">
+      <Filter>Reflection\MetaType</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Members\Field.h">
+      <Filter>Reflection\Members</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Members\Method.h">
+      <Filter>Reflection\Members</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Math\CRC32.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeClass.h">
+      <Filter>Reflection\MetaType</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeEnum.h">
+      <Filter>Reflection\MetaType</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeStruct.h">
+      <Filter>Reflection\MetaType</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\Serializer.h">
+      <Filter>Reflection\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeDeclMacro.h">
+      <Filter>Reflection\MetaType</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeDecl.h">
+      <Filter>Reflection\MetaType</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Objects\Object.h">
+      <Filter>Reflection\Objects</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\Code\Library\Foundation\Pattern\Event.h">
       <Filter>Pattern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Container\List.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Template\String.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Memory\Deletor.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Env\Assert.h">
+      <Filter>Env</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -356,6 +422,21 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Library\Foundation\Platform\Assert.cpp">
       <Filter>Env</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Library\Foundation\Math\CRC32.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Library\Foundation\Reflection\Reflection.cpp">
+      <Filter>Reflection</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Library\Foundation\Container\List.inl">
+      <Filter>Container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Library\Foundation\Pattern\Event2.inl">
+      <Filter>Pattern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Library\Foundation\Pattern\Event.inl">
+      <Filter>Pattern</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -10,39 +10,9 @@
 #include "Foundation/Platform/Misc.h"
 #include "Foundation/Memory/Allocator.h"
 #include "Foundation/Memory/Mem.h"
+#include "Foundation/Math/Conversion.h"
 #include <type_traits>
 
-//// ArrayIterator
-////------------------------------------------------------------------------------
-//template<typename T>
-//class ArrayIterator
-//{
-//public:
-//	explicit ArrayIterator(const T* element);
-//
-//	T& operator* () const;
-//	T* operator-> () const;
-//
-//	ArrayIterator& operator++ ();
-//	ArrayIterator& operator-- ();
-//	ArrayIterator  operator++ (int);
-//	ArrayIterator  operator-- (int);
-//	ArrayIterator& operator+= (int32 offset);
-//	ArrayIterator& operator-= (int32 offset);
-//
-//	ArrayIterator  operator+ (int32 offset);
-//	ArrayIterator  operator- (int32 offset);
-//
-//	bool operator==(const ArrayIterator& other) const;
-//	bool operator!=(const ArrayIterator& other) const;
-//	bool operator<(const ArrayIterator& other) const;
-//	bool operator>(const ArrayIterator& other) const;
-//	bool operator<=(const ArrayIterator& other) const;
-//	bool operator>=(const ArrayIterator& other) const;
-//
-//private:
-//	T* m_Pointer;
-//};
 
 // Array
 //------------------------------------------------------------------------------
@@ -50,39 +20,56 @@ template<class T, class Allocator = DefaultAllocator>
 class Array
 {
 public:
-	//typedef ArrayIterator<T>		Iter;
-	//typedef ArrayIterator<const T>	ConstIter;
 	typedef	T *			Iter;
 	typedef const T *	ConstIter;
 
-	explicit Array();
-	explicit Array(const T * begin, const T * end);
-	explicit Array(size_t initSize);
+	explicit Array(const Allocator & allocator = Allocator());
+	explicit Array(const T * begin, const T * end, const Allocator & allocator = Allocator());
+	explicit Array(SIZET initSize, const Allocator & allocator = Allocator());
+	Array(const std::initializer_list<T> & initList);
 
-	Array(const Array<T, Allocator> & other);
+	Array(const Array & other);
 	template<class OtherAllocator>
 	Array(const Array<T, OtherAllocator> & other);
 
+	Array(Array && other);
+	template<class OtherAllocator>
+	Array(Array<T, OtherAllocator> && other);
+
 	~Array();
+
+	// Operators
+	Array & operator = (const Array & other);
+	template<class OtherAllocator>
+	Array & operator = (const Array<T, OtherAllocator> & other);
 
 	// Iterators
 	FORCE_INLINE Iter      Begin() { return m_Begin; }
 	FORCE_INLINE ConstIter Begin() const { return m_Begin; }
 	FORCE_INLINE Iter      End() { return m_End; }
 	FORCE_INLINE ConstIter End() const { return m_End; }
-	FORCE_INLINE T &		operator [] (size_t index) { ASSERT(index < GetSize()); return m_Begin[index]; }
-	FORCE_INLINE const T &	operator [] (size_t index) const { ASSERT(index < GetSize()); return m_Begin[index]; }
-	FORCE_INLINE T &		Top() { ASSERT(m_Begin < m_End); return m_End[-1]; }
-	FORCE_INLINE const T &	Top() const { ASSERT(m_Begin < m_End); return m_End[-1]; }
-	FORCE_INLINE size_t     Index(const Iter iter) const { return iter - m_Begin; }
-	FORCE_INLINE size_t     Index(Iter iter) { return iter - m_Begin; }
+	FORCE_INLINE Iter      Last() { ASSERT(m_Begin < m_End); return m_End - 1; }
+	FORCE_INLINE ConstIter Last() const { ASSERT(m_Begin < m_End); return m_End - 1; }
+
+	FORCE_INLINE T &		operator [] (SIZET index) { ASSERT(index < GetSize()); return m_Begin[index]; }
+	FORCE_INLINE const T &	operator [] (SIZET index) const { ASSERT(index < GetSize()); return m_Begin[index]; }
+	FORCE_INLINE T &		TopItem() { ASSERT(m_Begin < m_End); return m_End[-1]; }
+	FORCE_INLINE const T &	TopItem() const { ASSERT(m_Begin < m_End); return m_End[-1]; }
+	FORCE_INLINE SIZET		Index(const Iter iter) const { return iter - m_Begin; }
+	FORCE_INLINE SIZET		Index(Iter iter) { return iter - m_Begin; }
+
+	// C iterator
+	FORCE_INLINE Iter      begin() { return m_Begin; }
+	FORCE_INLINE ConstIter begin() const { return m_Begin; }
+	FORCE_INLINE Iter      end() { return m_End; }
+	FORCE_INLINE ConstIter end() const { return m_End; }
 
 	// Capacity and size
-	void SetCapacity(size_t capacity);
-	void SetSize(size_t size);
+	void SetCapacity(SIZET capacity);
+	void SetSize(SIZET size);
 	void Clear();
-	void Swap(Array<T> & other);
-	void SwapItem(size_t index1, size_t index2);
+	void Swap(Array & other);
+	void SwapItem(SIZET index1, SIZET index2);
 	void SwapItem(Iter& iter1, Iter& iter2);
 
 	// Sort
@@ -98,79 +85,72 @@ public:
 	template<class U>
 	T * FindDeref(const U & obj) const;
 	template<class U>
-	T * Find(const U & obj, bool(* equal)(const T &, const U &)) const;
-	template<class U>
-	size_t FindPos(const U & obj) const;
-	size_t FindOrAppend(const T & item);
+	SIZET FindPos(const U & obj) const;
+	SIZET FindOrAppend(const T & item);
 
 	// Add / Remove
-	void Append(const T & item, size_t count = 1);
+	void Append(const T & item, SIZET count = 1);
 	template<class U>
 	void Append(const Array<U> & other);
 	template<class U>
 	void Append(const U * begin, const U * end);
+	bool AppendUnique(const T &item);
 
-	void Insert(size_t index, const T & item, size_t count = 1);
-	void Insert(Iter iter, const T & item, size_t count = 1);
+	void Insert(SIZET index, const T & item, SIZET count = 1);
+	void Insert(Iter iter, const T & item, SIZET count = 1);
 
-	void Pop(size_t count = 1);
-	void PopFront(size_t count = 1);
-	void Erase(T * const iter, size_t count = 1);
-	//void Erase(const Iter & iter, size_t count = 1) { Erase(*iter, count); }
-	void EraseIndex(size_t index) { Erase(m_Begin + index); }
-
-	Array & operator = (const Array<T> & other);
-	template<typename OtherAllocator>
-	Array & operator = (const Array<T, OtherAllocator> & other);
+	void Pop(SIZET count = 1);
+	void PopFront(SIZET count = 1);
+	void Erase(T * const iter, SIZET count = 1);
+	void EraseIndex(SIZET index) { Erase(m_Begin + index); }
 
 	// Query
-	FORCE_INLINE size_t	GetCapacity() const { return (m_MaxEnd - m_Begin); }
-	FORCE_INLINE size_t	GetSize() const { return (m_End - m_Begin); }
+	FORCE_INLINE SIZET	GetCapacity() const { return (m_MaxEnd - m_Begin); }
+	FORCE_INLINE SIZET	GetSize() const { return (m_End - m_Begin); }
 	FORCE_INLINE bool	IsEmpty() const { return (m_Begin == m_End); }
 
 	// Quick operation to be implement
-	void EraseSwapIndex(size_t index, size_t count = 1);
-	void EraseSwap(T * const iter, size_t count = 1) { EraseSwapIndex(iter - m_Begin, count); }
-	//void EraseSwap(const Iter iter, size_t count = 1) { EraseSwap(*iter, count); }
+	void EraseSwapIndex(SIZET index, SIZET count = 1);
+	void EraseSwap(T * const iter, SIZET count = 1) { EraseSwapIndex(iter - m_Begin, count); }
 
 	// Optimization
 	void Shrink();
 
 	// Static helper
-	static void InPlaceConstruct(T * mem, size_t count);
-	static void InPlaceDestruct(T * mem, size_t count);
-	static void UninitializedCopy(T * des, const T * src, size_t count);
-	static void UninitializedFill(T * des, const T& value, size_t count);
-	static void Move(T * des, T * src, size_t count);
-	static void Copy(T * des, T * src, size_t count);
-	static void Set(T * des, const T& value, size_t count);
+	static void InPlaceConstruct(T * mem, SIZET count);
+	static void InPlaceDestruct(T * mem, SIZET count);
+	static void UninitializedCopy(T * des, const T * src, SIZET count);
+	static void UninitializedFill(T * des, const T& value, SIZET count);
+	static void Move(T * des, T * src, SIZET count);
+	static void Copy(T * des, T * src, SIZET count);
+	static void Set(T * des, const T& value, SIZET count);
 
 private:
-	void   Resize(size_t size, size_t capacity);
-	void   Grow(size_t capacity);
-	size_t GetGrowCapacity(size_t capacity);
+	void   Resize(SIZET size, SIZET capacity);
+	void   Grow(SIZET capacity);
+	SIZET GetGrowCapacity(SIZET capacity);
 
-	T*   Allocate(size_t size);
-	T*   Reallocate(size_t size);
+	T*   Allocate(SIZET size);
+	T*   Reallocate(SIZET size);
 	void Deallocate();
 
-	static void InPlaceConstruct(T * mem, size_t count, const std::true_type&);
-	static void InPlaceConstruct(T * mem, size_t count, const std::false_type&);
-	static void InPlaceDestruct(T * mem, size_t count, const std::true_type&);
-	static void InPlaceDestruct(T * mem, size_t count, const std::false_type&);
-	static void UninitializedCopy(T * des, const T * src, size_t count, const std::true_type&);
-	static void UninitializedCopy(T * des, const T * src, size_t count, const std::false_type&);
-	static void UninitializedFill(T * des, const T& value, size_t count, const std::true_type&);
-	static void UninitializedFill(T * des, const T& value, size_t count, const std::false_type&);
-	static void Move(T * des, T * src, size_t count, const std::true_type&);
-	static void Move(T * des, T * src, size_t count, const std::false_type&);
-	static void Copy(T * des, T * src, size_t count, const std::true_type&);
-	static void Copy(T * des, T * src, size_t count, const std::false_type&);
+	static void InPlaceConstruct(T * mem, SIZET count, const std::true_type&);
+	static void InPlaceConstruct(T * mem, SIZET count, const std::false_type&);
+	static void InPlaceDestruct(T * mem, SIZET count, const std::true_type&);
+	static void InPlaceDestruct(T * mem, SIZET count, const std::false_type&);
+	static void UninitializedCopy(T * des, const T * src, SIZET count, const std::true_type&);
+	static void UninitializedCopy(T * des, const T * src, SIZET count, const std::false_type&);
+	static void UninitializedFill(T * des, const T& value, SIZET count, const std::true_type&);
+	static void UninitializedFill(T * des, const T& value, SIZET count, const std::false_type&);
+	static void Move(T * des, T * src, SIZET count, const std::true_type&);
+	static void Move(T * des, T * src, SIZET count, const std::false_type&);
+	static void Copy(T * des, T * src, SIZET count, const std::true_type&);
+	static void Copy(T * des, T * src, SIZET count, const std::false_type&);
 
 	T* m_Begin;
 	T* m_End;
 	T* m_MaxEnd;
-	Allocator m_AllocatorInst;
+	Allocator m_Allocator;
 };
 
 
@@ -179,122 +159,6 @@ private:
 template<class T, int SIZE>
 using StackArray = Array<T, StackAllocator<SIZE>>;
 
-
-// ArrayIterator functions
-//------------------------------------------------------------------------------
-//template<typename T>
-//ArrayIterator<T>::ArrayIterator(const T* element):
-//m_Pointer(element)
-//{
-//}
-//
-//template<typename T>
-//T& ArrayIterator<T>::operator* () const
-//{
-//	return *m_Pointer;
-//}
-//
-//template<typename T>
-//T* ArrayIterator<T>::operator-> () const
-//{
-//	return m_Pointer;
-//}
-//
-//template<typename T>
-//ArrayIterator<T>& ArrayIterator<T>::operator++ ()
-//{
-//	++m_Pointer;
-//	return *this;
-//}
-//
-//template<typename T>
-//ArrayIterator<T>& ArrayIterator<T>::operator-- ()
-//{
-//	--m_Pointer;
-//	return *this;
-//}
-//
-//template<typename T>
-//ArrayIterator<T>  ArrayIterator<T>::operator++ (int)
-//{
-//	ArrayIterator tmp(*this);
-//	++m_Pointer;
-//	return tmp;
-//}
-//
-//template<typename T>
-//ArrayIterator<T>  ArrayIterator<T>::operator-- (int)
-//{
-//	ArrayIterator tmp(*this);
-//	--m_Pointer;
-//	return tmp;
-//}
-//
-//template<typename T>
-//ArrayIterator<T>& ArrayIterator<T>::operator+= (int32 offset)
-//{
-//	m_Pointer += offset;
-//	return *this;
-//}
-//
-//template<typename T>
-//ArrayIterator<T>& ArrayIterator<T>::operator-= (int32 offset)
-//{
-//	m_Pointer -= offset;
-//	return *this;
-//}
-//
-//template<typename T>
-//ArrayIterator<T> ArrayIterator<T>::operator+ (int32 offset)
-//{
-//	ArrayIterator newIter(*this);
-//	newIter += offset;
-//	return newIter;
-//}
-//
-//template<typename T>
-//ArrayIterator<T> ArrayIterator<T>::operator- (int32 offset)
-//{
-//	ArrayIterator newIter(*this);
-//	newIter -= offset;
-//	return newIter;
-//}
-//
-//template<typename T>
-//bool ArrayIterator<T>::operator==(const ArrayIterator& other) const
-//{
-//	return m_Pointer == other.m_Pointer;
-//}
-//
-//template<typename T>
-//bool ArrayIterator<T>::operator!=(const ArrayIterator& other) const
-//{
-//	return m_Pointer != other.m_Pointer;
-//}
-//
-//template<typename T>
-//bool ArrayIterator<T>::operator<(const ArrayIterator& other) const
-//{
-//	return m_Pointer < other.m_Pointer;
-//}
-//
-//template<typename T>
-//bool ArrayIterator<T>::operator>(const ArrayIterator& other) const
-//{
-//	return m_Pointer > other.m_Pointer;
-//}
-//
-//template<typename T>
-//bool ArrayIterator<T>::operator<=(const ArrayIterator& other) const
-//{
-//	return m_Pointer <= other.m_Pointer;
-//}
-//
-//template<typename T>
-//bool ArrayIterator<T>::operator>=(const ArrayIterator& other) const
-//{
-//	return m_Pointer >= other.m_Pointer;
-//}
 
 #include "Foundation/Container/Array.inl"
 

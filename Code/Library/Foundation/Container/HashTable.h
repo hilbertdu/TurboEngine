@@ -70,10 +70,10 @@ public:
 
 protected:
 	Table* m_Table;
-	size_t m_BucketIndex;
-	size_t m_ElementIndex;
+	SIZET m_BucketIndex;
+	SIZET m_ElementIndex;
 
-	explicit HashTableIterator(Table* pTable, size_t bucketIndex, size_t elementIndex);
+	explicit HashTableIterator(Table* pTable, SIZET bucketIndex, SIZET elementIndex);
 
 	friend class HashTable<ValueType, KeyType, HasherType, ExtractKeyType, KeyEqualType, AllocatorType>;
 	friend class HashTableIterator<Table, !Const>;
@@ -92,7 +92,7 @@ template<
 class HashTable
 {
 public:
-	static const size_t DEFAULT_BUCKET_COUNT = 37;
+	static const SIZET DEFAULT_BUCKET_COUNT = 37;
 
 	typedef HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator> MyType;
 
@@ -106,8 +106,8 @@ public:
 	typedef HashTableIterator<MyType, false> Iterator;
 	typedef HashTableIterator<MyType, true>  ConstIterator;
 
-	explicit HashTable(size_t bucketCount, const HashFunction& rHasher, const EqualKey& rKeyEquals, const ExtractKey& rExtractKey, const Allocator& rAllocator = Allocator());
-	explicit HashTable(size_t bucketCount, const HashFunction& rHasher, const EqualKey& rKeyEquals, const Allocator& rAllocator = Allocator());
+	explicit HashTable(SIZET bucketCount, const HashFunction& rHasher, const EqualKey& rKeyEquals, const ExtractKey& rExtractKey, const Allocator& rAllocator = Allocator());
+	explicit HashTable(SIZET bucketCount, const HashFunction& rHasher, const EqualKey& rKeyEquals, const Allocator& rAllocator = Allocator());
 
 	HashTable(const HashTable& rSource);
 	template<class OtherAllocator>
@@ -118,7 +118,7 @@ public:
 	template<class OtherAllocator>
 	HashTable& operator=(const HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, OtherAllocator>& rSource);
 
-	size_t GetSize() const;
+	SIZET GetSize() const;
 	bool   IsEmpty() const;
 	void   Clear();
 	void   Shrink();
@@ -138,15 +138,15 @@ public:
 
 	Value & FindOrInsert(const Value& rValue);
 
-	size_t   Erase(const Key& rKey);
+	SIZET   Erase(const Key& rKey);
 	Iterator Erase(ConstIterator& iterator);
 
 protected:
 	typedef Array<Value, Allocator> Bucket;
 
 	Bucket* m_Buckets;
-	size_t  m_BucketCount;
-	size_t  m_Size;
+	SIZET  m_BucketCount;
+	SIZET  m_Size;
 
 	HashFunction m_Hasher;
 	EqualKey     m_KeyEquals;

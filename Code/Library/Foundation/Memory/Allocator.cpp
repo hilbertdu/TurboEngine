@@ -7,22 +7,22 @@
 
 // HeapAllocator
 //------------------------------------------------------------------------------
-/*virtual*/ void* HeapAllocator::Allocate(size_t size)
+/*virtual*/ void* HeapAllocator::Allocate(SIZET size)
 {
 	return ALLOC(size);
 }
 
-/*virtual*/ void* HeapAllocator::AllocateAligned(size_t size, size_t alignment)
+/*virtual*/ void* HeapAllocator::AllocateAligned(SIZET size, SIZET alignment)
 {
 	return ALLOC(size, alignment);
 }
 
-/*virtual*/ void* HeapAllocator::Reallocate(void* pMem, size_t size)
+/*virtual*/ void* HeapAllocator::Reallocate(void* pMem, SIZET size)
 {
 	return REALLOC(pMem, size);
 }
 
-/*virtual*/ void* HeapAllocator::ReallocateAligned(void* pMem, size_t size, size_t alignment)
+/*virtual*/ void* HeapAllocator::ReallocateAligned(void* pMem, SIZET size, SIZET alignment)
 {
 	return REALLOC(pMem, size, alignment);
 }

@@ -9,32 +9,31 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <windows.h>
 
 // Alloc
 //------------------------------------------------------------------------------
-void * Alloc(SIZE_T size)
+void * Alloc(SIZET size)
 {
 	return AllocFileLine(size, sizeof(void *), "Unknown", 0);
 }
 
 // Alloc
 //------------------------------------------------------------------------------
-void * Alloc(SIZE_T size, SIZE_T alignment)
+void * Alloc(SIZET size, SIZET alignment)
 {
 	return AllocFileLine(size, alignment, "Unknown", 0);
 }
 
 // AllocFileLine
 //------------------------------------------------------------------------------
-void * AllocFileLine(SIZE_T size, const char * file, int line)
+void * AllocFileLine(SIZET size, const char * file, int line)
 {
 	return AllocFileLine(size, sizeof(void *), file, line);
 }
 
 // AllocFileLine
 //------------------------------------------------------------------------------
-void * AllocFileLine(SIZE_T size, SIZE_T alignment, const char * file, int line)
+void * AllocFileLine(SIZET size, SIZET alignment, const char * file, int line)
 {
 	ASSERT(T_IS_POWER_OF_2(alignment));
 #if defined(__APPLE__)
@@ -49,26 +48,26 @@ void * AllocFileLine(SIZE_T size, SIZE_T alignment, const char * file, int line)
 
 // Realloc
 //------------------------------------------------------------------------------
-void * Realloc(void* pMem, SIZE_T size)
+void * Realloc(void* pMem, SIZET size)
 {
 	return ReallocFileLine(pMem, size, sizeof(void *), "Unknown", 0);
 }
 
-void * Realloc(void* pMem, SIZE_T size, SIZE_T alignment)
+void * Realloc(void* pMem, SIZET size, SIZET alignment)
 {
 	return ReallocFileLine(pMem, size, alignment, "Unknown", 0);
 }
 
-void * ReallocFileLine(void* pMem, SIZE_T size, const char * file, int line)
+void * ReallocFileLine(void* pMem, SIZET size, const char * file, int line)
 {
 	return ReallocFileLine(pMem, size, sizeof(void *), file, line);
 }
 
-void * ReallocFileLine(void* pMem, SIZE_T size, SIZE_T alignment, const char * file, int line)
+void * ReallocFileLine(void* pMem, SIZET size, SIZET alignment, const char * file, int line)
 {
 #if defined (__WINDOWS__)
 	void * mem = _aligned_realloc(pMem, size, alignment);
-	/*if (!T_IS_ALIGN_OF((SIZE_T)mem, alignment))
+	/*if (!T_IS_ALIGN_OF((SIZET)mem, alignment))
 	{
 		void * alignedMem = AllocFileLine(size, alignment, file, line);
 		memcpy(alignedMem, mem, size);
@@ -96,17 +95,17 @@ void Free(void * ptr)
 
 // Copy/Move/Set
 //------------------------------------------------------------------------------
-void MemCopy(void* des, const void* src, size_t size)
+void MemCopy(void* des, const void* src, SIZET size)
 {
 	memcpy(des, src, size);
 }
 
-void MemMove(void* des, const void* src, size_t size)
+void MemMove(void* des, const void* src, SIZET size)
 {
 	memmove(des, src, size);
 }
 
-void MemSet(void* des, int value, size_t size)
+void MemSet(void* des, int value, SIZET size)
 {
 	memset(des, value, size);
 }

@@ -23,6 +23,7 @@
 #include "Foundation/Platform/Misc.h"
 #include "Foundation/Memory/Mem.h"
 
+struct AllocForm;
 
 // Class
 //-----------------------------------------------------------------------------
@@ -31,15 +32,20 @@ class MemPoolBlock
 public:
 	enum { PAGE_SIZE = 64 * 1024 };
 
-	MemPoolBlock(SIZE_T blockSize, SIZE_T blockAlignment);
+	MemPoolBlock(SIZET allocSize, SIZET alignment);
 	~MemPoolBlock();
 
-	void* Alloc(SIZE_T size);
+	void* Alloc(SIZET size);
 	void  Free(void* pMem);
 
-	FORCE_INLINE SIZE_T GetBlockSize() const { return m_BlockSize; };
-	FORCE_INLINE SIZE_T GetBlockAlignment() const { return m_BlockAlignment; };
-	FORCE_INLINE SIZE_T GetAlignedSize() const { return T_MEM_ALIGN_ARB(m_BlockSize, m_BlockAlignment); };
+	SIZET GetBlockSize() const { return m_BlockSize; }
+	SIZET GetBlockAlignment() const { return m_BlockAlignment; }
+	SIZET GetAlignedSize() const { return T_MEM_ALIGN_ARB(m_BlockSize, m_BlockAlignment); }
+
+#if T_MEM_STATISTICS
+	void  SetCategoryName(const char * category);
+	float GetUsePercentage() const;
+#endif
 
 private:
 	void AllocPage();
@@ -57,11 +63,12 @@ private:
 	FreeBlock *		m_FreeBlockChain;
 	AllocatedPage *	m_AllocatedPageChain;
 
-	SIZE_T m_BlockSize;
-	SIZE_T m_BlockAlignment;
-	SIZE_T m_PageHeaderSize;
+	SIZET m_BlockSize;
+	SIZET m_BlockAlignment;
+	SIZET m_PageHeaderSize;
 
 #if T_MEM_STATISTICS
-	uint32 m_NumAllocations;
+	uint32		m_NumAllocations;
+	const char*	m_CategoryName;
 #endif
 };

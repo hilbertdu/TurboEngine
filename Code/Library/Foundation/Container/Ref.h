@@ -25,11 +25,11 @@ private:
 // RefPointerHolder class
 //------------------------------------------------------------------------------
 template<class T>
-class RefPointHolder: public Ref
+class RefPointerHolder: public Ref
 {
 public:
-	explicit RefPointHolder(): m_Pointer(nullptr), m_RefPointerCount(0) {};
-	explicit RefPointHolder(T* pointer) : m_Pointer(pointer), m_RefPointerCount(1) {};
+	explicit RefPointerHolder(): m_Pointer(nullptr), m_RefPointerCount(0) {};
+	explicit RefPointerHolder(T* pointer) : m_Pointer(pointer), m_RefPointerCount(1) {};
 
 	inline T* GetPointer() { return m_Pointer; };
 	inline void SetPointer(T* pointer) { m_Pointer = pointer; m_RefPointerCount = 1; };

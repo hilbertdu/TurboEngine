@@ -7,9 +7,57 @@
 // Include
 //------------------------------------------------------------------------------
 #include "Foundation/Platform/Types.h"
-#include "Foundation/Container/Pair.h"
-#include "Foundation/Container/Array.h"
-#include <type_traits>
+
+
+// Macros
+//------------------------------------------------------------------------------
+#define DELEGATE_DEFAULT_SIZE 16
+
+
+// DelegateStorage
+//------------------------------------------------------------------------------
+template<int32 SIZE>
+class DelegateStorage
+{
+public:
+	DelegateStorage()
+		: m_Mem(nullptr)
+	{}
+
+	DelegateStorage(DelegateStorage&& rOther)
+	{
+		m_Allocator = rOther.m_Allocator;
+		m_Mem = rOther.m_Mem;
+		m_Size = rOther.m_Size;
+		rOther.m_Mem = nullptr;
+	}
+
+	~DelegateStorage() { if (m_Mem) m_Allocator.Free(m_Mem); }
+
+	void * GetStorage() const { return m_Mem; }
+	void * SetStorage(SIZET size) 
+	{
+		if (size > 0)
+		{
+			m_Mem = m_Allocator.Allocate(size); 
+		}
+		else if (m_Mem)
+		{
+			m_Allocator.Free(m_Mem);
+			m_Mem = nullptr;
+		}
+		return m_Mem;
+	}
+
+	bool operator == (const DelegateStorage& rOther)
+	{
+		return m_Allocator
+	}
+
+private:
+	StackAllocator<SIZE> m_Allocator;
+	void * m_Mem;
+};
 
 
 // Delegate
@@ -21,77 +69,123 @@ template<typename T, typename... Args>
 class Delegate<T(Args...)>
 {
 public:
-	typedef void* InstancePointer;
-	typedef T (*FuncPointer)(Args...);
-	typedef T (*InnerFuncPointer)(InstancePointer, Args...);
-	typedef Pair<InstancePointer, InnerFuncPointer> InvokeStub;
-
-	template<FuncPointer function>
-	static T FunctionStub(InstancePointer pointer, Args... args)
+	class IFunction
 	{
-		return (function)(args...);
-	}
+	public:
+		virtual ~IFunction() {};
+		virtual void Destroy() = 0;
+		virtual T Invoke(Args... args) const = 0;
+		static void * operator new(SIZET size, DelegateStorage<DELEGATE_DEFAULT_SIZE>* storage)
+		{
+			return storage->SetStorage(size);
+		}
+		static void operator delete(void * mem, DelegateStorage<DELEGATE_DEFAULT_SIZE>* storage) {}
+	};
 
-	template<class C, T(C::*function)(Args...)>
-	static T MethodStub(InstancePointer pointer, Args... args)
+	class StaticFunction : public IFunction
 	{
-		return (static_cast<C*>(pointer)->*function)(args...);
-	}
+	public:
+		typedef T(*StaticFunctionPtr)(Args...);
+		StaticFunction(const StaticFunctionPtr function)
+			: m_Function(function)
+		{}
+		virtual ~StaticFunction() {};
+		virtual void Destroy() { this->~StaticFunction(); };
 
-	Delegate() : m_Stub(nullptr, nullptr) {}
+		T Invoke(Args... args) const { m_Function(args...); }
+	private:
+		StaticFunctionPtr m_Function;
+	};
 
-	inline bool operator == (const Delegate& rOther) { return m_Stub == rOther.m_Stub; }
-
-	template<FuncPointer function>
-	void Bind()
+	template<class C>
+	class MethodFunction : public IFunction
 	{
-		m_Stub.First() = nullptr;
-		m_Stub.Second() = &FunctionStub<function>;
-	}
+	public:
+		typedef C* InstancePtr;
+		typedef T(C::*MemberFunctionPtr)(Args...);
+		MethodFunction(InstancePtr instance, MemberFunctionPtr method)
+			: m_Method(method)
+		{}
+		virtual ~MethodFunction() {};
+		virtual void Destroy() { this->~MethodFunction(); };
 
-	template<class C, T(C::*function)(Args...)>
-	void Bind(C* c)
+		T Invoke(Args... args) const { (m_Instance->*m_Method)(args...); }
+	private:
+		InstancePtr			m_Instance;
+		MemberFunctionPtr	m_Method;
+	};
+
+	template<class Functor>
+	class LambdaFunction : public IFunction
 	{
-		m_Stub.First() = c;
-		m_Stub.Second() = &MethodStub<C, function>;
-	}
+	public:
+		LambdaFunction(const Functor & functor)
+			: m_Functor(functor)
+		{}
+		virtual ~LambdaFunction() {};
+		virtual void Destroy() { this->~LambdaFunction(); };
 
-	template<FuncPointer function>
-	bool Equal() const
+		T Invoke(Args... args) const { m_Functor(args...); }
+	private:
+		Functor m_Functor;
+	};
+
+
+	Delegate() = default;
+	~Delegate() { Unbind(); }
+
+	void BindFunction(typename StaticFunction::StaticFunctionPtr function)
 	{
-		return m_Stub.First() == nullptr && m_Stub.Second() == &FunctionStub<function>;
+		INPLACE_NEW(&m_Storage) StaticFunction(function);
 	}
 
-	template<class C, T(C::*function)(Args...)>
-	bool Equal(C* c) const
+	template<class C>
+	void BindMethod(C* c, T(C::* method)(Args...))
 	{
-		return m_Stub.First() == c && m_Stub.Second() == &MethodStub<C, function>;
+		INPLACE_NEW(&m_Storage) MethodFunction<C>(c, method);
 	}
 
-	void Unbind() 
-	{ 
-		m_Stub.First() = nullptr; 
-		m_Stub.Second() = nullptr; 
+	template<class Functor>
+	void BindLambda(const Functor & function)
+	{
+		INPLACE_NEW(&m_Storage) LambdaFunction<Functor>(function);
 	}
 
-	bool Valid() const
-	{ 
-		return m_Stub.Second() != nullptr; 
+	void Unbind()
+	{
+		if (IsValid())
+		{
+			reinterpret_cast<IFunction*>(m_Storage.GetStorage())->Destroy();
+			m_Storage.SetStorage(0);
+		}
+	}
+
+	bool IsValid() const
+	{
+		return m_Storage.GetStorage() != nullptr;
 	}
 
 	T Invoke(Args... args) const
 	{
-		ASSERT(m_Stub.Second(), "Cannot invoke unbound delegate.");
-		return m_Stub.Second()(m_Stub.First(), args...);
+		ASSERT(IsValid());
+		reinterpret_cast<IFunction*>(m_Storage.GetStorage())->Invoke(args...);
+	}
+
+	bool operator == (const Delegate & rOther)
+	{
+		return 
 	}
 
 private:
-	InvokeStub m_Stub;
+	DelegateStorage<DELEGATE_DEFAULT_SIZE> m_Storage;
 };
 
 
 // Event
 //-----------------------------------------------------------------------------
+template<typename T, typename... Args>
+class EventImpl<T(Args...)>;
+
 template<typename T>
 class Event;
 
@@ -99,93 +193,15 @@ template<typename T, typename... Args>
 class Event<T(Args...)>
 {
 public:
-	typedef Delegate<T(Args...)>                       EDelegate;
-	typedef Array<Delegate<T(Args...)>>                EDelegateList;
-	typedef typename Delegate<T(Args...)>::FuncPointer FuncPointer;
+	uint64 Bind(const Delegate & d) { return m_Impl->Bind(d); }
+	void   Unbind(uint64 id) { m_Impl->Unbind(id); }
 
-	Event() = default;
-	
-	template<FuncPointer function>
-	size_t Bind()
-	{
-		EDelegate delegate;
-		delegate.Bind<function>();
-		return Bind(delegate);
-	}
+	void SetOrderSensitive(bool orderSensitive) { m_Impl->SetOrderSensitive(orderSensitive); }
 
-	template<class C, T(C::*function)(Args...)>
-	size_t Bind(C* c)
-	{
-		EDelegate delegate;
-		delegate.Bind<C, function>(c);
-		return Bind(delegate);
-	}
-
-	void Unbind(size_t index)
-	{
-		if (index > 0 && index < m_Delegates.GetSize())
-		{
-			m_Delegates[index].Unbind();
-		}
-	}
-
-	template<FuncPointer function>
-	void Unbind()
-	{
-		for (EDelegateList::Iter iter = m_Delegates.Begin(); iter != m_Delegates.End(); ++iter)
-		{
-			if (iter->Equal<function>())
-			{
-				iter->Unbind();
-				return;
-			}
-		}
-	}
-
-	template<class C, T(C::*function)(Args...)>
-	void Unbind(C* c)
-	{
-		for (EDelegateList::Iter iter = m_Delegates.Begin(); iter != m_Delegates.End(); ++iter)
-		{
-			if (iter->Equal<C, function>(c))
-			{
-				iter->Unbind();
-				return;
-			}
-		}
-	}
-
-	void Signal(Args... args)
-	{
-		for (EDelegateList::ConstIter iter = m_Delegates.Begin(); iter != m_Delegates.End(); ++iter)
-		{
-			if (iter->Valid())
-			{
-				iter->Invoke(args...);
-			}
-		}
-	}
+	void Signal(Args... args) const { m_Impl->Signal(args...); }
 
 private:
-	size_t Bind(const EDelegate& delegate)
-	{
-		for (EDelegateList::Iter iter = m_Delegates.Begin(); iter != m_Delegates.End(); ++iter)
-		{
-			if (*iter == delegate)
-			{
-				return m_Delegates.Index(iter);
-			}
-			else if (!iter->Valid())
-			{
-				*iter = delegate;
-				return m_Delegates.Index(iter);
-			}
-		}
-		m_Delegates.Append(delegate);
-		return m_Delegates.GetSize() - 1;
-	}
-
-	Array<EDelegate> m_Delegates;
+	StrongPtr<EventImpl> m_Impl;
 };
 
 
@@ -199,8 +215,8 @@ class Signature<T(Args...)>
 {
 public:
 	typedef Delegate<T(Args...)> Delegate;
-	typedef Event<T(Args...)>    Event;
 };
+
 
 //------------------------------------------------------------------------------
 #endif // FOUNDATION_PATTERN_EVENT_H

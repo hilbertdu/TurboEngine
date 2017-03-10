@@ -19,6 +19,7 @@ private:
 
 	void TestDelegate() const;
 	void TestEvent() const;
+	void TestRemoveOwner() const;
 };
 
 // Register Tests
@@ -26,6 +27,7 @@ private:
 REGISTER_TESTS_BEGIN(TestDelegateEvent)
 	REGISTER_TEST(TestDelegate)
 	REGISTER_TEST(TestEvent)
+	REGISTER_TEST(TestRemoveOwner)
 REGISTER_TESTS_END
 
 // Test function
@@ -47,19 +49,71 @@ void Test2(int a, float b)
 
 // Test bound method
 //------------------------------------------------------------------------------
-class TestA 
+class TestA
 {
 public:
-	TestA() : event(nullptr) {}
-	void TestA2(int a, float b) { 
-		LOUTPUT("TestA2: %d, %.2f\n", a, b); 
-		if (event)
+	void Test1(int a)
+	{
+		LOUTPUT("TestA1: %d\n", a);
+	}
+
+	void Test2(int a, float b)
+	{
+		LOUTPUT("TestA2: %d, %.2f\n", a, b);
+	}
+};
+
+// Test Event
+//------------------------------------------------------------------------------
+class TestEvent
+{
+public:
+	//typedef Signature<void(int, float)>::Event EventType;
+
+	void Trigger(int a, float b)
+	{
+		LOUTPUT("TestEvent trigger\n");
+		//event.Signal(a, b);
+	}
+
+	//EventType event;
+};
+
+TestEvent* g_Event = new TestEvent();
+
+class TestListener
+{
+public:
+	void OnTrigger1(int a, float b)
+	{
+		LOUTPUT("TestEvent on trigger1: %d, %.2f\n", a, b);
+		// remove event
+		if (g_Event)
 		{
-			event->Unbind<TestA, &TestA::TestA2>(this);
+			LOUTPUT("Delete global event in event ontrigger function");
+			delete g_Event;
+			g_Event = nullptr;
 		}
 	}
 
-	Signature<void(int, float)>::Event* event;
+	void OnTrigger2(int a, float b)
+	{
+		LOUTPUT("TestEvent on trigger2: %d, %.2f\n", a, b);
+		Remove();
+	}
+
+	void Listen()
+	{
+	}
+
+	void Remove()
+	{
+	}
+
+	~TestListener()
+	{
+		Remove();
+	}
 };
 
 // TestStrongPtr
@@ -68,20 +122,41 @@ void TestDelegateEvent::TestDelegate() const
 {
 	{
 		Signature<void(int)>::Delegate delegate;
-		delegate.Bind<&Test1_0>();
-		delegate.Invoke(1);
-		delegate.Invoke(2);
-		delegate.Bind<&Test1_1>();
-		delegate.Invoke(20);
+		delegate.BindFunction(&Test1_0);
+		delegate.Invoke(10);
 		delegate.Unbind();
+		TEST_ASSERT(!delegate.IsValid());
+		LOUTPUT("Fast delegate size: %d\n", sizeof(delegate));
 	}
 	{
 		TestA a;
-		Signature<void(int, float)>::Delegate delegate;
-		delegate.Bind<&Test2>();
-		delegate.Bind<TestA, &TestA::TestA2>(&a);
-		delegate.Invoke(1, 2);
+		Signature<void(int)>::Delegate delegate;
+		delegate.BindMethod(&a, &TestA::Test1);
+		delegate.Invoke(20);
 		delegate.Unbind();
+		TEST_ASSERT(!delegate.IsValid());
+	}
+	{
+		Signature<void(int)>::Delegate delegate;
+		delegate.BindLambda([](int a) {
+			LOUTPUT("Test lambda: %d\n", a);
+		});
+		delegate.Invoke(30);
+		delegate.Unbind();
+		TEST_ASSERT(!delegate.IsValid());
+	}
+	{
+		int64 a = 1;
+		int64 b = 1;
+		int64 c = 1;
+		int64 d = 1;
+		Signature<void(int)>::Delegate delegate;
+		delegate.BindLambda([&a, &b, &c, &d](int x) {
+			LOUTPUT("Test lambda: %d (closure: %lld, %lld, %lld, %lld)\n", x, a, b, c, d);
+		});
+		delegate.Invoke(30);
+		delegate.Unbind();
+		TEST_ASSERT(!delegate.IsValid());
 	}
 }
 
@@ -89,40 +164,12 @@ void TestDelegateEvent::TestDelegate() const
 //------------------------------------------------------------------------------
 void TestDelegateEvent::TestEvent() const
 {
-	{
-		Signature<void(int)>::Event event;
-		event.Bind<&Test1_0>();
-		event.Bind<&Test1_1>();
-		event.Signal(10);
-		event.Signal(100);
-		event.Unbind<&Test1_0>();
-		event.Signal(1000);
-	}
-	{
-		TestA a;
-		Signature<void(int, float)>::Event event;
-		a.event = &event;
-		event.Bind<&Test2>();
-		event.Bind<TestA, &TestA::TestA2>(&a);
-		event.Signal(20, 7.5);
+}
 
-		//event.Unbind<TestA, &TestA::TestA2>(&a);
-		event.Signal(30, 8.5);
-
-		event.Unbind<&Test2>();
-		event.Unbind<TestA, &TestA::TestA2>(&a);
-	}
-	{
-		TestA a;
-		Signature<void(int, float)>::Event event;
-		size_t idx1 = event.Bind<&Test2>();
-		size_t idx2 = event.Bind<TestA, &TestA::TestA2>(&a);
-
-		event.Unbind<&Test2>();
-		event.Signal(40, 10.5);
-		event.Unbind(idx2);
-		event.Signal(40, 12.5);
-	}
+// TestRemoveOwner
+//------------------------------------------------------------------------------
+void TestDelegateEvent::TestRemoveOwner() const
+{
 }
 
 //------------------------------------------------------------------------------

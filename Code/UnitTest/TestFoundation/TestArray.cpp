@@ -7,6 +7,7 @@
 
 #include "Foundation/Container/Array.h"
 #include "Foundation/String/String.h"
+#include "Foundation/Memory/Allocator.h"
 
 // TestString
 //------------------------------------------------------------------------------
@@ -19,6 +20,7 @@ private:
 	void ArrayAssignment() const;
 	void ArrayInsertErase() const;
 	void ArrayIterator() const;
+	void ArrayAllocator() const;
 };
 
 // Register Tests
@@ -28,6 +30,7 @@ REGISTER_TESTS_BEGIN(TestArray)
 	REGISTER_TEST(ArrayAssignment)
 	REGISTER_TEST(ArrayInsertErase)
 	REGISTER_TEST(ArrayIterator)
+	REGISTER_TEST(ArrayAllocator)
 REGISTER_TESTS_END
 
 
@@ -169,3 +172,26 @@ void TestArray::ArrayIterator() const
 		}
 	}
 }
+
+// ArrayAllocator
+//------------------------------------------------------------------------------
+void TestArray::ArrayAllocator() const
+{
+	{
+		StackArray<int32, 20> stackArray1{ 1, 2, 3 };
+		StackArray<int32, 20> stackArray2{ 4, 5, 6 };
+		stackArray1 = stackArray2;
+		for (int32 idx = 0; idx < stackArray1.GetSize(); ++idx)
+		{
+			TEST_ASSERT(idx + 4 == stackArray1[idx]);
+		}
+
+		stackArray1.Append(7);
+		stackArray1.Append(8);
+	}
+	{
+		StackArray<int32, 2> stackArr{ 1, 2, 3 };
+	}
+}
+
+//------------------------------------------------------------------------------

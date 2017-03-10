@@ -2,8 +2,12 @@
 //------------------------------------------------------------------------------
 #pragma once
 
+
+// Includes
+//------------------------------------------------------------------------------
 #include "Foundation/Platform/Platform.h"
 #include "Foundation/Platform/Types.h"
+
 
 #define T_MEM_ALIGN_ARB(n, a) ((((UINTPTR)(n)) + ((a)-1)) & ~((a)-1))  // 'a' needs to be a power of 2
 
@@ -44,30 +48,41 @@
 	#define FREE(ptr)			::Free(ptr)
 #endif
 
-// Placement new/delete
-//------------------------------------------------------------------------------
-#define INPLACE_NEW new
-inline void * operator new(size_t, void * ptr) { return ptr; }
-inline void * operator new[](size_t, void * ptr) { return ptr; }
-inline void operator delete(void *, void *) {}
-inline void operator delete[](void *, void *) {}
-
 // Alloc/Free
 //------------------------------------------------------------------------------
-void * Alloc(SIZE_T size);
-void * Alloc(SIZE_T size, SIZE_T alignment);
-void * AllocFileLine(SIZE_T size, const char * file, int line);
-void * AllocFileLine(SIZE_T size, SIZE_T alignment, const char * file, int line);
-void * Realloc(void* pMem, SIZE_T size);
-void * Realloc(void* pMem, SIZE_T size, SIZE_T alignment);
-void * ReallocFileLine(void* pMem, SIZE_T size, const char * file, int line);
-void * ReallocFileLine(void* pMem, SIZE_T size, SIZE_T alignment, const char * file, int line);
+void * Alloc(SIZET size);
+void * Alloc(SIZET size, SIZET alignment);
+void * AllocFileLine(SIZET size, const char * file, int line);
+void * AllocFileLine(SIZET size, SIZET alignment, const char * file, int line);
+void * Realloc(void* pMem, SIZET size);
+void * Realloc(void* pMem, SIZET size, SIZET alignment);
+void * ReallocFileLine(void* pMem, SIZET size, const char * file, int line);
+void * ReallocFileLine(void* pMem, SIZET size, SIZET alignment, const char * file, int line);
 void Free(void * ptr);
 
 // Copy/Move/Set
 //------------------------------------------------------------------------------
-void MemCopy(void* des, const void* src, size_t size);
-void MemMove(void* des, const void* src, size_t size);
-void MemSet(void* des, int value, size_t size);
+void MemCopy(void* des, const void* src, SIZET size);
+void MemMove(void* des, const void* src, SIZET size);
+void MemSet(void* des, int value, SIZET size);
+
+
+// Placement new/delete
+//------------------------------------------------------------------------------
+#define INPLACE_NEW new
+#include <new>
+//inline void * operator new(SIZET, void * ptr){ return ptr; }
+//inline void * operator new[](SIZET, void * ptr) { return ptr; }
+//inline void operator delete(void *, void *) {}
+//inline void operator delete[](void *, void *) {}
+
+
+// Global new/delete
+//------------------------------------------------------------------------------
+//inline void * operator new(SIZET size){ return Alloc(size); }
+//inline void * operator new[](SIZET size) { return Alloc(size); }
+//inline void operator delete(void * ptr) { Free(ptr); }
+//inline void operator delete[](void * ptr) { Free(ptr); }
+
 
 //------------------------------------------------------------------------------

@@ -3,26 +3,29 @@
 
 // Includes
 //------------------------------------------------------------------------------
-#include "Mem.h"
-#include "MemPoolBlock.h"
+#include "Foundation/Memory/MemPoolBlock.h"
+#include "Foundation/Memory/MemPool.h"
 #include "Foundation/Env/Assert.h"
+#include "Foundation/Math/Conversion.h"
 
 // Constructor
 //------------------------------------------------------------------------------
-MemPoolBlock::MemPoolBlock(SIZE_T blockSize, SIZE_T blockAlignment)
+MemPoolBlock::MemPoolBlock(SIZET allocSize, SIZET alignment)
 	: m_FreeBlockChain(nullptr)
 	, m_AllocatedPageChain(nullptr)
-	, m_BlockSize(blockSize)
-	, m_BlockAlignment(blockAlignment)
+	, m_BlockSize(Math::Max(allocSize, sizeof(FreeBlock)))
+	, m_BlockAlignment(alignment)
 	, m_PageHeaderSize(T_MEM_ALIGN_ARB(sizeof(AllocatedPage), m_BlockAlignment))
 #ifdef T_MEM_STATISTICS
 	, m_NumAllocations(0)
 #endif
 {
-	ASSERT(blockSize >= sizeof(FreeBlock));
-	ASSERT(blockSize + m_PageHeaderSize <= PAGE_SIZE);
-	ASSERT(blockAlignment >= 4);
-	ASSERT(blockAlignment <= PAGE_SIZE);
+	ASSERT(m_BlockSize >= sizeof(FreeBlock));
+	ASSERT(m_BlockSize + m_PageHeaderSize <= PAGE_SIZE);
+	ASSERT(m_BlockAlignment >= 4);
+	ASSERT(m_BlockAlignment <= PAGE_SIZE);
+
+	MemPool::InsertMemPoolBlock(this);
 }
 
 // Destructor 
@@ -43,11 +46,14 @@ MemPoolBlock::~MemPoolBlock()
 		FREE((void *)page);
 		page = next;
 	}
+
+	// Remove from mem pool list
+	MemPool::RemoveMemPoolBlock(this);
 }
 
 // Alloc
 //------------------------------------------------------------------------------
-void * MemPoolBlock::Alloc(SIZE_T size)
+void * MemPoolBlock::Alloc(SIZET size)
 {
 	// Only permitted to call with supported sizes
 	ASSERT(size <= m_BlockSize); (void)size;
@@ -94,25 +100,25 @@ void MemPoolBlock::AllocPage()
 	void * newPage = ALLOC(PAGE_SIZE, m_BlockAlignment);
 
 	// sanity check page alignment can support block alignment
-	ASSERT(((SIZE_T)newPage % m_BlockAlignment) == 0);
+	ASSERT(((SIZET)newPage % m_BlockAlignment) == 0);
 
 	// alloc page pointer
-	const SIZE_T alignedSize = T_MEM_ALIGN_ARB(m_BlockSize, m_BlockAlignment);
-	const SIZE_T blockHeader = (SIZE_T)newPage + alignedSize;
+	const SIZET alignedSize = T_MEM_ALIGN_ARB(m_BlockSize, m_BlockAlignment);
+	const SIZET blockHeader = (SIZET)newPage + alignedSize;
 
 	AllocatedPage* page = m_AllocatedPageChain;
 	m_AllocatedPageChain = (AllocatedPage *)newPage;
 	m_AllocatedPageChain->m_Next = page;
 
 	// divide page into blocks
-	const SIZE_T numBlocksInPage = (PAGE_SIZE / alignedSize) - 1;
+	const SIZET numBlocksInPage = (PAGE_SIZE / alignedSize) - 1;
 
 	// build chain into new blocks
 	FreeBlock * const firstBlock = reinterpret_cast<FreeBlock *>(blockHeader);
 	FreeBlock * block = reinterpret_cast<FreeBlock *>(blockHeader);
-	for (SIZE_T i = 0; i < (numBlocksInPage - 1); ++i)
+	for (SIZET i = 0; i < (numBlocksInPage - 1); ++i)
 	{
-		FreeBlock * next = reinterpret_cast<FreeBlock *>((SIZE_T)block + alignedSize);
+		FreeBlock * next = reinterpret_cast<FreeBlock *>((SIZET)block + alignedSize);
 		block->m_Next = next;
 		block = next;
 	}
@@ -121,5 +127,22 @@ void MemPoolBlock::AllocPage()
 	block->m_Next = m_FreeBlockChain;
 	m_FreeBlockChain = firstBlock;
 }
+
+
+#if T_MEM_STATISTICS
+// SetCategoryName
+//------------------------------------------------------------------------------
+void MemPoolBlock::SetCategoryName(const char * category)
+{
+	m_CategoryName = category;
+}
+
+// GetUsePercentage
+//------------------------------------------------------------------------------
+float MemPoolBlock::GetUsePercentage() const
+{
+	return 0;
+}
+#endif
 
 //------------------------------------------------------------------------------

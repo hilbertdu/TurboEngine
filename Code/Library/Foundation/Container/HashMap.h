@@ -20,7 +20,7 @@ template<
 class HashMap
 {
 public:
-	static const size_t DEFAULT_BUCKET_COUNT = 37;
+	static const SIZET DEFAULT_BUCKET_COUNT = 37;
 
 	typedef KeyValuePair<Key, Data> ValueType;
 	typedef HashTable<ValueType, Key, HashFunction, SelectKey<ValueType>, EqualKey, Allocator> Table;
@@ -28,10 +28,10 @@ public:
 	typedef typename Table::Iterator      Iterator;
 	typedef typename Table::ConstIterator ConstIterator;
 
-	explicit HashMap(size_t bucketCount = DEFAULT_BUCKET_COUNT);
-	HashMap(std::initializer_list<ValueType> initList);
+	explicit HashMap(SIZET bucketCount = DEFAULT_BUCKET_COUNT, const Allocator & allocator = Allocator());
+	explicit HashMap(const Allocator & allocator);
+	HashMap(const std::initializer_list<ValueType> & initList);
 	HashMap(const HashMap& rSource) = default;
-
 	~HashMap() = default;
 
 	HashMap& operator=(const HashMap& rSource) = default;
@@ -45,7 +45,7 @@ public:
 
 	FORCE_INLINE Iterator             Find(const Key& key) { return m_Table.Find(key); }
 	FORCE_INLINE Pair<Iterator, bool> Insert(const ValueType& data) { return m_Table.InsertUnique(data); }
-	FORCE_INLINE size_t               Erase(const Key& key) { return m_Table.Erase(key); }
+	FORCE_INLINE SIZET               Erase(const Key& key) { return m_Table.Erase(key); }
 
 	FORCE_INLINE void Shrink() { m_Table.Shrink(); };
 
@@ -57,19 +57,23 @@ private:
 // Constructor
 //------------------------------------------------------------------------------
 template<class Key, class Data, class HashFunction, class EqualKey, class Allocator>
-HashMap<Key, Data, HashFunction, EqualKey, Allocator>::HashMap(size_t bucketCount)
-	: m_Table(Table(bucketCount, HashFunction(), EqualKey()))
+HashMap<Key, Data, HashFunction, EqualKey, Allocator>::HashMap(const Allocator & allocator)
+	: m_Table(Table(DEFAULT_BUCKET_COUNT, HashFunction(), EqualKey(), allocator))
 {
 }
 
 template<class Key, class Data, class HashFunction, class EqualKey, class Allocator>
-HashMap<Key, Data, HashFunction, EqualKey, Allocator>::HashMap(std::initializer_list<ValueType> initList)
-	: m_Table(Table(DEFAULT_BUCKET_COUNT, HashFunction(), EqualKey()))
+HashMap<Key, Data, HashFunction, EqualKey, Allocator>::HashMap(SIZET bucketCount, const Allocator & allocator)
+	: m_Table(Table(bucketCount, HashFunction(), EqualKey(), allocator))
 {
-	for (std::initializer_list<ValueType>::const_iterator iter = initList.begin(); iter != initList.end(); ++iter)
-	{
-		Insert((*iter));
-	}
 }
 
+template<class Key, class Data, class HashFunction, class EqualKey, class Allocator>
+HashMap<Key, Data, HashFunction, EqualKey, Allocator>::HashMap(const std::initializer_list<ValueType> & initList)
+	: m_Table(Table(DEFAULT_BUCKET_COUNT, HashFunction(), EqualKey()))
+{
+	for (auto item : initList) { Insert(item); }
+}
+
+//------------------------------------------------------------------------------
 #endif // FOUNDATION_CONTAINER_HASHMAP_H

@@ -27,7 +27,7 @@ public:
 	explicit String(const CharType * string);
 	explicit String(const CharType * start, const CharType * end);
 
-	String(const String<CharType, Allocator> & string);
+	String(const String & string);
 	template<typename OtherAllocator>
 	String(const String<CharType, OtherAllocator> & string);
 	~String();
@@ -36,15 +36,15 @@ public:
 	FORCE_INLINE bool   IsEmpty() const { return (m_Length == 0); }
 
 	// C-style compatibility
-	FORCE_INLINE CharType *		Get() { return m_Contents; }
+	FORCE_INLINE CharType *	      Get() { return m_Contents; }
 	FORCE_INLINE const CharType * Get() const { return m_Contents; }
-	FORCE_INLINE CharType *		GetEnd() { return (m_Contents + m_Length); }
-	FORCE_INLINE const CharType *	GetEnd() const { return (m_Contents + m_Length); }
-	FORCE_INLINE CharType &		operator [] (size_t index) { ASSERT(index < m_Length); return m_Contents[index]; }
+	FORCE_INLINE CharType *       GetEnd() { return (m_Contents + m_Length); }
+	FORCE_INLINE const CharType * GetEnd() const { return (m_Contents + m_Length); }
+	FORCE_INLINE CharType &	      operator [] (size_t index) { ASSERT(index < m_Length); return m_Contents[index]; }
 	FORCE_INLINE const CharType & operator [] (size_t index)  const { ASSERT(index < m_Length); return m_Contents[index]; }
 
 	// A pre-constructed global empty string for convenience
-	static const String & GetEmpty() { return s_EmptyStr; }
+	static const String &   GetEmpty() { return s_EmptyStr; }
 	static const CharType * GetEmptyCStr() { return s_EmptyCStr; }
 
 	// Assignment
@@ -181,10 +181,10 @@ template<class CharType, class Allocator>
 typedef String<CHAR> AString;
 typedef String<WCHAR> WString;
 
-template<int SIZE = 1024, bool OVERFLOW = true>
-using AStackString = String<CHAR, StackAllocator<SIZE, OVERFLOW>>;
-template<int SIZE = 1024, bool OVERFLOW = true>
-using WStackString = String<CHAR, StackAllocator<SIZE, OVERFLOW>>;
+template<int SIZE = 1024, bool SUPPORT_OVERFLOW = true>
+using AStackString = String<CHAR, StackAllocator<SIZE, SUPPORT_OVERFLOW>>;
+template<int SIZE = 1024, bool SUPPORT_OVERFLOW = true>
+using WStackString = String<CHAR, StackAllocator<SIZE, SUPPORT_OVERFLOW>>;
 
 
 // Inl includes

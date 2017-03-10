@@ -4,7 +4,7 @@
 // Constructors
 //------------------------------------------------------------------------------
 template<class Table, bool Const>
-HashTableIterator<Table, Const>::HashTableIterator(Table* pTable, size_t bucketIndex, size_t elementIndex)
+HashTableIterator<Table, Const>::HashTableIterator(Table* pTable, SIZET bucketIndex, SIZET elementIndex)
 	: m_Table(pTable)
 	, m_BucketIndex(bucketIndex)
 	, m_ElementIndex(elementIndex)
@@ -81,8 +81,8 @@ HashTableIterator<Table, Const>& HashTableIterator<Table, Const>::operator++()
 	{
 		m_ElementIndex = 0;
 
-		size_t bucketCount = m_Table->m_BucketCount;
-		for (size_t bucketIdx = m_BucketIndex + 1; bucketIdx < bucketCount; ++bucketIdx)
+		SIZET bucketCount = m_Table->m_BucketCount;
+		for (SIZET bucketIdx = m_BucketIndex + 1; bucketIdx < bucketCount; ++bucketIdx)
 		{
 			if (!pBuckets[bucketIdx].IsEmpty())
 			{
@@ -119,12 +119,12 @@ HashTableIterator<Table, Const>& HashTableIterator<Table, Const>::operator--()
 	typename Table::Bucket* pBuckets = m_Table->m_Buckets;
 	ASSERT(pBuckets);
 
-	size_t bucketIdx = m_BucketIndex;
+	SIZET bucketIdx = m_BucketIndex;
 	while (bucketIdx != 0)
 	{
 		--bucketIdx;
 
-		size_t entryCount = pBuckets[bucketIdx].GetSize();
+		SIZET entryCount = pBuckets[bucketIdx].GetSize();
 		if (entryCount != 0)
 		{
 			m_BucketIndex = bucketIdx;
@@ -221,7 +221,7 @@ bool HashTableIterator<Table, Const>::operator>=(const HashTableIterator& rOther
 //------------------------------------------------------------------------------
 template<class Value, class Key, class HashFunction, class ExtractKey, class EqualKey, class Allocator>
 HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::HashTable(
-	size_t bucketCount,
+	SIZET bucketCount,
 	const HashFunction& rHasher,
 	const EqualKey& rKeyEquals,
 	const ExtractKey& rExtractKey,
@@ -239,7 +239,7 @@ HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::HashTable(
 
 template<class Value, class Key, class HashFunction, class ExtractKey, class EqualKey, class Allocator>
 HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::HashTable(
-	size_t bucketCount,
+	SIZET bucketCount,
 	const HashFunction& rHasher,
 	const EqualKey& rKeyEquals,
 	const Allocator& rAllocator)
@@ -280,7 +280,7 @@ HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::~HashTable
 // GetSize
 //------------------------------------------------------------------------------
 template<class Value, class Key, class HashFunction, class ExtractKey, class EqualKey, class Allocator>
-size_t HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::GetSize() const
+SIZET HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::GetSize() const
 {
 	return m_Size;
 }
@@ -298,7 +298,7 @@ bool HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::IsEmp
 template<class Value, class Key, class HashFunction, class ExtractKey, class EqualKey, class Allocator>
 void HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Clear()
 {
-	for (size_t bucketIdx = 0; bucketIdx < m_BucketCount; ++bucketIdx)
+	for (SIZET bucketIdx = 0; bucketIdx < m_BucketCount; ++bucketIdx)
 	{
 		m_Buckets[bucketIdx].Clear();
 	}
@@ -310,7 +310,7 @@ void HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Clear
 template<class Value, class Key, class HashFunction, class ExtractKey, class EqualKey, class Allocator>
 void HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Shrink()
 {
-	for (size_t bucketIndex = 0; bucketIndex < m_BucketCount; ++bucketIndex)
+	for (SIZET bucketIndex = 0; bucketIndex < m_BucketCount; ++bucketIndex)
 	{
 		m_Buckets[bucketIndex].Shrink();
 	}
@@ -324,7 +324,7 @@ HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Begin()
 {
 	if (m_Size != 0)
 	{
-		for (size_t bucketIdx = 0; bucketIdx < m_BucketCount; ++bucketIdx)
+		for (SIZET bucketIdx = 0; bucketIdx < m_BucketCount; ++bucketIdx)
 		{
 			if (!m_Buckets[bucketIdx].IsEmpty())
 			{
@@ -341,7 +341,7 @@ HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Begin() co
 {
 	if (m_Size != 0)
 	{
-		for (size_t bucketIdx = 0; bucketIdx < m_BucketCount; ++bucketIdx)
+		for (SIZET bucketIdx = 0; bucketIdx < m_BucketCount; ++bucketIdx)
 		{
 			if (!m_Buckets[bucketIdx].IsEmpty())
 			{
@@ -376,12 +376,12 @@ HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Find(const
 {
 	if (m_Size != 0)
 	{
-		size_t bucketIndex = (m_Hasher(rKey) % m_BucketCount);
+		SIZET bucketIndex = (m_Hasher(rKey) % m_BucketCount);
 
 		ASSERT(m_Buckets);
 		Bucket& rEntries = m_Buckets[bucketIndex];
-		size_t entryCount = rEntries.GetSize();
-		for (size_t entryIndex = 0; entryIndex < entryCount; ++entryIndex)
+		SIZET entryCount = rEntries.GetSize();
+		for (SIZET entryIndex = 0; entryIndex < entryCount; ++entryIndex)
 		{
 			if (m_KeyEquals(m_ExtractKey(rEntries[entryIndex]), rKey))
 			{
@@ -399,12 +399,12 @@ HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Find(const
 {
 	if (m_Size != 0)
 	{
-		size_t bucketIndex = (m_Hasher(rKey) % m_BucketCount);
+		SIZET bucketIndex = (m_Hasher(rKey) % m_BucketCount);
 
 		ASSERT(m_Buckets);
 		Bucket& rEntries = m_Buckets[bucketIndex];
-		size_t entryCount = rEntries.GetSize();
-		for (size_t entryIndex = 0; entryIndex < entryCount; ++entryIndex)
+		SIZET entryCount = rEntries.GetSize();
+		for (SIZET entryIndex = 0; entryIndex < entryCount; ++entryIndex)
 		{
 			if (m_KeyEquals(m_ExtractKey(rEntries[entryIndex]), rKey))
 			{
@@ -436,13 +436,13 @@ bool HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Inser
 	const Value& rValue)
 {
 	const Key& rKey = m_ExtractKey(rValue);
-	size_t bucketIndex = m_Hasher(rKey) % m_BucketCount;
+	SIZET bucketIndex = m_Hasher(rKey) % m_BucketCount;
 
 	// Search for an existing entry.
 	ASSERT(m_Buckets);
 	Bucket& rEntries = m_Buckets[bucketIndex];
-	size_t entryCount = rEntries.GetSize();
-	for (size_t entryIndex = 0; entryIndex < entryCount; ++entryIndex)
+	SIZET entryCount = rEntries.GetSize();
+	for (SIZET entryIndex = 0; entryIndex < entryCount; ++entryIndex)
 	{
 		if (m_KeyEquals(m_ExtractKey(rEntries[entryIndex]), rKey))
 		{
@@ -469,12 +469,12 @@ HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::InsertEqua
 {
 	ASSERT(m_Buckets);
 	const Key& rKey = m_ExtractKey(rValue);
-	size_t bucketIndex = m_Hasher(rKey) % m_BucketCount;
+	SIZET bucketIndex = m_Hasher(rKey) % m_BucketCount;
 
 	// Search for an existing entry.
 	Bucket& rEntries = m_Buckets[bucketIndex];
-	size_t entryCount = rEntries.GetSize();
-	for (size_t entryIndex = 0; entryIndex < entryCount; ++entryIndex)
+	SIZET entryCount = rEntries.GetSize();
+	for (SIZET entryIndex = 0; entryIndex < entryCount; ++entryIndex)
 	{
 		if (m_KeyEquals(m_ExtractKey(rEntries[entryIndex]), rKey))
 		{
@@ -505,16 +505,16 @@ Value & HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Fi
 // Remove
 //-----------------------------------------------------------------------------
 template<class Value, class Key, class HashFunction, class ExtractKey, class EqualKey, class Allocator>
-size_t HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Erase(const Key& rKey)
+SIZET HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Erase(const Key& rKey)
 {
 	ASSERT(m_Buckets);
-	size_t bucketIndex = m_Hasher(rKey) % m_BucketCount;
+	SIZET bucketIndex = m_Hasher(rKey) % m_BucketCount;
 	Bucket& rEntries = m_Buckets[bucketIndex];
-	size_t entryCount = rEntries.GetSize();
+	SIZET entryCount = rEntries.GetSize();
 
-	size_t erasedCount = 0;
+	SIZET erasedCount = 0;
 
-	for (size_t entryIndex = 0; entryIndex < entryCount; ++entryIndex)
+	for (SIZET entryIndex = 0; entryIndex < entryCount; ++entryIndex)
 	{
 		if (m_KeyEquals(m_ExtractKey(rEntries[entryIndex]), rKey))
 		{
@@ -546,8 +546,8 @@ template<class Value, class Key, class HashFunction, class ExtractKey, class Equ
 void HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Swap(HashTable& rTable)
 {
 	Bucket* pBuckets = m_Buckets;
-	size_t bucketCount = m_BucketCount;
-	size_t size = m_Size;
+	SIZET bucketCount = m_BucketCount;
+	SIZET size = m_Size;
 	HashFunction hasher = m_Hasher;
 	EqualKey keyEquals = m_KeyEquals;
 	ExtractKey extractKey = m_ExtractKey;
@@ -625,7 +625,7 @@ template<class OtherAllocator>
 void HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::CopyConstruct(
 	const HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, OtherAllocator>& rSource)
 {
-	size_t bucketCount = rSource.m_BucketCount;
+	SIZET bucketCount = rSource.m_BucketCount;
 	m_BucketCount = bucketCount;
 
 	m_Size = rSource.m_Size;
@@ -635,7 +635,7 @@ void HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::CopyC
 
 	AllocateBuckets();
 
-	for (size_t bucketIndex = 0; bucketIndex < bucketCount; ++bucketIndex)
+	for (SIZET bucketIndex = 0; bucketIndex < bucketCount; ++bucketIndex)
 	{
 		m_Buckets[bucketIndex] = rSource.m_Buckets[bucketIndex];
 	}

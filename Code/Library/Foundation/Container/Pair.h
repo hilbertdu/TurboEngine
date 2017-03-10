@@ -17,12 +17,12 @@ public:
 	typedef T1 FirstType;
 	typedef T2 SecondType;
 
-	explicit Pair() = default;
+	explicit Pair();
 	Pair(const T1& rFirst, const T2& rSecond);	// not explicit to support initializer list ?
 	Pair(const Pair<T1, T2>& rPair) = default;
 	Pair& operator=(const Pair<T1, T2>& rOther) = default;
-	bool  operator==(const Pair& rOther) { return m_First == rOther.m_First && m_Second == rOther.m_Second; };
-	bool  operator!=(const Pair& rOther) { return m_First != rOther.m_First || m_Second != rOther.m_Second; };
+	bool  operator==(const Pair& rOther) const { return m_First == rOther.m_First && m_Second == rOther.m_Second; };
+	bool  operator!=(const Pair& rOther) const { return m_First != rOther.m_First || m_Second != rOther.m_Second; };
 
 	inline T1& First() { return m_First; };
 	inline T2& Second() { return m_Second; };
@@ -75,12 +75,16 @@ public:
 // Pair class member
 //------------------------------------------------------------------------------
 template<typename T1, typename T2>
+Pair<T1, T2>::Pair()
+{
+}
+
+template<typename T1, typename T2>
 Pair<T1, T2>::Pair(const T1& rFirst, const T2& rSecond)
 	: m_First(rFirst)
 	, m_Second(rSecond)
 {
 }
-
 
 // SelectFirst class member
 //------------------------------------------------------------------------------

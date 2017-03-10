@@ -135,7 +135,14 @@
     <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestMem.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestSmartPtr.cpp" />
+    <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestReflection.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestSmartPtr.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestString.cpp" />
     <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestMain.cpp" />
   </ItemGroup>

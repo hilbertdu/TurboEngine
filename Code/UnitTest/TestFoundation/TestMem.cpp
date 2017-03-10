@@ -49,15 +49,17 @@ void TestMem::TestUnused() const
 //------------------------------------------------------------------------------
 void TestMem::TestAllocs() const
 {
-	const size_t blockSize(32);
-	const size_t blockAlignment(4);
-	MemPoolBlock block(blockSize, blockAlignment);
+	constexpr size_t blockSize(32);
+	constexpr size_t blockAlignment(4);
+	//MemPoolBlock block(blockSize, blockAlignment);
 
 	// Allocate every size up to the block size
 	Array<void *> allocs(blockSize + 1);
+	PoolAllocator<TAllocForm<blockSize, blockAlignment>> allocator;
 	for (size_t i = 0; i <= blockSize; ++i)
 	{
-		void * mem = block.Alloc(i);
+		//void * mem = block.Alloc(i);
+		void * mem = allocator.Allocate(i);
 		TEST_ASSERT(mem);
 		TEST_ASSERT(((size_t)mem % blockAlignment) == 0);
 		allocs[i] = mem;
@@ -66,7 +68,8 @@ void TestMem::TestAllocs() const
 	// Free them
 	for (size_t i = 0; i < allocs.GetSize(); ++i)
 	{
-		block.Free(allocs[i]);
+		allocator.Free(allocs[i]);
+		//block.Free(allocs[i]);
 	}
 }
 
@@ -74,16 +77,17 @@ void TestMem::TestAllocs() const
 //------------------------------------------------------------------------------
 void TestMem::TestAllocsMultiplePages() const
 {
-	const size_t blockSize(32 * 1024);
-	const size_t blockAlignment(4);
-	MemPoolBlock block(blockSize, blockAlignment);
+	constexpr size_t blockSize(32 * 1024);
+	constexpr size_t blockAlignment(4);
+	//MemPoolBlock block(blockSize, blockAlignment);
+	PoolAllocator<TAllocForm<blockSize, blockAlignment>> allocator;
 
-	void * a = block.Alloc(1); // 32 KiB
-	void * b = block.Alloc(1); // 32 KiB
-	void * c = block.Alloc(1); // 32 KiB, new page
-	block.Free(a);
-	block.Free(b);
-	block.Free(c);
+	void * a = allocator.Allocate(1); // 32 KiB
+	void * b = allocator.Allocate(1); // 32 KiB
+	void * c = allocator.Allocate(1); // 32 KiB, new page
+	allocator.Free(a);
+	allocator.Free(b);
+	allocator.Free(c);
 }
 
 // TestSpeed
@@ -144,12 +148,9 @@ void TestMem::TestSpeed()
 //------------------------------------------------------------------------------
 void TestMem::TestMemPool() const
 {
-	PoolAllocator<32, 4> poolAllocator1;
-	PoolAllocator<32, 8> poolAllocator2;
-	PoolAllocator<24, 16> poolAllocator3;
-	TEST_ASSERT(poolAllocator1.GetPoolBlock() == poolAllocator2.GetPoolBlock());
-	TEST_ASSERT(poolAllocator1.GetPoolBlock() == poolAllocator3.GetPoolBlock());
-
+	PoolAllocator<TAllocForm<32>> poolAllocator1;
+	PoolAllocator<TAllocForm<32, 8>> poolAllocator2;
+	PoolAllocator<TAllocForm<24, 16>> poolAllocator3;
 	{
 		void* mem1 = poolAllocator1.Allocate(1);
 		void* mem2 = poolAllocator1.Allocate(16);
@@ -160,6 +161,20 @@ void TestMem::TestMemPool() const
 		poolAllocator1.Free(mem2);
 		poolAllocator2.Free(mem3);
 		poolAllocator2.Free(mem4);
+	}
+	{
+		using TAllocFormInt32 = TAllocForm<sizeof(int32)>;
+
+		auto p1 = PoolAllocator<TAllocFormInt32>();
+		auto p2 = PoolAllocator<TAllocFormInt32, CONSTSTR("Category1")>();
+
+		Array<int32, PoolAllocator<TAllocForm<sizeof(int32)>>> arr1;
+		Array<int32, decltype(p2)> arr2;
+	}
+	{
+		PoolAllocator<TAllocForm<32>> allocator = poolAllocator1;
+		void* mem = allocator.Allocate(32);
+		poolAllocator1.Free(mem);
 	}
 }
 

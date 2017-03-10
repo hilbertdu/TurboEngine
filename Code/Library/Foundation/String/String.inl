@@ -40,7 +40,7 @@ String<CharType, Allocator>::String(const CharType * start, const CharType * end
 // Copy Constructor
 //------------------------------------------------------------------------------
 template<typename CharType, typename Allocator>
-String<CharType, Allocator>::String(const String<CharType, Allocator> & string)
+String<CharType, Allocator>::String(const String & string)
 	: m_Contents(const_cast<CharType *>(GetEmptyCStr<CharType>()))
 	, m_Capacity(0)
 	, m_MemShared(true)

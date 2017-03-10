@@ -28,7 +28,7 @@ typedef uint8				CHAR8;		// An 8-bit character type - In-memory only.  8-bit rep
 typedef uint16				CHAR16;		// A 16-bit character type - In-memory only.  16-bit representation.  Should really be char16_t but making this the generic option is easier for compilers which don't fully support C++11 yet (i.e. MSVC).
 typedef uint32				CHAR32;		// A 32-bit character type - In-memory only.  32-bit representation.  Should really be char32_t but making this the generic option is easier for compilers which don't fully support C++11 yet (i.e. MSVC).
 
-typedef size_t				SIZE_T;
+typedef size_t				SIZET;
 
 
 #if defined(__WIN64__)
@@ -38,6 +38,10 @@ typedef size_t				SIZE_T;
 	typedef int32			INTPTR;
 	typedef uint32			UINTPTR;
 #endif
+
+
+// Prefix for declaring string and character literals of the default character type.
+#define TXT(X)	X
 
 
 //------------------------------------------------------------------------------

@@ -325,12 +325,19 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\Array.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Container\List.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\Ref.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\SmartPtr.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\BitArray.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\HashMap.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\HashTable.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\Pair.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Env\Assert.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Math\CRC32.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Memory\Deletor.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Pattern\Event.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Pattern\Property.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\PrecompileHeader.h" />
@@ -344,23 +351,49 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Memory\MemPoolBlock.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Memory\MemTracker.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Pattern\Singleton.h" />
-    <ClInclude Include="..\..\..\Code\Library\Foundation\Platform\Assert.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Platform\Misc.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Platform\Platform.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Platform\Types.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Members\Field.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Members\Method.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\Type.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeClass.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeDatabase.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeDecl.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeDeclMacro.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeEnum.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeStruct.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Objects\Object.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Reflection.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\Serializer.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\String\String.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\String\StringAnsi.inl" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\String\StringWide.inl" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Template\String.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Time\Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Library\Foundation\Container\List.inl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\..\Code\Library\Foundation\Logging\Logger.cpp" />
+    <ClCompile Include="..\..\..\Code\Library\Foundation\Math\CRC32.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Memory\Allocator.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Memory\Mem.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Memory\MemPool.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Memory\MemPoolBlock.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Memory\MemTracker.cpp" />
+    <ClCompile Include="..\..\..\Code\Library\Foundation\Pattern\Event.inl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Library\Foundation\Pattern\Event2.inl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\..\Code\Library\Foundation\Platform\Assert.cpp" />
+    <ClCompile Include="..\..\..\Code\Library\Foundation\Reflection\Reflection.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Time\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>

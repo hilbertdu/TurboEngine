@@ -2,42 +2,39 @@
 //------------------------------------------------------------------------------
 #pragma once
 
-
 // Memory pool illustration
 //================================
-// Block size 2 | PoolBlock
+// Block size 2 | PoolBlock 1
 //================================
-// Block size 4 | PoolBlock
+// Block size 4 | PoolBlock 2
 //================================
-// Block size 8 | PoolBlock
+// Block size 8 | PoolBlock 3
 //================================
-// Block size 8 | PoolBlock
+// Block size 8 | PoolBlock 4
 //================================
 // ....
 //================================
 
 
+// Includes
+//------------------------------------------------------------------------------
 #include "Foundation/Platform/Types.h"
-#include "Foundation/Memory/MemPoolBlock.h"
 
 
+// Forward declaration
+//------------------------------------------------------------------------------
+class MemPoolImpl;
+class MemPoolBlock;
+
+
+// MemPool
+//------------------------------------------------------------------------------
 class MemPool
 {
 public:
-	static MemPoolBlock* GetPoolBlock(SIZE_T blockSize);
-	static void          Shrink();
+	static void InsertMemPoolBlock(MemPoolBlock * block);
+	static void RemoveMemPoolBlock(MemPoolBlock * block);
 
 private:
-	struct PoolBlock
-	{
-	public:
-		PoolBlock(SIZE_T blockSize, SIZE_T alignment) : m_Block(blockSize, alignment) {};
-
-		MemPoolBlock m_Block;
-		PoolBlock *  m_Next;
-	};
-
-	static MemPoolBlock* FindOrCreate(SIZE_T blockSize);
-
-	static PoolBlock* s_PoolBlockList;
+	static MemPoolImpl * s_Impl;
 };

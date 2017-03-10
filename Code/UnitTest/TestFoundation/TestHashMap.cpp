@@ -17,6 +17,7 @@ private:
 	void HashMapConstructors() const;
 	void HashMapAssignment() const;
 	void HashMapIterator() const;
+	void HashMapAllocator() const;
 };
 
 // Register Tests
@@ -25,6 +26,7 @@ REGISTER_TESTS_BEGIN(TestHashMap)
 	REGISTER_TEST(HashMapConstructors)
 	REGISTER_TEST(HashMapAssignment)
 	REGISTER_TEST(HashMapIterator)
+	REGISTER_TEST(HashMapAllocator)
 REGISTER_TESTS_END
 
 
@@ -77,6 +79,11 @@ void TestHashMap::HashMapAssignment() const
 			map[idx] = idx + 1;
 		}
 	}
+	{
+		HashMap<int, int*> map;
+		map[1] = new int(1);
+		delete map[1];
+	}
 }
 
 // HashMapIterator
@@ -104,3 +111,14 @@ void TestHashMap::HashMapIterator() const
 		}
 	}
 }
+
+// HashMapAllocator
+//------------------------------------------------------------------------------
+void TestHashMap::HashMapAllocator() const
+{
+	{
+
+	}
+}
+
+//------------------------------------------------------------------------------
