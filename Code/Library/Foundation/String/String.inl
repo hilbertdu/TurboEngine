@@ -51,6 +51,18 @@ String<CharType, Allocator>::String(const String & string)
 }
 
 template<typename CharType, typename Allocator>
+String<CharType, Allocator>::String(String && rOther)
+	: m_Contents(rOther.m_Contents)
+	, m_Length(rOther.m_Length)
+	, m_Capacity(rOther.m_Capacity)
+	, m_AllocatorInst(rOther.m_AllocatorInst)
+	, m_MemShared(rOther.m_MemShared)
+{
+	rOther.m_Contents = const_cast<CharType*>(GetEmptyCStr<CharType>());
+	rOther.m_MemShared = true;
+}
+
+template<typename CharType, typename Allocator>
 template<typename OtherAllocator>
 String<CharType, Allocator>::String(const String<CharType, OtherAllocator> & string)
 	: m_Contents(const_cast<CharType *>(GetEmptyCStr<CharType>()))

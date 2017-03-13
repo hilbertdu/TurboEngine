@@ -27,7 +27,7 @@ private:
 	void Tokenize() const;
 	void PatternMatch() const;
 	void PatternMatchI() const;
-	void WStringTest() const;
+	void StringMove() const;
 };
 
 // Register Tests
@@ -43,7 +43,7 @@ REGISTER_TESTS_BEGIN(TestString)
 	REGISTER_TEST(Tokenize)
 	REGISTER_TEST(PatternMatch)
 	REGISTER_TEST(PatternMatchI)
-	REGISTER_TEST(WString)
+	REGISTER_TEST(StringMove)
 REGISTER_TESTS_END
 
 // AStringConstructors
@@ -421,8 +421,21 @@ void TestString::PatternMatchI() const
 }
 
 
-void TestString::WStringTest() const
+void TestString::StringMove() const
 {
+	{
+		AString a1 = AString("123");
+		a1 += "456";
+		AString a2 = std::move(a1);
+		TEST_ASSERT(a2 == "123456");
+	}
+	{
+		AStackString<2> a1 = AStackString<2>("12");
+		AStackString<2> a2 = std::move(a1);
+		a2 += "34";
+		AStackString<2> a3 = std::move(a2);
+		TEST_ASSERT(a3 == "1234");
+	}
 }
 
 //------------------------------------------------------------------------------

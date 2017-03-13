@@ -28,6 +28,7 @@ public:
 	explicit String(const CharType * start, const CharType * end);
 
 	String(const String & string);
+	String(String && string);
 	template<typename OtherAllocator>
 	String(const String<CharType, OtherAllocator> & string);
 	~String();
