@@ -32,9 +32,12 @@ public:
 	explicit HashMap(const Allocator & allocator);
 	HashMap(const std::initializer_list<ValueType> & initList);
 	HashMap(const HashMap& rSource) = default;
+	HashMap(HashMap && rOther) = default;
+
 	~HashMap() = default;
 
 	HashMap& operator=(const HashMap& rSource) = default;
+	HashMap& operator=(HashMap&& rOther) = default;
 
 	FORCE_INLINE Iterator      Begin() { return m_Table.Begin(); }
 	FORCE_INLINE Iterator      End() { return m_Table.End(); }

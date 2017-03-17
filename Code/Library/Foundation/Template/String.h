@@ -1,10 +1,10 @@
-// Array.h
+// String.h
 //------------------------------------------------------------------------------
 #pragma once
 #ifndef FOUNDATION_TEMPLATE_STRING_H
 #define FOUNDATION_TEMPLATE_STRING_H
 
-
+// char sequence for generate compiler string
 template<char... c>
 struct Sequence
 {

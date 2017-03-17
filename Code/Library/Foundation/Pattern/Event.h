@@ -159,7 +159,7 @@ public:
 			: m_Functor(functor)
 		{}
 		LambdaFunction(Functor && functor)
-			: m_Functor(std::move(functor))
+			: m_Functor(std::forward<Functor>(functor))
 		{}
 		virtual ~LambdaFunction() {};
 		virtual void Destroy() { this->~LambdaFunction(); };
@@ -215,7 +215,7 @@ public:
 	void BindLambda(Functor && function)
 	{
 		Unbind();
-		INPLACE_NEW(&m_Storage) LambdaFunction<Functor>(std::move(function));
+		INPLACE_NEW(&m_Storage) LambdaFunction<Functor>(std::forward<Functor>(function));
 	}
 
 	void Unbind()

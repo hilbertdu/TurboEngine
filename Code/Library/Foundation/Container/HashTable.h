@@ -112,17 +112,22 @@ public:
 	HashTable(const HashTable& rSource);
 	template<class OtherAllocator>
 	HashTable(const HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, OtherAllocator>& rSource);
+
+	HashTable(HashTable && rOther);
+
 	~HashTable();
 
 	HashTable& operator=(const HashTable& rSource);
 	template<class OtherAllocator>
 	HashTable& operator=(const HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, OtherAllocator>& rSource);
 
+	HashTable& operator=(HashTable&& rOther);
+
 	SIZET GetSize() const;
-	bool   IsEmpty() const;
-	void   Clear();
-	void   Shrink();
-	void   Swap(HashTable& rTable);
+	bool  IsEmpty() const;
+	void  Clear();
+	void  Shrink();
+	void  Swap(HashTable& rTable);
 
 	Iterator      Begin();
 	Iterator      End();
@@ -138,15 +143,15 @@ public:
 
 	Value & FindOrInsert(const Value& rValue);
 
-	SIZET   Erase(const Key& rKey);
+	SIZET    Erase(const Key& rKey);
 	Iterator Erase(ConstIterator& iterator);
 
 protected:
 	typedef Array<Value, Allocator> Bucket;
 
-	Bucket* m_Buckets;
-	SIZET  m_BucketCount;
-	SIZET  m_Size;
+	Array<Bucket*> m_Buckets;
+	SIZET          m_BucketCount;
+	SIZET          m_Size;
 
 	HashFunction m_Hasher;
 	EqualKey     m_KeyEquals;

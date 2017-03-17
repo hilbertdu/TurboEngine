@@ -74,25 +74,11 @@ Array<T, Allocator>::Array(const Array<T, OtherAllocator> & other)
 //------------------------------------------------------------------------------
 template<class T, class Allocator>
 Array<T, Allocator>::Array(Array && other)
+	: m_Begin(other.m_Begin)
+	, m_End(other.m_End)
+	, m_MaxEnd(other.m_MaxEnd)
+	, m_Allocator(std::move(other.m_Allocator))
 {
-	m_Begin = other.m_Begin;
-	m_End = other.m_End;
-	m_MaxEnd = other.m_MaxEnd;
-	other.m_Begin = nullptr;
-	other.m_End = nullptr;
-	other.m_MaxEnd = nullptr;
-}
-
-template<class T, class Allocator>
-template<class OtherAllocator>
-Array<T, Allocator>::Array(Array<T, OtherAllocator> && other)
-{
-	m_Begin = other.m_Begin;
-	m_End = other.m_End;
-	m_MaxEnd = other.m_MaxEnd;
-	other.m_Begin = nullptr;
-	other.m_End = nullptr;
-	other.m_MaxEnd = nullptr;
 }
 
 // Destructor
@@ -126,15 +112,10 @@ void Array<T, Allocator>::Clear()
 template<class T, class Allocator>
 void Array<T, Allocator>::Swap(Array & other)
 {
-	T * tmpBegin = m_Begin;
-	T * tmpEnd = m_End;
-	T * tmpMaxEnd = m_MaxEnd;
-	m_Begin = other.m_Begin;
-	m_End = other.m_End;
-	m_MaxEnd = other.m_MaxEnd;
-	other.m_Begin = tmpBegin;
-	other.m_End = tmpEnd;
-	other.m_MaxEnd = tmpMaxEnd;
+	std::move(m_Begin, other.m_Begin);
+	std::move(m_End, other.m_End);
+	std::move(m_MaxEnd, other.m_MaxEnd);
+	std::move(m_Allocator, other.m_Allocator);
 }
 
 template<class T, class Allocator>
@@ -420,6 +401,12 @@ Array<T, Allocator> & Array<T, Allocator>::operator = (const Array<T, OtherAlloc
 		m_End = m_Begin + newSize;
 	}
 	return *this;
+}
+
+template<class T, class Allocator>
+Array<T, Allocator> & Array<T, Allocator>::operator = (Array && rOther)
+{
+	Swap(rOther);
 }
 
 // EraseSwap

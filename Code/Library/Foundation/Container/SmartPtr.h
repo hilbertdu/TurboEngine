@@ -146,7 +146,7 @@ StrongPtr<T, Deletor>::StrongPtr(const StrongPtr<T, Deletor>& rOther)
 template<class T, class Deletor>
 StrongPtr<T, Deletor>::StrongPtr(StrongPtr<T, Deletor>&& rOther)
 	: m_RefPointHolder(rOther.m_RefPointHolder)
-	, m_Deletor(rOther.m_Deletor)
+	, m_Deletor(std::move(rOther.m_Deletor))
 {
 	rOther.m_RefPointHolder = nullptr;
 }
@@ -174,9 +174,8 @@ StrongPtr<T, Deletor>& StrongPtr<T, Deletor>::operator = (const StrongPtr<T, Del
 template<class T, class Deletor>
 StrongPtr<T, Deletor>& StrongPtr<T, Deletor>::operator = (StrongPtr<T, Deletor>&& rOther)
 {
-	m_RefPointHolder = rOther.m_RefPointHolder;
-	m_Deletor = rOther.m_Deletor;
-	rOther.m_RefPointHolder = nullptr;
+	std::swap(m_RefPointHolder, rOther.m_RefPointHolder);
+	std::swap(m_Deletor, rOther.m_Deletor);
 	return *this;
 }
 

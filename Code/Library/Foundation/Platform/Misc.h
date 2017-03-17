@@ -39,7 +39,7 @@
 #define KILOBYTE (1024)
 #define MEGABYTE (1024 * 1024)
 
-#define UNUSED( x )
+#define UNUSED (x)
 
 //------------------------------------------------------------------------------
 #endif // FOUNDATION_PLATFORM_MISC_H

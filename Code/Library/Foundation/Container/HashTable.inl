@@ -269,6 +269,21 @@ HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::HashTable(
 	CopyConstruct(rSource);
 }
 
+template<class Value, class Key, class HashFunction, class ExtractKey, class EqualKey, class Allocator>
+HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::HashTable(HashTable && rOther)
+	: m_Buckets(rOther.m_Buckets)
+	, m_BucketCount(rOther.m_BucketCount)
+	, m_Size(rOther.m_Size)
+	, m_Hasher(std::move(rOther.m_Hasher))
+	, m_KeyEquals(std::move(rOther.m_KeyEquals))
+	, m_ExtractKey(std::move(rOther.m_ExtractKey))
+	, m_Allocator(std::move(rOther.m_Allocator))
+{
+	rOther.m_Buckets = nullptr;
+	rOther.m_BucketCount = 0;
+	rOther.m_Size = 0;
+}
+
 // Destructor
 //------------------------------------------------------------------------------
 template<class Value, class Key, class HashFunction, class ExtractKey, class EqualKey, class Allocator>
@@ -601,21 +616,25 @@ HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::operator=(
 }
 
 template<class Value, class Key, class HashFunction, class ExtractKey, class EqualKey, class Allocator>
+HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>&
+HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::operator=(HashTable&& rOther)
+{
+	std::swap(m_Buckets, rOther.m_Buckets)
+	std::swap(m_BucketCount, rOther.m_BucketCount)
+	std::swap(m_Size, rOther.m_Size)
+	std::swap(m_Hasher, rOther.m_Hasher)
+	std::swap(m_KeyEquals, rOther.m_KeyEquals)
+	std::swap(m_ExtractKey, rOther.m_ExtractKey)
+	std::swap(m_Allocator, rOther.m_Allocator)
+}
+
+template<class Value, class Key, class HashFunction, class ExtractKey, class EqualKey, class Allocator>
 void HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::AllocateBuckets()
 {
-	m_Buckets = (Array<Value, Allocator> *)m_Allocator.Allocate(sizeof(Bucket) * m_BucketCount);
+	m_Buckets = (Bucket *)m_Allocator.Allocate(sizeof(Bucket) * m_BucketCount);
 	ASSERT(m_Buckets);
 
-	// in place new
-	Bucket* src = m_Buckets;
-	Bucket* des = m_Buckets;
-	Bucket* end = m_Buckets + m_BucketCount;
-	while (src < end)
-	{
-		INPLACE_NEW(des) Bucket();
-		src++;
-		des++;
-	}
+	Array<Bucket*>::InPlaceConstruct(m_Buckets, m_BucketCount);
 }
 
 // CopyConstruct

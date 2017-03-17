@@ -18,9 +18,11 @@ public:
 	typedef T2 SecondType;
 
 	explicit Pair();
-	Pair(const T1& rFirst, const T2& rSecond);	// not explicit to support initializer list ?
-	Pair(const Pair<T1, T2>& rPair) = default;
-	Pair& operator=(const Pair<T1, T2>& rOther) = default;
+	/*explicit*/ Pair(const T1& rFirst, const T2& rSecond);	// not explicit to support initializer list
+	Pair(const Pair& rPair) = default;
+	Pair(Pair&& rOther) = default;
+	Pair& operator=(const Pair& rOther) = default;
+	Pair& operator=(Pair&& rOther) = default;
 	bool  operator==(const Pair& rOther) const { return m_First == rOther.m_First && m_Second == rOther.m_Second; };
 	bool  operator!=(const Pair& rOther) const { return m_First != rOther.m_First || m_Second != rOther.m_Second; };
 
@@ -45,6 +47,7 @@ public:
 	explicit KeyValuePair() = default;
 	KeyValuePair(const T1& rFirst, const T2& rSecond) : Pair(rFirst, rSecond) {};
 	KeyValuePair(const Pair<T1, T2>& rPair) : Pair(rPair) {};
+	KeyValuePair(Pair<T1, T2>&& rPair) : Pair(std::move(rPair)) {};
 
 	inline const T1& First() { return m_First; };
 	inline const T1& First() const { return m_First; };

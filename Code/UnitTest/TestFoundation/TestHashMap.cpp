@@ -18,6 +18,7 @@ private:
 	void HashMapAssignment() const;
 	void HashMapIterator() const;
 	void HashMapAllocator() const;
+	void HashMapMove() const;
 };
 
 // Register Tests
@@ -27,6 +28,7 @@ REGISTER_TESTS_BEGIN(TestHashMap)
 	REGISTER_TEST(HashMapAssignment)
 	REGISTER_TEST(HashMapIterator)
 	REGISTER_TEST(HashMapAllocator)
+	REGISTER_TEST(HashMapMove)
 REGISTER_TESTS_END
 
 
@@ -117,7 +119,6 @@ void TestHashMap::HashMapIterator() const
 void TestHashMap::HashMapAllocator() const
 {
 	{
-
 	}
 }
 

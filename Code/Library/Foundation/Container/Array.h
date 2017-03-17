@@ -33,8 +33,6 @@ public:
 	Array(const Array<T, OtherAllocator> & other);
 
 	Array(Array && other);
-	template<class OtherAllocator>
-	Array(Array<T, OtherAllocator> && other);
 
 	~Array();
 
@@ -42,6 +40,8 @@ public:
 	Array & operator = (const Array & other);
 	template<class OtherAllocator>
 	Array & operator = (const Array<T, OtherAllocator> & other);
+
+	Array & operator = (Array && rOther);
 
 	// Iterators
 	FORCE_INLINE Iter      Begin() { return m_Begin; }

@@ -159,7 +159,7 @@ protected:
 	size_t     m_Length;			// Length in CharTypeacters
 	size_t     m_Capacity;
 	Allocator  m_AllocatorInst;
-	bool       m_MemShared;
+	//bool       m_MemShared;
 
 	template<class T>
 	inline static const T * GetEmptyCStr() { return ""; };
