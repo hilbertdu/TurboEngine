@@ -1,6 +1,9 @@
 // MemPool.h
 //------------------------------------------------------------------------------
 #pragma once
+#ifndef FOUNDATION_MEMORY_MEMPOOL_H
+#define FOUNDATION_MEMORY_MEMPOOL_H
+
 
 // Memory pool illustration
 //================================
@@ -38,3 +41,6 @@ public:
 private:
 	static MemPoolImpl * s_Impl;
 };
+
+//------------------------------------------------------------------------------
+#endif // FOUNDATION_MEMORY_MEMPOOL_H

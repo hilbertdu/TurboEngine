@@ -149,9 +149,9 @@ public:
 protected:
 	typedef Array<Value, Allocator> Bucket;
 
-	Array<Bucket*> m_Buckets;
-	SIZET          m_BucketCount;
-	SIZET          m_Size;
+	Bucket* m_Buckets;
+	SIZET	m_BucketCount;
+	SIZET	m_Size;
 
 	HashFunction m_Hasher;
 	EqualKey     m_KeyEquals;

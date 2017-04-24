@@ -1,6 +1,6 @@
 // Logger.cpp
 //------------------------------------------------------------------------------
-#include "Logger.h"
+#include "Foundation/Logging/Logger.h"
 #include "Foundation/String/String.h"
 #include "Foundation/Platform/Platform.h"
 

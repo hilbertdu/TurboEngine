@@ -1,6 +1,8 @@
 // MemPoolBlock.h
 //------------------------------------------------------------------------------
 #pragma once
+#ifndef FOUNDATION_MEMORY_MEMPOOLBLOCK_H
+#define FOUNDATION_MEMORY_MEMPOOLBLOCK_H
 
 
 // Memory pool block illustration
@@ -72,3 +74,6 @@ private:
 	const char*	m_CategoryName;
 #endif
 };
+
+//------------------------------------------------------------------------------
+#endif // FOUNDATION_MEMORY_MEMPOOLBLOCK_H

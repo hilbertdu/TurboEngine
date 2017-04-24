@@ -7,6 +7,7 @@
 
 
 #include "Foundation/Reflection/MetaType/Type.h"
+#include "Foundation/Container/Array.h"
 
 
 class MetaTypeEnum : public MetaType
@@ -14,8 +15,8 @@ class MetaTypeEnum : public MetaType
 public:
 	typedef enum Innertype;
 
-	void AddElement(uint32 value, const AString & name);
-	void AddElement()
+	template<class FieldT>
+	void AddElement(FieldT * value, const AString & name);
 
 private:
 	int32 m_Size{ sizeof(Innertype) };

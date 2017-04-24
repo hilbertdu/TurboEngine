@@ -634,7 +634,7 @@ void HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Alloc
 	m_Buckets = (Bucket *)m_Allocator.Allocate(sizeof(Bucket) * m_BucketCount);
 	ASSERT(m_Buckets);
 
-	Array<Bucket*>::InPlaceConstruct(m_Buckets, m_BucketCount);
+	Array<Bucket>::InPlaceConstruct(m_Buckets, m_BucketCount);
 }
 
 // CopyConstruct
@@ -665,13 +665,6 @@ void HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::CopyC
 template<class Value, class Key, class HashFunction, class ExtractKey, class EqualKey, class Allocator>
 void HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Finalize()
 {
-	// in place delete
-	Bucket* des = m_Buckets;
-	Bucket* end = m_Buckets + m_BucketCount;
-	while (des < end)
-	{
-		des->~Bucket();
-		des++;
-	}
+	Array<Bucket>::InPlaceDestruct(m_Buckets, m_BucketCount);
 	m_Allocator.Free(m_Buckets);
 }

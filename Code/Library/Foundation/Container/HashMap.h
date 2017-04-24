@@ -6,7 +6,7 @@
 
 // Include
 //------------------------------------------------------------------------------
-#include "HashTable.h"
+#include "Foundation/Container/HashTable.h"
 #include "Foundation/Function/Hash.h"
 #include "Foundation/Function/Compare.h"
 

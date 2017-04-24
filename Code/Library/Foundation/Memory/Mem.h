@@ -1,14 +1,18 @@
 // Mem.h
 //------------------------------------------------------------------------------
 #pragma once
+#ifndef FOUNDATION_MEMORY_MEM_H
+#define FOUNDATION_MEMORY_MEM_H
 
 
 // Includes
 //------------------------------------------------------------------------------
 #include "Foundation/Platform/Platform.h"
 #include "Foundation/Platform/Types.h"
+#include "Foundation/Platform/Misc.h"
 
-
+// Macros
+//------------------------------------------------------------------------------
 #define T_MEM_ALIGN_ARB(n, a) ((((UINTPTR)(n)) + ((a)-1)) & ~((a)-1))  // 'a' needs to be a power of 2
 
 #define T_MEM_ALIGN_128(n)    ((((UINTPTR)(n)) + 127) & ~127)
@@ -24,7 +28,6 @@
 
 
 #define T_MEM_STATISTICS		1
-#define T_MEM_TRACKER_ENABLE	0
 
 
 // new/delete
@@ -36,6 +39,7 @@
 	#define TDELETE_ARRAY		delete[]
 
 	#define ALLOC( ... )		::AllocFileLine( __VA_ARGS__, __FILE__, __LINE__ )
+	#define REALLOC(...)		::Realloc(__VA_ARGS__)
 	#define FREE( ptr )			::Free( ptr )
 #else
 	#define TNEW(code)			new code
@@ -47,6 +51,7 @@
 	#define REALLOC(...)		::Realloc(__VA_ARGS__)
 	#define FREE(ptr)			::Free(ptr)
 #endif
+
 
 // Alloc/Free
 //------------------------------------------------------------------------------
@@ -67,22 +72,15 @@ void MemMove(void* des, const void* src, SIZET size);
 void MemSet(void* des, int value, SIZET size);
 
 
-// Placement new/delete
+// Operator new/delete
 //------------------------------------------------------------------------------
 #define INPLACE_NEW new
-#include <new>
-//inline void * operator new(SIZET, void * ptr){ return ptr; }
-//inline void * operator new[](SIZET, void * ptr) { return ptr; }
-//inline void operator delete(void *, void *) {}
-//inline void operator delete[](void *, void *) {}
-
-
-// Global new/delete
-//------------------------------------------------------------------------------
-//inline void * operator new(SIZET size){ return Alloc(size); }
-//inline void * operator new[](SIZET size) { return Alloc(size); }
-//inline void operator delete(void * ptr) { Free(ptr); }
-//inline void operator delete[](void * ptr) { Free(ptr); }
-
+#if (T_MEM_TRACKER_ENABLE)
+	inline void * operator new(size_t size, const char * file, int line) { return AllocFileLine(size, file, line); }
+	inline void * operator new[](size_t size, const char * file, int line) { return AllocFileLine(size, file, line); }
+	inline void operator delete(void * ptr, const char *, int) { return Free(ptr); }
+	inline void operator delete[](void * ptr, const char *, int) { return Free(ptr); }
+#endif
 
 //------------------------------------------------------------------------------
+#endif // FOUNDATION_MEMORY_MEM_H
