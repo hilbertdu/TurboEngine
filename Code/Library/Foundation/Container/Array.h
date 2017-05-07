@@ -46,6 +46,7 @@ public:
 	template<class OtherAllocator>
 	Array & operator = (const Array<T, OtherAllocator> & other);
 
+	template<class = typename std::enable_if<std::is_move_assignable<Allocator>::value>::type>
 	Array & operator = (Array && rOther);
 
 	// Iterators
@@ -73,7 +74,6 @@ public:
 	void SetCapacity(SIZET capacity);
 	void SetSize(SIZET size);
 	void Clear();
-	void Swap(Array & other);
 	void SwapItem(SIZET index1, SIZET index2);
 	void SwapItem(Iter& iter1, Iter& iter2);
 
@@ -134,8 +134,9 @@ public:
 	static void Set(T * des, const T& value, SIZET count);
 
 private:
-	void   Resize(SIZET size, SIZET capacity);
-	void   Grow(SIZET capacity);
+	void  Swap(Array & other);
+	void  Resize(SIZET size, SIZET capacity);
+	void  Grow(SIZET capacity);
 	SIZET GetGrowCapacity(SIZET capacity);
 
 	T*   Allocate(SIZET size);

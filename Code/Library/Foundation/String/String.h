@@ -67,6 +67,7 @@ public:
 	String & operator = (const String<CharType, OtherAllocator> & string) { Assign(string); return *this; }
 
 	// C++ 11 [new]
+	template<class = typename std::enable_if<std::is_move_assignable<Allocator>::value>::type>
 	String & operator = (String && string);
 
 	// Concatenation

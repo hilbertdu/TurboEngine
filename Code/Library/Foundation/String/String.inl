@@ -119,6 +119,7 @@ bool String<CharType, Allocator>::operator == (const String<CharType, OtherAlloc
 }
 
 template<typename CharType, typename Allocator>
+template<class>
 String<CharType, Allocator> & String<CharType, Allocator>::operator = (String && rOther)
 {
 	std::swap(m_Contents, rOther.m_Contents);

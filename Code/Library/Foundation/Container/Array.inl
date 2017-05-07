@@ -434,6 +434,7 @@ Array<T, Allocator> & Array<T, Allocator>::operator = (const Array<T, OtherAlloc
 }
 
 template<class T, class Allocator>
+template<class>
 Array<T, Allocator> & Array<T, Allocator>::operator = (Array && rOther)
 {
 	Swap(rOther);

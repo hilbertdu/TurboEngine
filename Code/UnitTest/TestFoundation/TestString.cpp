@@ -448,6 +448,18 @@ void TestString::StringMove() const
 		a2 += "34";
 		AStackString<2> a3 = std::move(a2);
 		TEST_ASSERT(a3 == "1234");
+		AString a4 = a2;
+		TEST_ASSERT(a4 == "1234");
+		a4 += "56";
+		a3 = a4;
+		TEST_ASSERT(a3 == "123456");
+
+		AString a5 = std::move(a2);
+		TEST_ASSERT(a5 == "1234");
+	}
+	{
+		AString a1("123456");
+		AString a2 = std::move(a1);
 	}
 }
 
