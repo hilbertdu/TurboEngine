@@ -11,11 +11,12 @@
 #include "Foundation/Reflection/MetaType/Type.h"
 
 
-class MetaStruct: public MetaType
+namespace TReflection
 {
-public:
-
-};
-
+	class MetaStruct : public MetaType
+	{
+	public:
+	};
+}
 
 #endif // FOUNDATION_REFLECTION_TYPESTRUCT_H

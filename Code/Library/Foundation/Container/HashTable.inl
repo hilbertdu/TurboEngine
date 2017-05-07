@@ -631,7 +631,8 @@ HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::operator=(
 template<class Value, class Key, class HashFunction, class ExtractKey, class EqualKey, class Allocator>
 void HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::AllocateBuckets()
 {
-	m_Buckets = (Bucket *)m_Allocator.Allocate(sizeof(Bucket) * m_BucketCount);
+	m_Buckets = ::Allocate<Bucket>(m_BucketCount, m_Allocator);
+	//m_Buckets = (Bucket *)m_Allocator.Allocate(sizeof(Bucket) * m_BucketCount);
 	ASSERT(m_Buckets);
 
 	Array<Bucket>::InPlaceConstruct(m_Buckets, m_BucketCount);

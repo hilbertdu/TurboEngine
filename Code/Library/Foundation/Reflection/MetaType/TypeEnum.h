@@ -9,18 +9,20 @@
 #include "Foundation/Reflection/MetaType/Type.h"
 #include "Foundation/Container/Array.h"
 
-
-class MetaTypeEnum : public MetaType
+namespace TReflection
 {
-public:
-	typedef enum Innertype;
+	class MetaTypeEnum : public MetaType
+	{
+	public:
+		typedef enum Innertype;
 
-	template<class FieldT>
-	void AddElement(FieldT * value, const AString & name);
+		template<class FieldT>
+		void AddElement(FieldT * value, const AString & name);
 
-private:
-	int32 m_Size{ sizeof(Innertype) };
-};
+	private:
+		int32 m_Size{ sizeof(Innertype) };
+	};
+}
 
 
 #endif // FOUNDATION_REFLECTION_TYPEENUM_H

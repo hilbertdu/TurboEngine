@@ -6,18 +6,21 @@
 #include "Foundation/Reflection/Reflection.h"
 
 
-// Initialization
-//------------------------------------------------------------------------------
-/*static*/ void Reflection::Initialization()
+namespace TReflection
 {
-	s_MetaTypeDB.RegisterAll();
-}
+	// Initialization
+	//------------------------------------------------------------------------------
+	/*static*/ void Initialization()
+	{
+		s_MetaTypeDB.RegisterAll();
+	}
 
-// GetMetaTypeDB
-//------------------------------------------------------------------------------
-/*static*/ const MetaTypeDB & Reflection::GetMetaTypeDB()
-{
-	return s_MetaTypeDB;
+	// GetMetaTypeDB
+	//------------------------------------------------------------------------------
+	/*static*/ const MetaTypeDB & GetMetaTypeDB()
+	{
+		return s_MetaTypeDB;
+	}
 }
 
 //------------------------------------------------------------------------------

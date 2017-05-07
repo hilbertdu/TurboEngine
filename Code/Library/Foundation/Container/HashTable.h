@@ -15,6 +15,7 @@
 #include "Foundation/Container/Pair.h"
 #include <type_traits>
 
+
 // Forward declaration
 //------------------------------------------------------------------------------
 template<
@@ -172,4 +173,5 @@ private:
 
 #include "Foundation/Container/HashTable.inl"
 
+//------------------------------------------------------------------------------
 #endif // FOUNDATION_CONTAINER_HASHTABLE_H

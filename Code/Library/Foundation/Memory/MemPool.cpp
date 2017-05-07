@@ -33,17 +33,19 @@ private:
 };
 
 
-
 // Statics
 //------------------------------------------------------------------------------
-/*static*/ MemPoolImpl* MemPool::s_Impl = TNEW(MemPoolImpl);
+/*static*/ MemPoolImpl* MemPool::s_Impl(nullptr);
 
 
 // InsertMemPoolBlock
 //------------------------------------------------------------------------------
 /*static*/ void MemPool::InsertMemPoolBlock(MemPoolBlock * block)
 {
-	ASSERT(s_Impl);
+	if (!s_Impl)
+	{
+		s_Impl = TNEW(MemPoolImpl);
+	}
 	s_Impl->InsertMemPoolBlock(block);
 }
 
@@ -51,7 +53,10 @@ private:
 //------------------------------------------------------------------------------
 /*static*/ void MemPool::RemoveMemPoolBlock(MemPoolBlock * block)
 {
-	ASSERT(s_Impl);
+	if (!s_Impl)
+	{
+		s_Impl = TNEW(MemPoolImpl);
+	}
 	s_Impl->RemoveMemPoolBlock(block);
 }
 

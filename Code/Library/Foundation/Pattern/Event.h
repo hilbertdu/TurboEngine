@@ -45,7 +45,7 @@ public:
 
 		if (size > 0)
 		{
-			m_Mem = m_Allocator.Allocate(size); 
+			m_Mem = ::Allocate<char>(size, m_Allocator);
 		}
 		else
 		{
@@ -78,7 +78,7 @@ private:
 		{
 			// stack move
 			m_Size = other.m_Size;
-			m_Mem = m_Allocator.Allocate(m_Size);
+			m_Mem = ::Allocate<char>(size, m_Allocator);
 			MemCopy(m_Mem, other.m_Mem, m_Size);
 		}
 		else
@@ -111,12 +111,15 @@ public:
 		virtual ~IFunction() {};
 		virtual void Destroy() = 0;
 		virtual T Invoke(Args... args) const = 0;
+#pragma push_macro("new")
+#undef new
 		static void * operator new(SIZET size, DelegateStorage<DELEGATE_DEFAULT_SIZE>* storage)
 		{
 			return storage->SetStorage(size);
 		}
 		static void operator delete(void * mem, DelegateStorage<DELEGATE_DEFAULT_SIZE>* storage) {}
 	};
+#pragma pop_macro("new")
 
 	class StaticFunction : public IFunction
 	{

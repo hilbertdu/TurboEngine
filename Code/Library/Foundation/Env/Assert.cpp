@@ -3,7 +3,8 @@
 
 // Includes
 //------------------------------------------------------------------------------
-#include "Assert.h"
+#include "Foundation/Env/Assert.h"
+#include "Foundation/Platform/Platform.h"
 #include "Foundation/String/String.h"
 
 #ifdef ASSERT_ENABLED
@@ -17,9 +18,9 @@
 //------------------------------------------------------------------------------
 bool IsDebuggerAttached()
 {
-#if defined( __WINDOWS__ )
+#if defined(__WINDOWS__)
 	return (IsDebuggerPresent() == TRUE);
-#elif defined( __APPLE__ )
+#elif defined(__APPLE__)
 	return false; // TODO:MAC Implement IsDebugerAttached
 #else
 	#error Unknown platform

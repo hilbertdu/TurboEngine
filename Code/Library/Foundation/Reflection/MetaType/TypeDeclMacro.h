@@ -11,7 +11,8 @@
 #include "Foundation/Reflection/MetaType/Type.h"
 #include "Foundation/Reflection/MetaType/TypeDatabase.h"
 
-
+namespace TReflection
+{
 #define NAME(X) Name(TXT(X))
 
 #define REFLECTION_DECLARE_META_BEGIN
@@ -41,7 +42,7 @@
 
 #define REFLECTION_REGISTER_META_END \
 	}
-	
+}
 
 #endif // FOUNDATION_REFLECTION_TYPEDECLMACRO_H
 //------------------------------------------------------------------------------

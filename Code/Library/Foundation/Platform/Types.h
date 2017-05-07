@@ -40,9 +40,5 @@ typedef size_t				SIZET;
 #endif
 
 
-// Prefix for declaring string and character literals of the default character type.
-#define TXT(X)	X
-
-
 //------------------------------------------------------------------------------
 #endif // FOUNDATION_PLATFORM_TYPES_H

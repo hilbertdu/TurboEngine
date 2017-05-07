@@ -78,5 +78,6 @@ HashMap<Key, Data, HashFunction, EqualKey, Allocator>::HashMap(const std::initia
 	for (auto item : initList) { Insert(item); }
 }
 
+
 //------------------------------------------------------------------------------
 #endif // FOUNDATION_CONTAINER_HASHMAP_H

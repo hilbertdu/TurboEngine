@@ -14,7 +14,7 @@
 // Includes
 //-----------------------------------------------------------------------------
 #include "Foundation/Platform/Types.h"
-#include "Foundation/Container/HashMap.h"
+#include <stdarg.h>
 
 // Macros
 //-----------------------------------------------------------------------------
@@ -27,11 +27,10 @@
 
 #define _LOG(tag, slevel, level, ...)				\
 	do {											\
-		PRAGMA_DISABLE_PUSH_MSVC(4127)				\
+	PRAGMA_DISABLE_PUSH_MSVC(4127)					\
 		if (level & Logger::GetLoggerLevel(#tag))	\
 		{											\
-			Logger::Output(slevel);					\
-			Logger::Log##slevel(__VA_ARGS__);		\
+			Logger::LogTag(slevel, __VA_ARGS__);	\
 		}											\
 	} while (0)										\
 	PRAGMA_DISABLE_POP_MSVC
@@ -39,12 +38,12 @@
 
 // Expose interface
 //----------------------------------------------------------------------------
-#define LDEBUG(tag, ...)		_LOG(tag, "[DEBUG] ", LOGLEVEL_DEBUG, __VA_ARGS__)
-#define LVERBOSE(tag, ...)		_LOG(tag, "[VERBOSE] ", LOGLEVEL_VERBOSE, __VA_ARGS__)
-#define LINFO(tag, ...)			_LOG(tag, "[INFO] ", LOGLEVEL_VERBOSE, __VA_ARGS__)
-#define LWARN(tag, ...)			_LOG(tag, "[WARN] ", LOGLEVEL_VERBOSE, __VA_ARGS__)
-#define LERROR(tag, ...)		_LOG(tag, "[ERROR] ", LOGLEVEL_VERBOSE, __VA_ARGS__)
-#define LFATALERROR(tag, ...)	_LOG(tag, "[FATALERROR] ", LOGLEVEL_VERBOSE, __VA_ARGS__)
+#define LDEBUG(tag, ...)		_LOG(tag, "DEBUG", LOGLEVEL_DEBUG, __VA_ARGS__)
+#define LVERBOSE(tag, ...)		_LOG(tag, "VERBOSE", LOGLEVEL_VERBOSE, __VA_ARGS__)
+#define LINFO(tag, ...)			_LOG(tag, "INFO", LOGLEVEL_VERBOSE, __VA_ARGS__)
+#define LWARN(tag, ...)			_LOG(tag, "WARN", LOGLEVEL_VERBOSE, __VA_ARGS__)
+#define LERROR(tag, ...)		_LOG(tag, "ERROR", LOGLEVEL_VERBOSE, __VA_ARGS__)
+#define LFATALERROR(tag, ...)	_LOG(tag, "FATALERROR", LOGLEVEL_VERBOSE, __VA_ARGS__)
 
 // Directly output
 #define LOUTPUT(...)			Logger::Log(__VA_ARGS__)
@@ -59,18 +58,20 @@ public:
 	static void UnregisteLogger(const char * tag);
 	static int32 GetLoggerLevel(const char* tag);
 
-	static inline void DoNothing() {};
+	static inline void DoNothing() {}
 
-	static void Log(const char * fmtString, ...);
-	static void LogDebug(const char * fmtString, ...);
-	static void LogVerbose(const char * fmtString, ...);
-	static void LogInfo(const char * fmtString, ...);
-	static void LogWarn(const char * fmtString, ...);
-	static void LogError(const char * fmtString, ...);
-	static void FatalError(const char * fmtString, ...);
+	static void Log(const char * format, ...);
+	static void LogTag(const char * tag, const char * format, ...);
 
 private:
-	static void Output(const char* fmtString, va_list args);
+	static void LogDebug(const char * format, ...);
+	static void LogVerbose(const char * format, ...);
+	static void LogInfo(const char * format, ...);
+	static void LogWarn(const char * format, ...);
+	static void LogError(const char * format, ...);
+	static void FatalError(const char * format, ...);
+	static void Output(const char* format, va_list args);
+	static void OutputDirect(const char * msg);
 };
 
 

@@ -334,7 +334,9 @@
     <ClInclude Include="..\..\..\..\..\OpenSource\stl\vector.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Analyzer\MemTracker.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\Array.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Container\Base.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\List.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -363,6 +365,7 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Platform\Misc.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Platform\Platform.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Platform\Types.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Process\Mutex.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Members\Field.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Members\Method.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\Type.h" />
@@ -382,10 +385,12 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Time\Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Library\Foundation\Analyzer\MemTracker.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Container\List.inl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\Library\Foundation\Env\Assert.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Logging\Logger.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Math\CRC32.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Memory\Allocator.cpp" />
@@ -397,7 +402,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <FileType>Document</FileType>
     </ClInclude>
-    <ClCompile Include="..\..\..\Code\Library\Foundation\Platform\Assert.cpp" />
+    <ClCompile Include="..\..\..\Code\Library\Foundation\Process\Mutex.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Reflection\Reflection.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Time\Timer.cpp" />
   </ItemGroup>

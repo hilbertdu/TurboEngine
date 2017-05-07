@@ -23,15 +23,20 @@ public:
 	typedef	T *			Iter;
 	typedef const T *	ConstIter;
 
-	explicit Array(const Allocator & allocator = Allocator());
-	explicit Array(const T * begin, const T * end, const Allocator & allocator = Allocator());
-	explicit Array(SIZET initSize, const Allocator & allocator = Allocator());
+	explicit Array();
+	explicit Array(const Allocator & allocator);
+	explicit Array(const T * begin, const T * end);
+	explicit Array(const T * begin, const T * end, const Allocator & allocator);
+	explicit Array(SIZET initSize);
+	explicit Array(SIZET initSize, const Allocator & allocator);
 	Array(const std::initializer_list<T> & initList);
+	Array(const std::initializer_list<T> & initList, const Allocator & allocator);
 
 	Array(const Array & other);
 	template<class OtherAllocator>
 	Array(const Array<T, OtherAllocator> & other);
 
+	template<class = typename std::enable_if<std::is_move_assignable<Allocator>::value>::type>
 	Array(Array && other);
 
 	~Array();
@@ -55,7 +60,7 @@ public:
 	FORCE_INLINE const T &	operator [] (SIZET index) const { ASSERT(index < GetSize()); return m_Begin[index]; }
 	FORCE_INLINE T &		TopItem() { ASSERT(m_Begin < m_End); return m_End[-1]; }
 	FORCE_INLINE const T &	TopItem() const { ASSERT(m_Begin < m_End); return m_End[-1]; }
-	FORCE_INLINE SIZET		Index(const Iter iter) const { return iter - m_Begin; }
+	FORCE_INLINE SIZET		Index(ConstIter iter) const { return iter - m_Begin; }
 	FORCE_INLINE SIZET		Index(Iter iter) { return iter - m_Begin; }
 
 	// C iterator

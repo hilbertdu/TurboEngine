@@ -4,30 +4,38 @@
 // Constructors
 //------------------------------------------------------------------------------
 template<class T, class Allocator>
-Array<T, Allocator>::Array(const Allocator & allocator)
+Array<T, Allocator>::Array()
 	: m_Begin(nullptr)
 	, m_End(nullptr)
 	, m_MaxEnd(nullptr)
-	, m_Allocator(allocator)
 {
 }
 
 template<class T, class Allocator>
-Array<T, Allocator>::Array(SIZET initSize, const Allocator & allocator)
-	: m_Begin(nullptr)
-	, m_End(nullptr)
-	, m_MaxEnd(nullptr)
-	, m_Allocator(allocator)
+Array<T, Allocator>::Array(const Allocator & allocator)
+	: Array()
+{
+	m_Allocator = allocator;
+}
+
+template<class T, class Allocator>
+Array<T, Allocator>::Array(SIZET initSize)
+	: Array()
 {
 	SetSize(initSize);
 }
 
 template<class T, class Allocator>
-Array<T, Allocator>::Array(const T * begin, const T * end, const Allocator & allocator)
-	: m_Begin(nullptr)
-	, m_End(nullptr)
-	, m_MaxEnd(nullptr)
-	, m_Allocator(allocator)
+Array<T, Allocator>::Array(SIZET initSize, const Allocator & allocator)
+	: Array()
+{
+	m_Allocator = allocator;
+	SetSize(initSize);
+}
+
+template<class T, class Allocator>
+Array<T, Allocator>::Array(const T * begin, const T * end)
+	: Array()
 {
 	const SIZET size = (end - begin);
 	SetCapacity(size);
@@ -36,7 +44,27 @@ Array<T, Allocator>::Array(const T * begin, const T * end, const Allocator & all
 }
 
 template<class T, class Allocator>
+Array<T, Allocator>::Array(const T * begin, const T * end, const Allocator & allocator)
+	: Array()
+{
+	m_Allocator = allocator;
+	const SIZET size = (end - begin);
+	SetCapacity(size);
+	UninitializedCopy(m_Begin, begin, size);
+	m_End = m_Begin + size;
+}
+
+template<class T, class Allocator>
 Array<T, Allocator>::Array(const std::initializer_list<T> & initList)
+{
+	SetCapacity(initList.size());
+	UninitializedCopy(m_Begin, initList.begin(), initList.size());
+	m_End = m_Begin + initList.size();
+}
+
+template<class T, class Allocator>
+Array<T, Allocator>::Array(const std::initializer_list<T> & initList, const Allocator & allocator)
+	: m_Allocator(allocator)
 {
 	SetCapacity(initList.size());
 	UninitializedCopy(m_Begin, initList.begin(), initList.size());
@@ -73,6 +101,7 @@ Array<T, Allocator>::Array(const Array<T, OtherAllocator> & other)
 // Move copy constructors
 //------------------------------------------------------------------------------
 template<class T, class Allocator>
+template<class>
 Array<T, Allocator>::Array(Array && other)
 	: m_Begin(other.m_Begin)
 	, m_End(other.m_End)
@@ -288,7 +317,8 @@ void Array<T, Allocator>::Insert(SIZET index, const T & item, SIZET count)
 		UninitializedCopy(newMem, m_Begin, index);
 		UninitializedFill(newMem + index, item, count);
 		UninitializedCopy(newMem + index + count, m_Begin + index, oldSize - index);
-
+		
+		InPlaceDestruct(m_Begin, m_End - m_Begin);
 		Deallocate();
 
 		m_Begin = newMem;
@@ -506,13 +536,13 @@ void Array<T, Allocator>::Resize(SIZET size, SIZET capacity)
 template<class T, class Allocator>
 T * Array<T, Allocator>::Allocate(SIZET size)
 {
-	return (T *)m_Allocator.Allocate(size * sizeof(T));
+	return ::Allocate<T>(size, m_Allocator);
 }
 
 template<class T, class Allocator>
 T * Array<T, Allocator>::Reallocate(SIZET size)
 {
-	return (T *)m_Allocator.Allocate(size * sizeof(T));
+	return ::Allocate<T>(size, m_Allocator);
 }
 
 template<class T, class Allocator>
@@ -520,7 +550,7 @@ void Array<T, Allocator>::Deallocate()
 {
 	if (m_Begin)
 	{
-		m_Allocator.Free(m_Begin);
+		::Deallocate<T>(m_Begin, m_Allocator);
 	}
 }
 

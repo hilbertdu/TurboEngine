@@ -111,6 +111,19 @@ void TestString::AStringAssignment() const
 		AString dst;
 		dst.Assign(AString::GetEmpty().Get(), AString::GetEmpty().Get());
 	}
+	{
+		str3 += " ";
+		str3 += "world";
+		TEST_ASSERT(str3 == "hello world");
+	}
+	{
+		str3.Append("!!!!!", 1);
+		TEST_ASSERT(str3 == "hello world!");
+	}
+	{
+		str3.Append(str);
+		TEST_ASSERT(str3 == "hello world!test");
+	}
 }
 
 // AStackStringConstructors
@@ -186,7 +199,7 @@ void TestString::BigString() const
 {
 	// create a massive string
 	AutoPtr<char, AllocDeletor> mem((char *)ALLOC((10 * MEGABYTE) + 1));
-	memset(mem.Get(), 'a', 10 * MEGABYTE);
+	MemSet(mem.Get(), 'a', 10 * MEGABYTE);
 	mem.Get()[10 * MEGABYTE] = '\000';
 
 	// create a stack string

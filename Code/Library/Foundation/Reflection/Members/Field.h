@@ -10,17 +10,17 @@
 //------------------------------------------------------------------------------
 #include "Foundation/Reflection/MetaType/Type.h"
 
-
-class Field : public MetaType
+namespace TReflection
 {
-public:
-	Field();
+	class Field : public MetaType
+	{
+	public:
+		Field();
 
-private:
-	uint32 m_Offset;
-	uint32 m_Index;
-};
-
-
+	private:
+		uint32 m_Offset;
+		uint32 m_Index;
+	};
+}
 
 #endif // FOUNDATION_REFLECTION_FIELD_H

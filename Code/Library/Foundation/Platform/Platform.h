@@ -16,5 +16,13 @@
 	#define __WINDOWS__
 #endif
 
+#ifdef __WINDOWS__
+	#if defined(_DEBUG)
+		#define __DEBUG__
+	#else
+		#define __RELEASE__
+	#endif
+#endif
+
 //------------------------------------------------------------------------------
 #endif // FOUNDATION_PLATFORM_PLATFORM_H

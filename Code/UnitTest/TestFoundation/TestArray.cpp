@@ -166,9 +166,11 @@ void TestArray::ArrayIterator() const
 		TEST_ASSERT(arr.GetSize() == 10);
 	}
 	{
-		for (Array<AString>::ConstIter iter = arr.Begin(); iter != arr.End(); ++iter)
+		SIZET idx = 0;
+		for (Array<AString>::ConstIter iter = arr.Begin(); iter != arr.End(); ++iter, ++idx)
 		{
 			TEST_ASSERT(*iter == "iterator");
+			TEST_ASSERT(idx == arr.Index(iter));
 		}
 	}
 }

@@ -13,7 +13,6 @@ String<CharType, Allocator>::String()
 	: m_Contents(const_cast<CharType *>(GetEmptyCStr<CharType>()))
 	, m_Length(0)
 	, m_Capacity(0)
-	//, m_MemShared(true)
 {
 }
 
@@ -21,11 +20,10 @@ template<typename CharType, typename Allocator>
 String<CharType, Allocator>::String(const CharType * string)
 	: m_Contents(const_cast<CharType *>(GetEmptyCStr<CharType>()))
 	, m_Capacity(0)
-	//, m_MemShared(true)
 {
 	ASSERT(string);
 	m_Length = StrLen(string);
-	SetCapacity(m_Length);
+	SetCapacity(m_Length, false);
 	Copy(string, m_Contents, m_Length); // copy handles terminator
 }
 
@@ -33,11 +31,10 @@ template<typename CharType, typename Allocator>
 String<CharType, Allocator>::String(const CharType * start, const CharType * end)
 	: m_Contents(const_cast<CharType *>(GetEmptyCStr<CharType>()))
 	, m_Capacity(0)
-	//, m_MemShared(true)
 {
 	ASSERT(start && end);
-	m_Length = (size_t)(end - start);
-	SetCapacity(m_Length);
+	m_Length = (SIZET)(end - start);
+	SetCapacity(m_Length, false);
 	Copy(start, m_Contents, m_Length); // copy handles terminator
 }
 
@@ -47,25 +44,23 @@ template<typename CharType, typename Allocator>
 String<CharType, Allocator>::String(const String & string)
 	: m_Contents(const_cast<CharType *>(GetEmptyCStr<CharType>()))
 	, m_Capacity(0)
-	//, m_MemShared(true)
 {
 	m_Length = string.GetLength();
-	SetCapacity(m_Length);
+	SetCapacity(m_Length, false);
 	Copy(string.Get(), m_Contents, m_Length); // copy handles terminator
 }
 
 template<typename CharType, typename Allocator>
+template<class>
 String<CharType, Allocator>::String(String && rOther)
 	: m_Contents(rOther.m_Contents)
 	, m_Length(rOther.m_Length)
 	, m_Capacity(rOther.m_Capacity)
-	, m_AllocatorInst(rOther.m_AllocatorInst)
-	//, m_MemShared(rOther.m_MemShared)
+	, m_AllocatorInst(std::move(rOther.m_AllocatorInst))
 {
 	rOther.m_Length = 0;
 	rOther.m_Capacity = 0;
 	rOther.m_Contents = const_cast<CharType*>(GetEmptyCStr<CharType>());
-	//rOther.m_MemShared = true;
 }
 
 template<typename CharType, typename Allocator>
@@ -73,10 +68,9 @@ template<typename OtherAllocator>
 String<CharType, Allocator>::String(const String<CharType, OtherAllocator> & string)
 	: m_Contents(const_cast<CharType *>(GetEmptyCStr<CharType>()))
 	, m_Capacity(0)
-	//, m_MemShared(true)
 {
 	m_Length = string.GetLength();
-	SetCapacity(m_Length);
+	SetCapacity(m_Length, false);
 	Copy(string.Get(), m_Contents, m_Length); // copy handles terminator
 }
 
@@ -147,7 +141,7 @@ void String<CharType, Allocator>::Assign(const CharType * start, const CharType 
 	m_Length = (size_t)(end - start);
 	if (m_Length > GetCapacity())
 	{
-		SetCapacity(m_Length);
+		SetCapacity(m_Length, false);
 	}
 	Copy(start, m_Contents, m_Length); // handles terminator
 }
@@ -173,30 +167,7 @@ void String<CharType, Allocator>::Clear()
 template<typename CharType, typename Allocator>
 void String<CharType, Allocator>::SetCapacity(size_t capacity)
 {
-	ASSERT(capacity >= 0);
-	if (capacity == GetCapacity())
-	{
-		return;
-	}
-	else if (capacity == 0)
-	{
-		Deallocate();
-		m_Contents = const_cast<CharType *>(s_EmptyCStr);
-		//m_MemShared = true;
-	}
-	else
-	{
-		if (/*m_MemShared*/m_Capacity == 0)
-		{
-			Allocate(capacity + 1);
-		}
-		else
-		{
-			Reallocate(capacity + 1);
-		}
-		//m_MemShared = false;
-	}
-	m_Capacity = capacity;
+	SetCapacity(capacity, true);
 }
 
 // operator += (CharType)
@@ -818,39 +789,58 @@ template<typename CharType, typename Allocator>
 void String<CharType, Allocator>::Grow(size_t addedSize = 0)
 {
 	// Grow by 1.5 times
-	size_t newCapacity = Math::Max(m_Capacity + addedSize, m_Capacity + (m_Capacity >> 1) + 1);
-	if (/*m_MemShared*/m_Capacity == 0)
-	{
-		Allocate(newCapacity);
-	}
-	else
-	{
-		Reallocate(newCapacity);
-	}
-	//m_MemShared = false;
+	size_t newCapacity = Math::Max(m_Capacity + addedSize, m_Capacity + (m_Capacity >> 1));
+	SetCapacity(newCapacity, true);
 }
 
 template<typename CharType, typename Allocator>
-void String<CharType, Allocator>::Allocate(size_t size)
+void String<CharType, Allocator>::SetCapacity(SIZET capacity, bool needCopy)
 {
-	ASSERT(m_Contents == s_EmptyCStr);
-	m_Contents = (CharType *)m_AllocatorInst.Allocate(size * sizeof(CharType));
-}
+	if (m_Capacity != capacity)
+	{
+		SIZET newLength = Math::Min(m_Length, capacity);
+		if (capacity == 0)
+		{
+			Deallocate();
+			m_Contents = const_cast<CharType *>(s_EmptyCStr);
+		}
+		else
+		{
+			CharType * newMem = Allocate(capacity);
+			if (needCopy)
+			{
+				Array<CharType>::UninitializedCopy(newMem, m_Contents, newLength);
+				Array<CharType>::InPlaceDestruct(m_Contents, m_Length);
+			}
+			Deallocate();
+			m_Contents = newMem;
+		}
+		m_Length = newLength;
+		m_Capacity = capacity;
+	}
+} 
 
 template<typename CharType, typename Allocator>
-void String<CharType, Allocator>::Reallocate(size_t size)
+CharType * String<CharType, Allocator>::Allocate(size_t size)
 {
 	ASSERT(size > 0);
-	m_Contents = (CharType *)m_AllocatorInst.Reallocate(m_Contents, size * sizeof(CharType));
+	return ::Allocate<CharType>(size, m_AllocatorInst);
+}
+
+template<typename CharType, typename Allocator>
+CharType * String<CharType, Allocator>::Reallocate(size_t size)
+{
+	ASSERT(size > 0);
+	return ::Reallocate<CharType>(m_Contents, size, m_AllocatorInst);
 }
 
 template<typename CharType, typename Allocator>
 void String<CharType, Allocator>::Deallocate()
 {
 	ASSERT(m_Contents);
-	if (/*!m_MemShared*/m_Capacity > 0)
+	if (m_Capacity > 0)
 	{
-		m_AllocatorInst.Free(m_Contents);
+		::Deallocate(m_Contents, m_AllocatorInst);
 	}
 }
 

@@ -27,20 +27,35 @@
 #define T_IS_ALIGN_OF(n, a)   (T_MEM_ALIGN_ARB(n, a) == n)
 
 
-#define T_MEM_STATISTICS		1
-
+#define T_MEM_STATISTICS	1
+#define T_MEM_TRACKER		1
+#define T_MEM_TRACKER_ALL	1
 
 // new/delete
 //------------------------------------------------------------------------------
-#if (T_MEM_TRACKER_ENABLE)
-	#define TNEW( code )		new ( __FILE__, __LINE__ ) code
-	#define TNEW_ARRAY( code )	new ( __FILE__, __LINE__ ) code
-	#define TDELETE				delete
-	#define TDELETE_ARRAY		delete[]
+#define INPLACE_NEW			new
 
-	#define ALLOC( ... )		::AllocFileLine( __VA_ARGS__, __FILE__, __LINE__ )
-	#define REALLOC(...)		::Realloc(__VA_ARGS__)
-	#define FREE( ptr )			::Free( ptr )
+#if (T_MEM_TRACKER)
+	#include "Foundation/Analyzer/MemTracker.h"
+
+	#if (T_MEM_TRACKER_ALL)
+		#define new					MemStamp(__FILE__, __LINE__) * new
+		#define TNEW(code)			new code
+		#define TNEW_ARRAY(code)	new code
+		#define TDELETE				delete
+		#define TDELETE_ARRAY		delete[]
+	#else
+		#define TNEW(code)			(MemStamp(__FILE__, __LINE__) * new(MemStructNone(), MemStructNone()) code)
+		#define TNEW_ARRAY(code)	(MemStamp(__FILE__, __LINE__) * new(MemStructNone(), MemStructNone()) code)
+		#define TDELETE				delete
+		#define TDELETE_ARRAY		delete[]
+	#endif
+
+	#define ALLOC(...)			(MemStamp(__FILE__, __LINE__) * MemTracker::Alloc(__VA_ARGS__))
+	#define REALLOC(...)		(MemStamp(__FILE__, __LINE__) * MemTracker::Realloc(__VA_ARGS__))
+	#define FREE(ptr)			MemTracker::Free(ptr)
+
+	#define TMEM_TRACKER_DUMP_INFO	MemTracker::DumpAllocations();
 #else
 	#define TNEW(code)			new code
 	#define TNEW_ARRAY(code)	new code
@@ -55,14 +70,8 @@
 
 // Alloc/Free
 //------------------------------------------------------------------------------
-void * Alloc(SIZET size);
-void * Alloc(SIZET size, SIZET alignment);
-void * AllocFileLine(SIZET size, const char * file, int line);
-void * AllocFileLine(SIZET size, SIZET alignment, const char * file, int line);
-void * Realloc(void* pMem, SIZET size);
-void * Realloc(void* pMem, SIZET size, SIZET alignment);
-void * ReallocFileLine(void* pMem, SIZET size, const char * file, int line);
-void * ReallocFileLine(void* pMem, SIZET size, SIZET alignment, const char * file, int line);
+void * Alloc(SIZET size, SIZET alignment = sizeof(void*));
+void * Realloc(void* pMem, SIZET size, SIZET alignment = sizeof(void*));
 void Free(void * ptr);
 
 // Copy/Move/Set
@@ -71,16 +80,6 @@ void MemCopy(void* des, const void* src, SIZET size);
 void MemMove(void* des, const void* src, SIZET size);
 void MemSet(void* des, int value, SIZET size);
 
-
-// Operator new/delete
-//------------------------------------------------------------------------------
-#define INPLACE_NEW new
-#if (T_MEM_TRACKER_ENABLE)
-	inline void * operator new(size_t size, const char * file, int line) { return AllocFileLine(size, file, line); }
-	inline void * operator new[](size_t size, const char * file, int line) { return AllocFileLine(size, file, line); }
-	inline void operator delete(void * ptr, const char *, int) { return Free(ptr); }
-	inline void operator delete[](void * ptr, const char *, int) { return Free(ptr); }
-#endif
 
 //------------------------------------------------------------------------------
 #endif // FOUNDATION_MEMORY_MEM_H

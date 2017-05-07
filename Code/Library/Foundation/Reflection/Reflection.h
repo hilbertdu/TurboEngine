@@ -11,13 +11,10 @@
 #include "Foundation/Pattern/Singleton.h"
 
 
-class Reflection
+namespace TReflection
 {
-public:
 	static void Initialization();
 	static const MetaTypeDB & GetMetaTypeDB();
-
-private:
 	static MetaTypeDB s_MetaTypeDB;
 };
 

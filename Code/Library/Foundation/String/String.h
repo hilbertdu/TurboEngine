@@ -28,7 +28,10 @@ public:
 	explicit String(const CharType * start, const CharType * end);
 
 	String(const String & string);
+
+	template<class = typename std::enable_if<std::is_move_assignable<Allocator>::value>::type>
 	String(String && string);
+
 	template<typename OtherAllocator>
 	String(const String<CharType, OtherAllocator> & string);
 	~String();
@@ -150,16 +153,16 @@ public:
 
 protected:
 	void Grow(size_t addedSize = 0);
+	void SetCapacity(SIZET capacity, bool needCopy);
 
-	void Allocate(size_t size);
-	void Reallocate(size_t size);
-	void Deallocate();
+	CharType * Allocate(size_t size);
+	CharType * Reallocate(size_t size);
+	void       Deallocate();
 
 	CharType * m_Contents;			// Always points to valid null terminated string (even when empty)
 	size_t     m_Length;			// Length in CharTypeacters
 	size_t     m_Capacity;
 	Allocator  m_AllocatorInst;
-	//bool       m_MemShared;
 
 	template<class T>
 	inline static const T * GetEmptyCStr() { return ""; };

@@ -25,6 +25,7 @@ private:
 	void TestAllocsMultiplePages() const;
 	void TestSpeed();
 	void TestMemPool() const;
+	void TestMemTracker() const;
 };
 
 // Register Tests
@@ -35,6 +36,7 @@ REGISTER_TESTS_BEGIN(TestMem)
 	REGISTER_TEST(TestAllocsMultiplePages);
 	REGISTER_TEST(TestSpeed);
 	REGISTER_TEST(TestMemPool);
+	REGISTER_TEST(TestMemTracker);
 REGISTER_TESTS_END
 
 // TestUnused
@@ -59,7 +61,8 @@ void TestMem::TestAllocs() const
 	for (size_t i = 0; i <= blockSize; ++i)
 	{
 		//void * mem = block.Alloc(i);
-		void * mem = allocator.Allocate(i);
+		//void * mem = allocator.Allocate(i);
+		void * mem = ::Allocate<char>(i, allocator);
 		TEST_ASSERT(mem);
 		TEST_ASSERT(((size_t)mem % blockAlignment) == 0);
 		allocs[i] = mem;
@@ -176,6 +179,15 @@ void TestMem::TestMemPool() const
 		void* mem = allocator.Allocate(32);
 		poolAllocator1.Free(mem);
 	}
+}
+
+// TestMemTracker
+//------------------------------------------------------------------------------
+void TestMem::TestMemTracker() const
+{
+#if defined(TMEM_TRACKER_DUMP_INFO)
+	TMEM_TRACKER_DUMP_INFO
+#endif
 }
 
 //------------------------------------------------------------------------------

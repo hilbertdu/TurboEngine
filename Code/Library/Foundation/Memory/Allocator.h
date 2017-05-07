@@ -14,9 +14,39 @@
 #include "Foundation/Template/String.h"
 #include "Foundation/Container/SmartPtr.h"
 #include "Foundation/Memory/Deletor.h"
+#include "Foundation/Logging/Logger.h"
 #include <type_traits>
 
 #define DefaultAllocator HeapAllocator
+
+
+// Global Allocate and Deallocate
+//------------------------------------------------------------------------------
+template<class T, class AllocType>
+T * Allocate(SIZET size, AllocType & allocator)
+{
+#if (T_MEM_TRACKER)
+	return MemStamp(__FILE__, __LINE__) * (T *)allocator.Allocate(size * sizeof(T));
+#else
+	return (T *)allocator.Allocate(size * sizeof(T));
+#endif
+}
+
+template<class T, class AllocType>
+T * Reallocate(T * ptr, SIZET size, AllocType & allocator)
+{
+#if (T_MEM_TRACKER)
+	return MemStamp(__FILE__, __LINE__) * (T *)allocator.Reallocate(ptr, size * sizeof(T));
+#else
+	return (T *)allocator.Reallocate(size * sizeof(T));
+#endif
+}
+
+template<class T, class AllocType>
+void Deallocate(T * ptr, AllocType & allocator)
+{
+	allocator.Free(ptr);
+}
 
 
 // AlignAlloc
@@ -55,14 +85,14 @@ struct TAllocForm
 class HeapAllocator
 {
 public:
-	virtual void* Allocate(SIZET size);
-	virtual void* AllocateAligned(SIZET size, SIZET alignment);
+	void* Allocate(SIZET size);
+	void* AllocateAligned(SIZET size, SIZET alignment);
 
-	virtual void* Reallocate(void* pMem, SIZET size);
-	virtual void* ReallocateAligned(void* pMem, SIZET size, SIZET alignment);
+	void* Reallocate(void* pMem, SIZET size);
+	void* ReallocateAligned(void* pMem, SIZET size, SIZET alignment);
 
-	virtual void Free(void* pMem);
-	virtual void FreeAligned(void* pMem);
+	void Free(void* pMem);
+	void FreeAligned(void* pMem);
 };
 
 
@@ -71,15 +101,17 @@ class StackAllocator
 {
 public:
 	explicit StackAllocator();
+	StackAllocator(const StackAllocator&) = delete;
+	StackAllocator(StackAllocator&&) = delete;
 
-	virtual void* Allocate(SIZET size);
-	virtual void* AllocateAligned(SIZET size, SIZET alignment);
+	void* Allocate(SIZET size);
+	void* AllocateAligned(SIZET size, SIZET alignment);
 
-	virtual void* Reallocate(void* pMem, SIZET size);
-	virtual void* ReallocateAligned(void* pMem, SIZET size, SIZET alignment);
+	void* Reallocate(void* pMem, SIZET size);
+	void* ReallocateAligned(void* pMem, SIZET size, SIZET alignment);
 
-	virtual void Free(void* pMem);
-	virtual void FreeAligned(void* pMem);
+	void Free(void* pMem);
+	void FreeAligned(void* pMem);
 
 	bool IsInStack(void* pMem) const;
 
@@ -96,14 +128,14 @@ class PoolAllocator
 public:
 	explicit PoolAllocator();
 
-	virtual void* Allocate(SIZET size);
-	virtual void* AllocateAligned(SIZET size, SIZET alignment);
+	void* Allocate(SIZET size);
+	void* AllocateAligned(SIZET size, SIZET alignment);
 
-	virtual void* Reallocate(void* pMem, SIZET size);
-	virtual void* ReallocateAligned(void* pMem, SIZET size, SIZET alignment);
+	void* Reallocate(void* pMem, SIZET size);
+	void* ReallocateAligned(void* pMem, SIZET size, SIZET alignment);
 
-	virtual void Free(void* pMem);
-	virtual void FreeAligned(void* pMem);
+	void Free(void* pMem);
+	void FreeAligned(void* pMem);
 
 	PoolDeletor<AFORM, CATEGORY> GetDeletor();
 
@@ -160,6 +192,7 @@ template<uint32 RESERVED, bool SUPPORT_OVERFLOW>
 template<uint32 RESERVED, bool SUPPORT_OVERFLOW>
 /*virtual*/ void* StackAllocator<RESERVED, SUPPORT_OVERFLOW>::Reallocate(void* pMem, SIZET size)
 {
+	ASSERT(pMem);
 	if (pMem == m_StackMem + m_StackFreeLastIdx)
 	{
 		// Try to increase in place
@@ -197,7 +230,7 @@ template<uint32 RESERVED, bool SUPPORT_OVERFLOW>
 /*virtual*/ void StackAllocator<RESERVED, SUPPORT_OVERFLOW>::Free(void* pMem)
 {
 	ASSERT(pMem);
-	if ((UINTPTR)pMem < (UINTPTR)&m_StackMem || (UINTPTR)pMem > (UINTPTR)&m_StackMem[RESERVED - 1])
+	if (!IsInStack(pMem))
 	{
 		FREE(pMem);
 	}
@@ -206,7 +239,7 @@ template<uint32 RESERVED, bool SUPPORT_OVERFLOW>
 template<uint32 RESERVED, bool SUPPORT_OVERFLOW>
 /*virtual*/ void StackAllocator<RESERVED, SUPPORT_OVERFLOW>::FreeAligned(void* pMem)
 {
-	Free(pMem);
+	FREE(pMem);
 }
 
 template<uint32 RESERVED, bool SUPPORT_OVERFLOW>

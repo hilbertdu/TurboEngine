@@ -5,6 +5,9 @@
 //------------------------------------------------------------------------------
 #include "Foundation/Container/Array.h"
 
+#define EVENT_FREE_SLOT_THRETHHOLD 1024
+
+
 template<typename T>
 class EventImpl;
 
@@ -64,6 +67,11 @@ public:
 		if (m_OrderSensitive)
 		{
 			(*iter).m_Delegate.Unbind();
+			++m_FreeSlots;
+			if (m_FreeSlots > EVENT_FREE_SLOT_THRETHHOLD && (m_FreeSlots << 2) >= m_Delegates.GetSize())
+			{
+				Compact();
+			}
 		}
 		else
 		{
@@ -100,10 +108,20 @@ private:
 
 	void Compact()
 	{
+		Array<DelegateHandle>::Iter iter1 = m_Delegates.Begin();
+		Array<DelegateHandle>::Iter iter2 = m_Delegates.Begin();
+
+		for (; iter2 != m_Delegates.End(); ++iter1, ++iter2)
+		{
+			while (iter2 != m_Delegates.End() && !(*iter2).m_Delegate.IsValid()) ++iter2;
+			if (iter2 == m_Delegates.End()) break;
+			(*iter1) = (*iter2);
+		}
+		m_Delegates.SetSize(m_Delegates.Index(iter1));
 	}
 
 	Array<DelegateHandle>	m_Delegates;
-	uint32					m_FreeSlots {0};
+	SIZET					m_FreeSlots {0};
 	uint64					m_CurMaxID {0};
 	bool					m_OrderSensitive {false};
 };
