@@ -825,14 +825,14 @@ template<typename CharType, typename Allocator>
 CharType * String<CharType, Allocator>::Allocate(size_t size)
 {
 	ASSERT(size > 0);
-	return ::Allocate<CharType>(size, m_AllocatorInst);
+	return m_AllocatorInst.AllocateT<CharType>(size);
 }
 
 template<typename CharType, typename Allocator>
 CharType * String<CharType, Allocator>::Reallocate(size_t size)
 {
 	ASSERT(size > 0);
-	return ::Reallocate<CharType>(m_Contents, size, m_AllocatorInst);
+	return m_AllocatorInst.ReallocateT<CharType>(m_Contents, size);
 }
 
 template<typename CharType, typename Allocator>
@@ -841,7 +841,7 @@ void String<CharType, Allocator>::Deallocate()
 	ASSERT(m_Contents);
 	if (m_Capacity > 0)
 	{
-		::Deallocate(m_Contents, m_AllocatorInst);
+		m_AllocatorInst.FreeT(m_Contents);
 	}
 }
 

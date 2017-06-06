@@ -16,6 +16,10 @@
 class MemPoolImpl
 {
 public:
+	using ArrayBlockType = StackArray<MemPoolBlock *, TMEMPOOL_MAX_NUM>;
+
+	MemPoolImpl(): m_MemPoolBlocks(ArrayBlockType(TMEMPOOL_MAX_NUM)) {}
+
 	void InsertMemPoolBlock(MemPoolBlock * block)
 	{
 		ASSERT(!m_MemPoolBlocks.Find(block));
@@ -29,7 +33,7 @@ public:
 	}
 
 private:
-	StackArray<MemPoolBlock *, TMEMPOOL_MAX_NUM> m_MemPoolBlocks;
+	ArrayBlockType m_MemPoolBlocks;
 };
 
 

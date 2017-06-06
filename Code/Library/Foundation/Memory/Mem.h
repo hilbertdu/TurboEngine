@@ -26,6 +26,7 @@
 #define T_IS_POWER_OF_2(n)    (((n) != 0) && !((n) & (n - 1)))
 #define T_IS_ALIGN_OF(n, a)   (T_MEM_ALIGN_ARB(n, a) == n)
 
+#define T_MEM_DEFAULT_ALIGN    sizeof(void*)
 
 #define T_MEM_STATISTICS	1
 #define T_MEM_TRACKER		1
@@ -70,8 +71,8 @@
 
 // Alloc/Free
 //------------------------------------------------------------------------------
-void * Alloc(SIZET size, SIZET alignment = sizeof(void*));
-void * Realloc(void* pMem, SIZET size, SIZET alignment = sizeof(void*));
+void * Alloc(SIZET size, SIZET alignment = T_MEM_DEFAULT_ALIGN);
+void * Realloc(void* pMem, SIZET size, SIZET alignment = T_MEM_DEFAULT_ALIGN);
 void Free(void * ptr);
 
 // Copy/Move/Set

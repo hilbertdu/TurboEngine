@@ -1,4 +1,4 @@
-// Array functions
+// Array.inl
 //------------------------------------------------------------------------------
 
 // Constructors
@@ -537,13 +537,13 @@ void Array<T, Allocator>::Resize(SIZET size, SIZET capacity)
 template<class T, class Allocator>
 T * Array<T, Allocator>::Allocate(SIZET size)
 {
-	return ::Allocate<T>(size, m_Allocator);
+	return m_Allocator.AllocateT<T>(size);
 }
 
 template<class T, class Allocator>
 T * Array<T, Allocator>::Reallocate(SIZET size)
 {
-	return ::Allocate<T>(size, m_Allocator);
+	return m_Allocator.AllocateT<T>(size);
 }
 
 template<class T, class Allocator>
@@ -551,7 +551,7 @@ void Array<T, Allocator>::Deallocate()
 {
 	if (m_Begin)
 	{
-		::Deallocate<T>(m_Begin, m_Allocator);
+		m_Allocator.FreeT(m_Begin);
 	}
 }
 
@@ -640,7 +640,6 @@ template<class T, class Allocator>
 template<class T, class Allocator>
 /*static*/ void Array<T, Allocator>::UninitializedFill(T * des, const T& value, SIZET count, const std::true_type&)
 {
-	//MemSet(des, value, count);
 	for (SIZET idx = 0; idx < count; ++idx)
 	{
 		*(des + idx) = value;

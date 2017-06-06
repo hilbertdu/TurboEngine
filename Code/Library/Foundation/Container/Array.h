@@ -107,6 +107,11 @@ public:
 	void Insert(SIZET index, const T & item, SIZET count = 1);
 	void Insert(Iter iter, const T & item, SIZET count = 1);
 
+	template<class... Args>
+	void EmplaceAppend(Args... args);
+	template<class... Args>
+	void EmplaceInsert(Args... args);
+
 	void Pop(SIZET count = 1);
 	void PopFront(SIZET count = 1);
 	void Erase(T * const iter, SIZET count = 1);

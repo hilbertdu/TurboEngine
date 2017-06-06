@@ -393,7 +393,6 @@
     <ClCompile Include="..\..\..\Code\Library\Foundation\Env\Assert.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Logging\Logger.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Math\CRC32.cpp" />
-    <ClCompile Include="..\..\..\Code\Library\Foundation\Memory\Allocator.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Memory\Mem.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Memory\MemPool.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Memory\MemPoolBlock.cpp" />
@@ -409,6 +408,7 @@
   <ItemGroup>
     <None Include="..\..\..\Code\Library\Foundation\Container\Array.inl" />
     <None Include="..\..\..\Code\Library\Foundation\Container\HashTable.inl" />
+    <None Include="..\..\..\Code\Library\Foundation\Memory\Allocator.inl" />
     <None Include="..\..\..\Code\Library\Foundation\String\String.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

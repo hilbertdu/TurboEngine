@@ -20,41 +20,12 @@
 #define DefaultAllocator HeapAllocator
 
 
-// Global Allocate and Deallocate
-//------------------------------------------------------------------------------
-template<class T, class AllocType>
-T * Allocate(SIZET size, AllocType & allocator)
-{
-#if (T_MEM_TRACKER)
-	return MemStamp(__FILE__, __LINE__) * (T *)allocator.Allocate(size * sizeof(T));
-#else
-	return (T *)allocator.Allocate(size * sizeof(T));
-#endif
-}
-
-template<class T, class AllocType>
-T * Reallocate(T * ptr, SIZET size, AllocType & allocator)
-{
-#if (T_MEM_TRACKER)
-	return MemStamp(__FILE__, __LINE__) * (T *)allocator.Reallocate(ptr, size * sizeof(T));
-#else
-	return (T *)allocator.Reallocate(size * sizeof(T));
-#endif
-}
-
-template<class T, class AllocType>
-void Deallocate(T * ptr, AllocType & allocator)
-{
-	allocator.Free(ptr);
-}
-
-
 // AlignAlloc
 //------------------------------------------------------------------------------
 struct AllocForm
 {
 public:
-	AllocForm(SIZET size, SIZET alignment = sizeof(void *))
+	AllocForm(SIZET size, SIZET alignment = T_MEM_DEFAULT_ALIGN)
 		: m_AllocSize(size)
 		, m_Alignment(alignment)
 	{}
@@ -74,7 +45,7 @@ public:
 };
 
 
-template<SIZET ALLOC_SIZE, SIZET ALIGNMENT = sizeof(void *)>
+template<SIZET ALLOC_SIZE, SIZET ALIGNMENT = T_MEM_DEFAULT_ALIGN>
 struct TAllocForm
 {
 	static const SIZET AllocSize{ ALLOC_SIZE };
@@ -82,38 +53,40 @@ struct TAllocForm
 };
 
 
-class HeapAllocator
+template<class AllocatorS>
+class Allocator : public AllocatorS
 {
 public:
-	void* Allocate(SIZET size);
-	void* AllocateAligned(SIZET size, SIZET alignment);
+	template<class T>
+	T * AllocateT(SIZET size, SIZET alignment = T_MEM_DEFAULT_ALIGN);
+	template<class T>
+	T * ReallocateT(T * ptr, SIZET size, SIZET alignment = T_MEM_DEFAULT_ALIGN);
+	template<class T>
+	void FreeT(T * ptr);
+};
 
-	void* Reallocate(void* pMem, SIZET size);
-	void* ReallocateAligned(void* pMem, SIZET size, SIZET alignment);
 
-	void Free(void* pMem);
-	void FreeAligned(void* pMem);
+class HeapSizeAllocator
+{
+public:
+	void* Allocate(SIZET size, SIZET alignment = T_MEM_DEFAULT_ALIGN) { return ALLOC(size, alignment); }
+	void* Reallocate(void* pMem, SIZET size, SIZET alignment = T_MEM_DEFAULT_ALIGN) { return REALLOC(pMem, size); }
+	void  Free(void* pMem) { FREE(pMem); }
 };
 
 
 template<uint32 RESERVED = 256, bool SUPPORT_OVERFLOW = true>
-class StackAllocator
+class StackSizeAllocator
 {
 public:
-	explicit StackAllocator();
-	StackAllocator(const StackAllocator&) = delete;
-	StackAllocator(StackAllocator&&) = delete;
+	explicit StackSizeAllocator();
+	StackSizeAllocator(const StackSizeAllocator&) = delete;
+	StackSizeAllocator(StackSizeAllocator&&) = delete;
 
-	void* Allocate(SIZET size);
-	void* AllocateAligned(SIZET size, SIZET alignment);
-
-	void* Reallocate(void* pMem, SIZET size);
-	void* ReallocateAligned(void* pMem, SIZET size, SIZET alignment);
-
-	void Free(void* pMem);
-	void FreeAligned(void* pMem);
-
-	bool IsInStack(void* pMem) const;
+	void* Allocate(SIZET size, SIZET alignment = T_MEM_DEFAULT_ALIGN);
+	void* Reallocate(void* pMem, SIZET size, SIZET alignment = T_MEM_DEFAULT_ALIGN);
+	void  Free(void* pMem);
+	bool  IsInStack(void* pMem) const;
 
 private:
 	char	m_StackMem[RESERVED];
@@ -123,19 +96,14 @@ private:
 
 
 template<class AFORM, class CATEGORY = CONSTSTR("Default")>
-class PoolAllocator
+class PoolSizeAllocator
 {
 public:
-	explicit PoolAllocator();
+	explicit PoolSizeAllocator();
 
-	void* Allocate(SIZET size);
-	void* AllocateAligned(SIZET size, SIZET alignment);
-
-	void* Reallocate(void* pMem, SIZET size);
-	void* ReallocateAligned(void* pMem, SIZET size, SIZET alignment);
-
-	void Free(void* pMem);
-	void FreeAligned(void* pMem);
+	void* Allocate(SIZET size, SIZET alignment = T_MEM_DEFAULT_ALIGN);
+	void* Reallocate(void* pMem, SIZET size, SIZET alignment = T_MEM_DEFAULT_ALIGN);
+	void  Free(void* pMem);
 
 	PoolDeletor<AFORM, CATEGORY> GetDeletor();
 
@@ -144,163 +112,16 @@ private:
 };
 
 
-// StackAllocator
-//------------------------------------------------------------------------------
-template<uint32 RESERVED, bool SUPPORT_OVERFLOW>
-StackAllocator<RESERVED, SUPPORT_OVERFLOW>::StackAllocator()
-	: m_StackFreeIdx(0)
-	, m_StackFreeLastIdx(0)
-{
-}
+using HeapAllocator = Allocator<HeapSizeAllocator>;
 
-template<uint32 RESERVED, bool SUPPORT_OVERFLOW>
-/*virtual*/ void* StackAllocator<RESERVED, SUPPORT_OVERFLOW>::Allocate(SIZET size)
-{
-	ASSERT(size > 0);
+template<uint32 RESERVED = 256, bool SUPPORT_OVERFLOW = true>
+using StackAllocator = Allocator<StackSizeAllocator<RESERVED, SUPPORT_OVERFLOW>>;
 
-	if (m_StackFreeIdx + size <= RESERVED)
-	{
-		m_StackFreeLastIdx = m_StackFreeIdx;
-		m_StackFreeIdx += (uint32)size;
-		return (void *)&m_StackMem[m_StackFreeIdx - size];
-	}
-
-	// Allocate from heap
-	ASSERT(SUPPORT_OVERFLOW);
-	return ALLOC(size);
-}
-
-template<uint32 RESERVED, bool SUPPORT_OVERFLOW>
-/*virtual*/ void* StackAllocator<RESERVED, SUPPORT_OVERFLOW>::AllocateAligned(SIZET size, SIZET alignment)
-{
-	UINTPTR alignedAddr = T_MEM_ALIGN_ARB(&m_StackMem[m_StackFreeIdx], alignment);
-	m_StackFreeIdx = (uint32)(alignedAddr - (UINTPTR)m_StackMem);
-
-	ASSERT(size > 0);
-	if (m_StackFreeIdx + size <= RESERVED)
-	{
-		m_StackFreeLastIdx = m_StackFreeIdx;
-		m_StackFreeIdx += (uint32)size;
-		return (void *)&m_StackMem[m_StackFreeIdx - size];
-	}
-
-	// Allocate from heap
-	ASSERT(SUPPORT_OVERFLOW);
-	return ALLOC(size, alignment);
-}
-
-template<uint32 RESERVED, bool SUPPORT_OVERFLOW>
-/*virtual*/ void* StackAllocator<RESERVED, SUPPORT_OVERFLOW>::Reallocate(void* pMem, SIZET size)
-{
-	ASSERT(pMem);
-	if (pMem == m_StackMem + m_StackFreeLastIdx)
-	{
-		// Try to increase in place
-		if (m_StackFreeLastIdx + size < RESERVED)
-		{
-			m_StackFreeIdx = (uint32)(m_StackFreeLastIdx + size);
-			return pMem;
-		}
-	}
-	else
-	{
-		// Copy to upper
-		if (m_StackFreeIdx + size <= RESERVED)
-		{
-			MemMove((void *)m_StackMem[m_StackFreeIdx], pMem, size);
-
-			m_StackFreeLastIdx = m_StackFreeIdx;
-			m_StackFreeIdx += (uint32)size;
-			return (void *)&m_StackMem[m_StackFreeIdx - size];
-		}
-	}
-
-	// Reallocate from heap
-	ASSERT(SUPPORT_OVERFLOW);
-	return REALLOC(pMem, size);
-}
-
-template<uint32 RESERVED, bool SUPPORT_OVERFLOW>
-/*virtual*/ void* StackAllocator<RESERVED, SUPPORT_OVERFLOW>::ReallocateAligned(void* pMem, SIZET size, SIZET alignment)
-{
-	return Reallocate(pMem, size);
-}
-
-template<uint32 RESERVED, bool SUPPORT_OVERFLOW>
-/*virtual*/ void StackAllocator<RESERVED, SUPPORT_OVERFLOW>::Free(void* pMem)
-{
-	ASSERT(pMem);
-	if (!IsInStack(pMem))
-	{
-		FREE(pMem);
-	}
-}
-
-template<uint32 RESERVED, bool SUPPORT_OVERFLOW>
-/*virtual*/ void StackAllocator<RESERVED, SUPPORT_OVERFLOW>::FreeAligned(void* pMem)
-{
-	FREE(pMem);
-}
-
-template<uint32 RESERVED, bool SUPPORT_OVERFLOW>
-bool StackAllocator<RESERVED, SUPPORT_OVERFLOW>::IsInStack(void* pMem) const
-{
-	return (UINTPTR)pMem >= (UINTPTR)&m_StackMem && (UINTPTR)pMem <= (UINTPTR)&m_StackMem[RESERVED - 1];
-}
+template<class AFORM, class CATEGORY = CONSTSTR("Default")>
+using PoolAllocator = Allocator<PoolSizeAllocator<AFORM, CATEGORY>>;
 
 
-// PoolAllocator
-//------------------------------------------------------------------------------
-template<class AFORM, class CATEGORY>
-/*explicit*/ PoolAllocator<AFORM, CATEGORY>::PoolAllocator()
-	: m_PoolBlock(TNEW(MemPoolBlock(AFORM::AllocSize, AFORM::Alignment)))
-{
-#if T_MEM_STATISTICS
-	m_PoolBlock->SetCategoryName(CATEGORY::Str);
-#endif
-}
-
-template<class AFORM, class CATEGORY>
-/*virtual*/ void* PoolAllocator<AFORM, CATEGORY>::Allocate(SIZET size)
-{
-	return m_PoolBlock->Alloc(size);
-}
-
-template<class AFORM, class CATEGORY>
-/*virtual*/ void* PoolAllocator<AFORM, CATEGORY>::AllocateAligned(SIZET size, SIZET alignment)
-{
-	return m_PoolBlock->Alloc(size);
-}
-
-template<class AFORM, class CATEGORY>
-/*virtual*/ void* PoolAllocator<AFORM, CATEGORY>::Reallocate(void* pMem, SIZET size)
-{
-	return m_PoolBlock->Alloc(size);
-}
-
-template<class AFORM, class CATEGORY>
-/*virtual*/ void* PoolAllocator<AFORM, CATEGORY>::ReallocateAligned(void* pMem, SIZET size, SIZET alignment)
-{
-	return m_PoolBlock->Alloc(size);
-}
-
-template<class AFORM, class CATEGORY>
-/*virtual*/ void PoolAllocator<AFORM, CATEGORY>::Free(void* pMem)
-{
-	m_PoolBlock->Free(pMem);
-}
-
-template<class AFORM, class CATEGORY>
-/*virtual*/ void PoolAllocator<AFORM, CATEGORY>::FreeAligned(void* pMem)
-{
-	m_PoolBlock->Free(pMem);
-}
-
-template<class AFORM, class CATEGORY>
-PoolDeletor<AFORM, CATEGORY> PoolAllocator<AFORM, CATEGORY>::GetDeletor()
-{
-	return PoolDeletor<AFORM, CATEGORY>(this);
-}
+#include "Foundation/Memory/Allocator.inl"
 
 //------------------------------------------------------------------------------
 #endif // FOUNDATION_MEMORY_ALLOCATOR_H

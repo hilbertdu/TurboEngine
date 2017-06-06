@@ -45,7 +45,7 @@ public:
 
 		if (size > 0)
 		{
-			m_Mem = ::Allocate<char>(size, m_Allocator);
+			m_Mem = m_Allocator.AllocateT<char>(size);
 		}
 		else
 		{

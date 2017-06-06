@@ -64,12 +64,6 @@ public:
 	static void LogTag(const char * tag, const char * format, ...);
 
 private:
-	static void LogDebug(const char * format, ...);
-	static void LogVerbose(const char * format, ...);
-	static void LogInfo(const char * format, ...);
-	static void LogWarn(const char * format, ...);
-	static void LogError(const char * format, ...);
-	static void FatalError(const char * format, ...);
 	static void Output(const char* format, va_list args);
 	static void OutputDirect(const char * msg);
 };

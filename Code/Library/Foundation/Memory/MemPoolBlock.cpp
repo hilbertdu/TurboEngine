@@ -8,6 +8,8 @@
 #include "Foundation/Env/Assert.h"
 #include "Foundation/Math/Conversion.h"
 
+#include "Foundation/Logging/Logger.h"
+
 // Constructor
 //------------------------------------------------------------------------------
 MemPoolBlock::MemPoolBlock(SIZET allocSize, SIZET alignment)
@@ -25,6 +27,8 @@ MemPoolBlock::MemPoolBlock(SIZET allocSize, SIZET alignment)
 	ASSERT(m_BlockAlignment >= 4);
 	ASSERT(m_BlockAlignment <= PAGE_SIZE);
 
+	LOUTPUT("MemPoolBlock constructor: %d (%p)\n", allocSize, this);
+
 	MemPool::InsertMemPoolBlock(this);
 }
 
@@ -36,6 +40,8 @@ MemPoolBlock::~MemPoolBlock()
 #if T_MEM_STATISTICS
 	ASSERT(m_NumAllocations == 0);
 #endif
+
+	LOUTPUT("MemPoolBlock destructor: %p\n", this);
 
 	// Free pages
 	AllocatedPage* page = m_AllocatedPageChain;

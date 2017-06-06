@@ -62,7 +62,7 @@ void TestMem::TestAllocs() const
 	{
 		//void * mem = block.Alloc(i);
 		//void * mem = allocator.Allocate(i);
-		void * mem = ::Allocate<char>(i, allocator);
+		void * mem = allocator.AllocateT<char>(i);
 		TEST_ASSERT(mem);
 		TEST_ASSERT(((size_t)mem % blockAlignment) == 0);
 		allocs[i] = mem;

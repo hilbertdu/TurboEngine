@@ -42,54 +42,6 @@
 	va_end(args);
 }
 
-/*static*/ void Logger::LogDebug(const char * format, ...)
-{
-	va_list args;
-	va_start(args, format);
-	Output(format, args);
-	va_end(args);
-}
-
-/*static*/ void Logger::LogVerbose(const char * format, ...)
-{
-	va_list args;
-	va_start(args, format);
-	Output(format, args);
-	va_end(args);
-}
-
-/*static*/ void Logger::LogInfo(const char * format, ...)
-{
-	va_list args;
-	va_start(args, format);
-	Output(format, args);
-	va_end(args);
-}
-
-/*static*/ void Logger::LogWarn(const char * format, ...)
-{
-	va_list args;
-	va_start(args, format);
-	Output(format, args);
-	va_end(args);
-}
-
-/*static*/ void Logger::LogError(const char * format, ...)
-{
-	va_list args;
-	va_start(args, format);
-	Output(format, args);
-	va_end(args);
-}
-
-/*static*/ void Logger::FatalError(const char * format, ...)
-{
-	va_list args;
-	va_start(args, format);
-	Output(format, args);
-	va_end(args);
-}
-
 /*static*/ void Logger::Output(const char* format, va_list args)
 {
 	AStackString<8192> buffer;

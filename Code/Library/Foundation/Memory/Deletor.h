@@ -8,8 +8,8 @@
 //------------------------------------------------------------------------------
 #include "Foundation/Memory/Mem.h"
 
-template<class Form, class Category>
-class PoolAllocator;
+template<class AForm, class Category>
+class PoolSizeAllocator;
 
 
 // DefaultDeletor
@@ -38,12 +38,12 @@ template<class Form, class Category = CONSTSTR("Default")>
 class PoolDeletor
 {
 public:
-	PoolDeletor(PoolAllocator<Form, Category>* allocator) { m_Allocator = allocator; }
+	PoolDeletor(PoolSizeAllocator<Form, Category>* allocator) { m_Allocator = allocator; }
 
 	inline void Delete(void * ptr) { m_Allocator->Free(ptr); }
 
 private:
-	PoolAllocator<Form, Category>* m_Allocator;
+	PoolSizeAllocator<Form, Category>* m_Allocator;
 };
 
 

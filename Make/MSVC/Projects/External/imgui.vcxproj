@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{8AEC3445-1655-486B-A4E8-C223CC32CAEA}</ProjectGuid>
-    <RootNamespace>UIFramework</RootNamespace>
+    <ProjectGuid>{A7173BA5-1B7C-4178-8E5A-89879A776F1D}</ProjectGuid>
+    <RootNamespace>imgui</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -125,6 +125,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\Code\External\imgui\imgui.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\imgui\impl_dx9\imgui_impl_dx9.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\Code\External\imgui\imconfig.h" />
+    <ClInclude Include="..\..\..\..\Code\External\imgui\imgui.h" />
+    <ClInclude Include="..\..\..\..\Code\External\imgui\imgui_internal.h" />
+    <ClInclude Include="..\..\..\..\Code\External\imgui\impl_dx9\imgui_impl_dx9.h" />
+    <ClInclude Include="..\..\..\..\Code\External\imgui\stb_rect_pack.h" />
+    <ClInclude Include="..\..\..\..\Code\External\imgui\stb_textedit.h" />
+    <ClInclude Include="..\..\..\..\Code\External\imgui\stb_truetype.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

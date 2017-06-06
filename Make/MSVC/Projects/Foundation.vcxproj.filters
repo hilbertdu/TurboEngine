@@ -417,9 +417,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Code\Library\Foundation\Memory\Allocator.cpp">
-      <Filter>Memory</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Library\Foundation\Memory\MemPool.cpp">
       <Filter>Memory</Filter>
     </ClCompile>
@@ -463,6 +460,9 @@
     </None>
     <None Include="..\..\..\Code\Library\Foundation\Container\HashTable.inl">
       <Filter>Container</Filter>
+    </None>
+    <None Include="..\..\..\Code\Library\Foundation\Memory\Allocator.inl">
+      <Filter>Memory</Filter>
     </None>
   </ItemGroup>
 </Project>
