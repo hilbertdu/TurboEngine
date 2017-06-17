@@ -9,7 +9,8 @@
 // Includes
 //------------------------------------------------------------------------------
 #include "Foundation/Reflection/MetaType/Type.h"
-#include "Foundation/Reflection/MetaType/TypeDatabase.h"
+#include "Foundation/Container/HashMap.h"
+
 
 namespace TReflection
 {
@@ -33,12 +34,12 @@ namespace TReflection
 
 
 #define REFLECTION_REGISTER_META_BEGIN \
-	void MetaTypeDB::RegisterAll()				\
-	{											\
+	inline void RegisterAllMetaType(HashMap<int32, MetaType*>& metaTypes)	\
+	{																		\
 
 #define REFLECTION_REGISTER_METATYPE(type) \
 		MetaType* meta_##type = new MetaType_##type();			\
-		m_MetaTypes[meta_##type->m_Name.m_Hash] = meta_##type;	\
+		metaTypes[meta_##type->m_Name.m_Hash] = meta_##type;	\
 
 #define REFLECTION_REGISTER_META_END \
 	}

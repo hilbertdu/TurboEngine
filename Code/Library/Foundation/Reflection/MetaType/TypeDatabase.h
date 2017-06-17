@@ -6,7 +6,7 @@
 
 // Includes
 //------------------------------------------------------------------------------
-#include "Foundation/Reflection/MetaType/Type.h"
+#include "Foundation/Reflection/MetaType/TypeDecl.h"
 #include "Foundation/Container/HashMap.h"
 
 namespace TReflection
@@ -16,7 +16,7 @@ namespace TReflection
 	public:
 		using MetaTypeMap = HashMap<int32, MetaType*>;
 
-		void RegisterAll();
+		inline void RegisterAll();
 
 		template<typename T>
 		const MetaType * RegisterType(const Name & name);
@@ -26,6 +26,11 @@ namespace TReflection
 		HashMap<int32, MetaType*> m_MetaTypes;
 	};
 
+
+	inline void MetaTypeDB::RegisterAll()
+	{
+		RegisterAllMetaType(m_MetaTypes);
+	}
 
 	template<typename T>
 	const MetaType * MetaTypeDB::RegisterType(const Name & name)
