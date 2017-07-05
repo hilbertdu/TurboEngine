@@ -141,10 +141,10 @@ void Array<T, Allocator>::Clear()
 template<class T, class Allocator>
 void Array<T, Allocator>::Swap(Array & other)
 {
-	std::move(m_Begin, other.m_Begin);
-	std::move(m_End, other.m_End);
-	std::move(m_MaxEnd, other.m_MaxEnd);
-	std::move(m_Allocator, other.m_Allocator);
+	std::swap(m_Begin, other.m_Begin);
+	std::swap(m_End, other.m_End);
+	std::swap(m_MaxEnd, other.m_MaxEnd);
+	std::swap(m_Allocator, other.m_Allocator);
 }
 
 template<class T, class Allocator>
