@@ -394,9 +394,6 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\List.h">
       <Filter>Container</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Library\Foundation\Template\String.h">
-      <Filter>Template</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Library\Foundation\Memory\Deletor.h">
       <Filter>Memory</Filter>
     </ClInclude>
@@ -414,6 +411,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\Base.h">
       <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeContainer.h">
+      <Filter>Reflection\MetaType</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\FileIO\IOStream.h">
+      <Filter>FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Template\Template.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Template\Macros.h">
+      <Filter>Template</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -449,6 +458,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Library\Foundation\Env\Assert.cpp">
       <Filter>Env</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Library\Foundation\FileIO\IOStream.cpp">
+      <Filter>FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\Serializer.cpp">
+      <Filter>Reflection\Serialization</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

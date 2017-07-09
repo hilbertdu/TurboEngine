@@ -19,12 +19,12 @@ namespace TReflection
 	struct Name
 	{
 	public:
-		explicit Name() {};
-		explicit Name(const AString & name)
+		Name() {};
+		Name(const AString & name)
 			: m_Name(name)
 			, m_Hash(CRC32::Calc(name))
 		{}
-		explicit Name(const char * name)
+		Name(const char * name)
 			: m_Name(name)
 			, m_Hash(CRC32::Calc(name, AString::StrLen(name)))
 		{}
@@ -35,14 +35,23 @@ namespace TReflection
 
 	struct Primitive
 	{
+	public:
 		Name m_Name;
 	};
 
-	class MetaType : public Primitive
+	class IMetaType : public Primitive
 	{
 	public:
+		IMetaType() = default;
+		IMetaType(const IMetaType&) = delete;
+		IMetaType(IMetaType&&) = delete;
+		virtual ~IMetaType() { TDELETE m_Serializer; };
+
+		virtual bool IsBaseType() = 0;
+		virtual bool IsContainer() = 0;
+
 		int32			m_Size;
-		ISerializer*	m_Serializer;
+		ISerializer *	m_Serializer;
 	};
 }
 

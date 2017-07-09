@@ -6,7 +6,7 @@
 
 // Includes
 //------------------------------------------------------------------------------
-#include "Foundation/Reflection/MetaType/TypeDecl.h"
+#include "Foundation/Reflection/MetaType/TypeDatabase.h"
 #include "Foundation/Container/SmartPtr.h"
 #include "Foundation/Pattern/Singleton.h"
 
@@ -16,6 +16,8 @@ namespace TReflection
 	static void Initialization();
 	static const MetaTypeDB & GetMetaTypeDB();
 	static MetaTypeDB s_MetaTypeDB;
+
+	static void Test();
 };
 
 

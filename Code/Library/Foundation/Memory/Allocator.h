@@ -11,7 +11,7 @@
 #include "Foundation/Memory/Mem.h"
 #include "Foundation/Memory/MemPool.h"
 #include "Foundation/Memory/MemPoolBlock.h"
-#include "Foundation/Template/String.h"
+#include "Foundation/Template/Template.h"
 #include "Foundation/Container/SmartPtr.h"
 #include "Foundation/Memory/Deletor.h"
 #include "Foundation/Logging/Logger.h"

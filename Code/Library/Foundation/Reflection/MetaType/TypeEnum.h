@@ -11,7 +11,7 @@
 
 namespace TReflection
 {
-	class MetaTypeEnum : public MetaType
+	class MetaTypeEnum : public IMetaType
 	{
 	public:
 		typedef enum Innertype;

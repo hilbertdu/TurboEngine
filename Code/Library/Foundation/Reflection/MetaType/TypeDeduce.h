@@ -1,4 +1,4 @@
-// TypeDatabase.h
+// TypeDa.h
 //------------------------------------------------------------------------------
 #pragma once
 #ifndef FOUNDATION_REFLECTION_TYPEDATABASE_H
@@ -19,12 +19,13 @@ namespace TReflection
 		inline void RegisterAll();
 
 		template<typename T>
-		const IMetaType * GetMetaType();
+		const IMetaType * RegisterType(const Name & name);
 		const IMetaType * GetMetaType(const Name & name);
 
 	private:
 		HashMap<int32, IMetaType*> m_MetaTypes;
 	};
+
 
 	inline void MetaTypeDB::RegisterAll()
 	{
@@ -32,9 +33,10 @@ namespace TReflection
 	}
 
 	template<typename T>
-	const IMetaType * MetaTypeDB::GetMetaType()
+	const IMetaType * MetaTypeDB::RegisterType(const Name & name)
 	{
-		return GetMetaType(MetaDeduce<T>().Name);
+		IMetaType * metatype = new MetaType<T>();
+		m_MetaTypes[name.m_Hash] = metatype;
 	}
 
 	const IMetaType * MetaTypeDB::GetMetaType(const Name & name)
