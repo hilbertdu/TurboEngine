@@ -107,10 +107,10 @@ public:
 	void Insert(SIZET index, const T & item, SIZET count = 1);
 	void Insert(Iter iter, const T & item, SIZET count = 1);
 
-	template<class... Args>
-	void EmplaceAppend(Args... args);
-	template<class... Args>
-	void EmplaceInsert(Args... args);
+	template<class... TArgs>
+	void EmplaceAppend(TArgs... args);
+	template<class... TArgs>
+	Iter EmplaceInsert(ConstIter iter, TArgs... args);
 
 	void Pop(SIZET count = 1);
 	void PopFront(SIZET count = 1);
@@ -130,7 +130,8 @@ public:
 	void Shrink();
 
 	// Static helper
-	static void InPlaceConstruct(T * mem, SIZET count);
+	template<class... TArgs>
+	static void InPlaceConstruct(T * mem, SIZET count, TArgs... args);
 	static void InPlaceDestruct(T * mem, SIZET count);
 	static void UninitializedCopy(T * des, const T * src, SIZET count);
 	static void UninitializedFill(T * des, const T& value, SIZET count);
@@ -148,18 +149,17 @@ private:
 	T*   Reallocate(SIZET size);
 	void Deallocate();
 
-	static void InPlaceConstruct(T * mem, SIZET count, const std::true_type&);
-	static void InPlaceConstruct(T * mem, SIZET count, const std::false_type&);
-	static void InPlaceDestruct(T * mem, SIZET count, const std::true_type&);
-	static void InPlaceDestruct(T * mem, SIZET count, const std::false_type&);
-	static void UninitializedCopy(T * des, const T * src, SIZET count, const std::true_type&);
-	static void UninitializedCopy(T * des, const T * src, SIZET count, const std::false_type&);
-	static void UninitializedFill(T * des, const T& value, SIZET count, const std::true_type&);
-	static void UninitializedFill(T * des, const T& value, SIZET count, const std::false_type&);
-	static void Move(T * des, T * src, SIZET count, const std::true_type&);
-	static void Move(T * des, T * src, SIZET count, const std::false_type&);
-	static void Copy(T * des, T * src, SIZET count, const std::true_type&);
-	static void Copy(T * des, T * src, SIZET count, const std::false_type&);
+	template<class... TArgs>
+	static void _InPlaceConstruct(T * mem, SIZET count, const std::false_type&, TArgs... args);
+	static void _InPlaceConstruct(T * mem, SIZET count, const std::true_type&);
+	static void _InPlaceDestruct(T * mem, SIZET count, const std::true_type&);
+	static void _InPlaceDestruct(T * mem, SIZET count, const std::false_type&);
+	static void _UninitializedCopy(T * des, const T * src, SIZET count, const std::true_type&);
+	static void _UninitializedCopy(T * des, const T * src, SIZET count, const std::false_type&);
+	static void _Move(T * des, T * src, SIZET count, const std::true_type&);
+	static void _Move(T * des, T * src, SIZET count, const std::false_type&);
+	static void _Copy(T * des, T * src, SIZET count, const std::true_type&);
+	static void _Copy(T * des, T * src, SIZET count, const std::false_type&);
 
 	T* m_Begin;
 	T* m_End;

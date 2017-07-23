@@ -13,9 +13,12 @@
 
 namespace TReflection
 {
-	class MetaStruct : public MetaType
+	class IStruct {};
+
+	class IMetaStruct : public IMetaType
 	{
 	public:
+
 	};
 }
 

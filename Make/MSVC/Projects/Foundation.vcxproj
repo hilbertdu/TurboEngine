@@ -336,7 +336,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Library\Foundation\Analyzer\MemTracker.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\Array.h" />
-    <ClInclude Include="..\..\..\Code\Library\Foundation\Container\Base.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\List.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -379,6 +378,7 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeStruct.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Objects\Object.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Reflection.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\ReflectionMacros.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\Serializer.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\String\String.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\String\StringAnsi.inl" />

@@ -355,6 +355,54 @@ void Array<T, Allocator>::Insert(Iter iter, const T & item, SIZET count)
 	Insert(iter - m_Begin, item, count);
 }
 
+template<class T, class Allocator>
+template<class... TArgs>
+void Array<T, Allocator>::EmplaceAppend(TArgs... args)
+{
+	Grow(GetSize() + 1);
+	InPlaceConstruct(m_End, 1, std::forward<TArgs>(args)...);
+	m_End += 1;
+}
+
+template<class T, class Allocator>
+template<class... TArgs>
+typename Array<T, Allocator>::Iter Array<T, Allocator>::EmplaceInsert(ConstIter iter, TArgs... args)
+{
+	ASSERT(iter >= m_Begin && iter <= m_End);
+
+	const SIZET oldSize = GetSize();
+	const SIZET newSize = oldSize + 1;
+	uint32 index = iter - m_Begin;
+
+	if (newSize > GetCapacity())
+	{
+		SIZET newCapacity = GetGrowCapacity(newSize);
+		T * newMem = Reallocate(newCapacity);
+
+		UninitializedCopy(newMem, m_Begin, index);
+		InPlaceConstruct(newMem + m_Begin, 1, std::forward<TArgs>(args)...);
+		UninitializedCopy(newMem + index + 1, m_Begin + index, oldSize - index);
+
+		InPlaceDestruct(m_Begin, m_End - m_Begin);
+		Deallocate();
+
+		m_Begin = newMem;
+		m_End = m_Begin + oldSize + 1;
+		m_MaxEnd = m_Begin + newCapacity;
+	}
+	else
+	{
+		if (iter != m_End)
+		{
+			UninitializedCopy(m_End, m_End - 1, 1);
+			Move(iter + 1, iter + index, m_End - iter - 1);
+		}
+		InPlaceConstruct(iter, 1, std::forward<TArgs>(args)...);
+
+		m_End = m_Begin + oldSize + 1;
+	}
+}
+
 // Pop
 //------------------------------------------------------------------------------
 template<class T, class Allocator>
@@ -562,25 +610,27 @@ void Array<T, Allocator>::Deallocate()
 // InPlaceConstruct
 //------------------------------------------------------------------------------
 template<class T, class Allocator>
-/*static*/ void Array<T, Allocator>::InPlaceConstruct(T * mem, SIZET count)
+template<class... TArgs>
+/*static*/ void Array<T, Allocator>::InPlaceConstruct(T * mem, SIZET count, TArgs... args)
 {
-	InPlaceConstruct(mem, count, std::is_trivially_constructible<T>());
+	_InPlaceConstruct(mem, count, std::is_trivially_constructible<T>(), args...);
 }
 
 template<class T, class Allocator>
-/*static*/ void Array<T, Allocator>::InPlaceConstruct(T * mem, SIZET count, const std::true_type&)
+/*static*/ void Array<T, Allocator>::_InPlaceConstruct(T * mem, SIZET count, const std::true_type&)
 {
 	ASSERT(mem);
 }
 
 template<class T, class Allocator>
-/*static*/ void Array<T, Allocator>::InPlaceConstruct(T * mem, SIZET count, const std::false_type&)
+template<class... TArgs>
+/*static*/ void Array<T, Allocator>::_InPlaceConstruct(T * mem, SIZET count, const std::false_type&, TArgs... args)
 {
 	ASSERT(mem);
 
 	for (SIZET idx = 0; idx < count; ++idx)
 	{
-		new(mem + idx) T;
+		INPLACE_NEW(mem + idx) T(std::forward<TArgs>(args)...);
 	}
 }
 
@@ -589,16 +639,16 @@ template<class T, class Allocator>
 template<class T, class Allocator>
 /*static*/ void Array<T, Allocator>::InPlaceDestruct(T * mem, SIZET count)
 {
-	InPlaceDestruct(mem, count, std::is_trivially_destructible<T>());
+	_InPlaceDestruct(mem, count, std::is_trivially_destructible<T>());
 }
 
 template<class T, class Allocator>
-/*static*/ void Array<T, Allocator>::InPlaceDestruct(T * mem, SIZET count, const std::true_type&)
+/*static*/ void Array<T, Allocator>::_InPlaceDestruct(T * mem, SIZET count, const std::true_type&)
 {
 }
 
 template<class T, class Allocator>
-/*static*/ void Array<T, Allocator>::InPlaceDestruct(T * mem, SIZET count, const std::false_type&)
+/*static*/ void Array<T, Allocator>::_InPlaceDestruct(T * mem, SIZET count, const std::false_type&)
 {
 	for (SIZET idx = 0; idx < count; ++idx)
 	{
@@ -611,17 +661,17 @@ template<class T, class Allocator>
 template<class T, class Allocator>
 /*static*/ void Array<T, Allocator>::UninitializedCopy(T * des, const T * src, SIZET count)
 {
-	UninitializedCopy(des, src, count, std::is_trivially_copy_assignable<T>());
+	_UninitializedCopy(des, src, count, std::is_trivially_copy_assignable<T>());
 }
 
 template<class T, class Allocator>
-/*static*/ void Array<T, Allocator>::UninitializedCopy(T * des, const T * src, SIZET count, const std::true_type&)
+/*static*/ void Array<T, Allocator>::_UninitializedCopy(T * des, const T * src, SIZET count, const std::true_type&)
 {
 	MemCopy(des, src, count * sizeof(T));
 }
 
 template<class T, class Allocator>
-/*static*/ void Array<T, Allocator>::UninitializedCopy(T * des, const T * src, SIZET count, const std::false_type&)
+/*static*/ void Array<T, Allocator>::_UninitializedCopy(T * des, const T * src, SIZET count, const std::false_type&)
 {
 	for (SIZET idx = 0; idx < count; ++idx)
 	{
@@ -634,24 +684,9 @@ template<class T, class Allocator>
 template<class T, class Allocator>
 /*static*/ void Array<T, Allocator>::UninitializedFill(T * des, const T& value, SIZET count)
 {
-	UninitializedFill(des, value, count, std::is_trivially_copy_assignable<T>());
-}
-
-template<class T, class Allocator>
-/*static*/ void Array<T, Allocator>::UninitializedFill(T * des, const T& value, SIZET count, const std::true_type&)
-{
 	for (SIZET idx = 0; idx < count; ++idx)
 	{
-		*(des + idx) = value;
-	}
-}
-
-template<class T, class Allocator>
-/*static*/ void Array<T, Allocator>::UninitializedFill(T * des, const T& value, SIZET count, const std::false_type&)
-{
-	for (SIZET idx = 0; idx < count; ++idx)
-	{
-		INPLACE_NEW(des + idx) T(value);
+		INPLACE_NEW (des + idx) T(value);
 	}
 }
 
@@ -660,17 +695,17 @@ template<class T, class Allocator>
 template<class T, class Allocator>
 /*static*/ void Array<T, Allocator>::Move(T * des, T * src, SIZET count)
 {
-	Move(des, src, count, std::is_trivially_copy_assignable<T>());
+	_Move(des, src, count, std::is_trivially_copy_assignable<T>());
 }
 
 template<class T, class Allocator>
-/*static*/ void Array<T, Allocator>::Move(T * des, T * src, SIZET count, const std::true_type&)
+/*static*/ void Array<T, Allocator>::_Move(T * des, T * src, SIZET count, const std::true_type&)
 {
 	MemMove(des, src, count * sizeof(T));
 }
 
 template<class T, class Allocator>
-/*static*/ void Array<T, Allocator>::Move(T * des, T * src, SIZET count, const std::false_type&)
+/*static*/ void Array<T, Allocator>::_Move(T * des, T * src, SIZET count, const std::false_type&)
 {
 	if (des <= src)
 	{
@@ -693,17 +728,17 @@ template<class T, class Allocator>
 template<class T, class Allocator>
 /*static*/ void Array<T, Allocator>::Copy(T * des, T * src, SIZET count)
 {
-	Copy(des, src, count, std::is_trivially_copy_assignable<T>());
+	_Copy(des, src, count, std::is_trivially_copy_assignable<T>());
 }
 
 template<class T, class Allocator>
-/*static*/ void Array<T, Allocator>::Copy(T * des, T * src, SIZET count, const std::true_type&)
+/*static*/ void Array<T, Allocator>::_Copy(T * des, T * src, SIZET count, const std::true_type&)
 {
 	MemCopy(des, src, count * sizeof(T));
 }
 
 template<class T, class Allocator>
-/*static*/ void Array<T, Allocator>::Copy(T * des, T * src, SIZET count, const std::false_type&)
+/*static*/ void Array<T, Allocator>::_Copy(T * des, T * src, SIZET count, const std::false_type&)
 {
 	for (SIZET idx = 0; idx < count; ++idx)
 	{

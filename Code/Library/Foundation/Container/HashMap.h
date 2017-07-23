@@ -47,8 +47,9 @@ public:
 	FORCE_INLINE Data & operator[](const Key& key) { return m_Table.FindOrInsert(ValueType(key, Data())).Second(); }
 
 	FORCE_INLINE Iterator             Find(const Key& key) { return m_Table.Find(key); }
+	FORCE_INLINE ConstIterator        Find(const Key& key) const { return m_Table.Find(key); }
 	FORCE_INLINE Pair<Iterator, bool> Insert(const ValueType& data) { return m_Table.InsertUnique(data); }
-	FORCE_INLINE SIZET               Erase(const Key& key) { return m_Table.Erase(key); }
+	FORCE_INLINE SIZET				  Erase(const Key& key) { return m_Table.Erase(key); }
 
 	FORCE_INLINE void Shrink() { m_Table.Shrink(); };
 

@@ -53,6 +53,8 @@ namespace TReflection
 		int32			m_Size;
 		ISerializer *	m_Serializer;
 	};
+
+	class IType	{};
 }
 
 #endif // FOUNDATION_REFLECTION_TYPE_H

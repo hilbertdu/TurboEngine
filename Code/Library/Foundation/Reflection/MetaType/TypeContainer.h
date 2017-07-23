@@ -70,14 +70,14 @@ namespace TReflection
 		template<class T>
 		void RegisterKeyType(const T * t)
 		{
-			m_MetaTypeKey = TNEW(GetMetaTypeDB().GetMetaType<T>());
+			m_MetaTypeKey = MetaTypeDB::Instance().GetMetaType<T>();
 			m_MetaTypeKey->Register<T>(t);
 		}
 
 		template<class T>
 		void RegisterValueType(const T * t)
 		{
-			m_MetaTypeValue = TNEW(GetMetaTypeDB().GetMetaType<T>());
+			m_MetaTypeValue = MetaTypeDB::Instance().GetMetaType<T>();
 			m_MetaTypeValue->Register<T>(t);
 		}
 

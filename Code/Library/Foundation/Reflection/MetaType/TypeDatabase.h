@@ -8,39 +8,55 @@
 //------------------------------------------------------------------------------
 #include "Foundation/Reflection/MetaType/TypeDecl.h"
 #include "Foundation/Container/HashMap.h"
+#include "Foundation/Pattern/Singleton.h"
 
 namespace TReflection
 {
-	class MetaTypeDB
+	class MetaTypeDB : public Singleton<MetaTypeDB>
 	{
 	public:
 		using MetaTypeMap = HashMap<int32, IMetaType*>;
 
 		inline void RegisterAll();
+		inline void Register(IMetaType * metaType);
 
 		template<typename T>
-		const IMetaType * GetMetaType();
-		const IMetaType * GetMetaType(const Name & name);
+		IMetaType * GetMetaType();
+		template<typename T>
+		IMetaType * GetMetaType(const T * t);
+		IMetaType * GetMetaType(const Name & name);
 
 	private:
-		HashMap<int32, IMetaType*> m_MetaTypes;
+		MetaTypeMap m_MetaTypes;
 	};
 
-	inline void MetaTypeDB::RegisterAll()
+	/*inline*/ void MetaTypeDB::RegisterAll()
 	{
 		RegisterAllMetaType(m_MetaTypes);
 	}
 
+	/*inline*/ void MetaTypeDB::Register(IMetaType * metaType)
+	{
+		m_MetaTypes[metaType->m_Name.m_Hash] = metaType;
+	}
+
 	template<typename T>
-	const IMetaType * MetaTypeDB::GetMetaType()
+	IMetaType * MetaTypeDB::GetMetaType()
 	{
 		return GetMetaType(MetaDeduce<T>().Name);
 	}
 
-	const IMetaType * MetaTypeDB::GetMetaType(const Name & name)
+	template<typename T>
+	IMetaType * MetaTypeDB::GetMetaType(const T * t)
 	{
-		MetaTypeMap::ConstIterator iter = m_MetaTypes.Find(name.m_Hash);
-		return iter != m_MetaTypes.End() ? iter->Second() : nullptr;
+		// TODO: Get instance t meta type
+		return nullptr;
+	}
+
+	IMetaType * MetaTypeDB::GetMetaType(const Name & name)
+	{
+		MetaTypeMap::Iterator iter = m_MetaTypes.Find(name.m_Hash);
+		return iter != m_MetaTypes.End() ? (*iter).Second() : nullptr;
 	}
 }
 

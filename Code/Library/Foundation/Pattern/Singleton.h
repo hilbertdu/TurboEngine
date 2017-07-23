@@ -14,7 +14,8 @@ template<class T>
 class Singleton
 {
 public:
-	static inline T &  Get();
+	static inline void Initialize();
+	static inline T &  Instance();
 	static inline bool IsValid() { return (s_Instance != nullptr); }
 
 protected:
@@ -48,10 +49,19 @@ Singleton<T>::~Singleton()
 	s_Instance = nullptr;
 }
 
-// Get
+// Initialize
 //------------------------------------------------------------------------------
 template<class T>
-T & Singleton<T>::Get()
+void Singleton<T>::Initialize()
+{
+	ASSERT(s_Instance == nullptr);
+	s_Instance = TNEW(T);
+}
+
+// Instance
+//------------------------------------------------------------------------------
+template<class T>
+T & Singleton<T>::Instance()
 {
 	ASSERT(s_Instance);
 PRAGMA_DISABLE_PUSH_MSVC(6011) // static analysis generates a C6011: Dereferencing NULL pointer 's_Instance'

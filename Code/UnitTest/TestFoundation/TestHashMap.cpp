@@ -111,6 +111,10 @@ void TestHashMap::HashMapIterator() const
 		{
 			TEST_ASSERT((*iter).Second() == "test");
 		}
+		HashMap<int, AString>::Iterator iter1 = map.Find(1);
+		HashMap<int, AString>::ConstIterator iter2 = map.Find(1);
+		AString s1 = (*iter1).Second();
+		const AString s2 = (*iter2).Second();
 	}
 }
 
