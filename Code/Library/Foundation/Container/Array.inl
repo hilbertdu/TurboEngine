@@ -357,11 +357,12 @@ void Array<T, Allocator>::Insert(Iter iter, const T & item, SIZET count)
 
 template<class T, class Allocator>
 template<class... TArgs>
-void Array<T, Allocator>::EmplaceAppend(TArgs... args)
+typename Array<T, Allocator>::Iter Array<T, Allocator>::EmplaceAppend(TArgs... args)
 {
 	Grow(GetSize() + 1);
 	InPlaceConstruct(m_End, 1, std::forward<TArgs>(args)...);
 	m_End += 1;
+	return m_End - 1;
 }
 
 template<class T, class Allocator>
@@ -401,6 +402,7 @@ typename Array<T, Allocator>::Iter Array<T, Allocator>::EmplaceInsert(ConstIter 
 
 		m_End = m_Begin + oldSize + 1;
 	}
+	return iter;
 }
 
 // Pop

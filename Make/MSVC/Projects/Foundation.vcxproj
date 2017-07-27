@@ -350,6 +350,7 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\FileIO\IOStream.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Math\CRC32.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Memory\Deletor.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Pattern\Delegate.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Pattern\Event.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Pattern\Property.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\PrecompileHeader.h" />

@@ -424,6 +424,9 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\ReflectionMacros.h">
       <Filter>Reflection</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Pattern\Delegate.h">
+      <Filter>Pattern</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Library\Foundation\Memory\MemPool.cpp">

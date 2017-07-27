@@ -108,7 +108,7 @@ public:
 	void Insert(Iter iter, const T & item, SIZET count = 1);
 
 	template<class... TArgs>
-	void EmplaceAppend(TArgs... args);
+	Iter EmplaceAppend(TArgs... args);
 	template<class... TArgs>
 	Iter EmplaceInsert(ConstIter iter, TArgs... args);
 

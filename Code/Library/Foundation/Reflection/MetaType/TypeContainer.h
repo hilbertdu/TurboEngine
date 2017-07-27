@@ -15,6 +15,8 @@
 
 namespace TReflection
 {
+	class IContainer : public IType {};
+
 	class IMetaTypeContainer : public IMetaType
 	{
 	public:
@@ -50,12 +52,11 @@ namespace TReflection
 
 		virtual ~IMetaTypeContainer() 
 		{ 
-			TDELETE m_MetaTypeKey;
-			TDELETE m_MetaTypeValue;
-			TDELETE m_Iterator; 
+			TDELETE_SAFE(m_MetaTypeKey);
+			TDELETE_SAFE(m_MetaTypeValue);
+			TDELETE_SAFE(m_Iterator);
 		}
 
-		virtual bool IsBaseType() { return false; }
 		virtual bool IsContainer() { return true; }
 
 		template<class T>

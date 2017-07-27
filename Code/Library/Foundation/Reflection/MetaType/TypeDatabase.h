@@ -22,8 +22,6 @@ namespace TReflection
 
 		template<typename T>
 		IMetaType * GetMetaType();
-		template<typename T>
-		IMetaType * GetMetaType(const T * t);
 		IMetaType * GetMetaType(const Name & name);
 
 	private:
@@ -44,13 +42,6 @@ namespace TReflection
 	IMetaType * MetaTypeDB::GetMetaType()
 	{
 		return GetMetaType(MetaDeduce<T>().Name);
-	}
-
-	template<typename T>
-	IMetaType * MetaTypeDB::GetMetaType(const T * t)
-	{
-		// TODO: Get instance t meta type
-		return nullptr;
 	}
 
 	IMetaType * MetaTypeDB::GetMetaType(const Name & name)

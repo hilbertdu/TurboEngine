@@ -40,11 +40,13 @@
 	#include "Foundation/Analyzer/MemTracker.h"
 
 	#if (T_MEM_TRACKER_ALL)
-		#define new					MemStamp(__FILE__, __LINE__) * new
-		#define TNEW(code)			new code
-		#define TNEW_ARRAY(code)	new code
-		#define TDELETE				delete
-		#define TDELETE_ARRAY		delete[]
+		#define new							MemStamp(__FILE__, __LINE__) * new
+		#define TNEW(code)					new code
+		#define TNEW_ARRAY(code)			new code
+		#define TDELETE						delete
+		#define TDELETE_ARRAY				delete[]
+		#define TDELETE_SAFE(code)			do { if (code) { delete code; } } while(0)
+		#define TDELETE_ARRAY_SAFE(code)	do { if (code) { delete[] code; } } while(0)
 	#else
 		#define TNEW(code)			(MemStamp(__FILE__, __LINE__) * new(MemStructNone(), MemStructNone()) code)
 		#define TNEW_ARRAY(code)	(MemStamp(__FILE__, __LINE__) * new(MemStructNone(), MemStructNone()) code)

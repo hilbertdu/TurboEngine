@@ -36,13 +36,11 @@ namespace TReflection
 		MetaType_##TYPE()								\
 		{												\
 			m_Name = #TYPE;								\
-			m_Serializer = new Serializer<TYPE>();		\
+			m_Size = sizeof(TYPE);						\
+			m_Serializer = TNEW(Serializer<TYPE>());	\
 		}												\
 		virtual bool IsBaseType() { return true; }		\
-		virtual bool IsContainer() { return false; }	\
 		template<class T> void Register(const T *) {}	\
-	private:											\
-		int m_Size{ sizeof(TYPE) };						\
 	};													\
 	template<> struct MetaDeduce<TYPE>					\
 	{													\

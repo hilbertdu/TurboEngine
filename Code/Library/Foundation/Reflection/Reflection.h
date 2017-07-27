@@ -8,14 +8,11 @@
 //------------------------------------------------------------------------------
 
 namespace TReflection
-{	
-	class IEnumeration;
-
+{
 	void Initialization();
 
 	void TestGetMetaType();
-	void TestEnumeration();
-	void TestCreate();
+	void TestMetaStruct();
 };
 
 

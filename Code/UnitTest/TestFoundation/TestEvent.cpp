@@ -23,6 +23,7 @@ private:
 	void TestDelegatePerformance() const;
 	void TestEvent() const;
 	void TestRemoveOwner() const;
+	void TestAnyDelegate() const;
 };
 
 // Register Tests
@@ -32,6 +33,7 @@ REGISTER_TESTS_BEGIN(TestDelegateEvent)
 	REGISTER_TEST(TestDelegatePerformance)
 	REGISTER_TEST(TestEvent)
 	REGISTER_TEST(TestRemoveOwner)
+	REGISTER_TEST(TestAnyDelegate)
 REGISTER_TESTS_END
 
 // Test function
@@ -170,6 +172,12 @@ void TestDelegateEvent::TestDelegate() const
 		delegate.Unbind();
 		TEST_ASSERT(!delegate.IsValid());
 	}
+	{
+		TestA a;
+		Delegate<void(int)> d;
+		d.BindMethod<TestA>(nullptr, &TestA::Test1);
+		d.Invoke(&a, 100);
+	}
 }
 
 // TestDelegatePerformance
@@ -251,6 +259,32 @@ void TestDelegateEvent::TestRemoveOwner() const
 
 		g_Event->event.Signal(10, 100);
 		TEST_ASSERT(g_Event == nullptr);
+	}
+}
+
+// TestAnyDelegate
+//------------------------------------------------------------------------------
+void TestDelegateEvent::TestAnyDelegate() const
+{
+	AnyDelegate anyDelegate(&Test1_0);
+	AnyDelegate anyDelegate0((TestA*)0, &TestA::Test1);
+	{
+		anyDelegate = Delegate<void(int)>(&Test1_0);
+		anyDelegate.Invoke<void, int>(1000);
+	}
+	{
+		TestA a;
+		anyDelegate = Delegate<void(int)>(&a, &TestA::Test1);
+		anyDelegate.Invoke<void, int>(100);
+	}
+	{
+		anyDelegate = Delegate<void(int)>((TestA*)0, &TestA::Test1);
+		TestA a;
+		anyDelegate.Invoke<TestA, void, int>(&a, 100);
+	}
+	{
+		anyDelegate = Delegate<void(int, float)>(Test2);
+		anyDelegate.Invoke<void, int, float>(100, 100.0);
 	}
 }
 

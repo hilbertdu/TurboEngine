@@ -27,11 +27,13 @@ namespace TReflection
 		Name(const char * name)
 			: m_Name(name)
 			, m_Hash(CRC32::Calc(name, AString::StrLen(name)))
-		{}
+		{}		
 
 		int32	m_Hash;
 		AString	m_Name;
 	};
+
+	bool operator==(const Name& lhs, const char * rhs) { return lhs.m_Name == rhs; }
 
 	struct Primitive
 	{
@@ -45,11 +47,15 @@ namespace TReflection
 		IMetaType() = default;
 		IMetaType(const IMetaType&) = delete;
 		IMetaType(IMetaType&&) = delete;
-		virtual ~IMetaType() { TDELETE m_Serializer; };
+		virtual ~IMetaType() { TDELETE_SAFE(m_Serializer); }
 
-		virtual bool IsBaseType() = 0;
-		virtual bool IsContainer() = 0;
+		virtual bool IsBaseType() { return false; }
+		virtual bool IsContainer() { return false; }
+		virtual bool IsStruct() { return false; }
+		virtual bool IsClass() { return false; }
+		virtual bool IsObject() { return false; }
 
+	protected:
 		int32			m_Size;
 		ISerializer *	m_Serializer;
 	};
