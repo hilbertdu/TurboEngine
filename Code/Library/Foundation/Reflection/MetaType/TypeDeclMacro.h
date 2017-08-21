@@ -30,36 +30,42 @@ namespace TReflection
 #define REFLECTION_DECLARE_META_END
 
 #define REFLECTION_DECLARE_METATYPE(TYPE) \
-	class MetaType_##TYPE: public IMetaType				\
-	{													\
-	public:												\
-		MetaType_##TYPE()								\
-		{												\
-			m_Name = #TYPE;								\
-			m_Size = sizeof(TYPE);						\
-			m_Serializer = TNEW(Serializer<TYPE>());	\
-		}												\
-		virtual bool IsBaseType() { return true; }		\
-		template<class T> void Register(const T *) {}	\
-	};													\
+	class MetaType_##TYPE : public IMetaType				\
+	{														\
+	public:													\
+		MetaType_##TYPE()									\
+		{													\
+			m_Name = #TYPE;									\
+			m_Size = sizeof(TYPE);							\
+			m_Serializer = TNEW(Serializer<TYPE>());		\
+		}													\
+		virtual bool IsBaseType() { return true; }			\
+		template<class T> void Register(const T *) {}		\
+	};														\
+	REFLECTION_META_DEDUCE(TYPE, MetaType_##TYPE)
+
+#define REFLECTION_DECLARE_METACONTAINERTYPE(TYPE, ...) \
+	class MetaType_##TYPE : public IMetaTypeContainer		\
+	{														\
+	public:													\
+		MetaType_##TYPE()									\
+		{													\
+			m_Name = #TYPE;									\
+		}													\
+	};														\
+	REFLECTION_META_DEDUCE_CONTAINER(TYPE, MetaType_##TYPE, __VA_ARGS__)
+
+#define REFLECTION_META_DEDUCE(TYPE, META_TYPE) \
 	template<> struct MetaDeduce<TYPE>					\
 	{													\
 		using IsBaseType = std::true_type;				\
 	public:												\
 		MetaDeduce() : Name(#TYPE) {}					\
-		using MetaType = MetaType_##TYPE;				\
+		using MetaType = META_TYPE;						\
 		const char * Name;								\
-	};													
+	};
 
-#define REFLECTION_DECLARE_METACONTAINERTYPE(TYPE, ...) \
-	class MetaType_##TYPE: public IMetaTypeContainer					\
-	{																	\
-	public:																\
-		MetaType_##TYPE()												\
-		{																\
-			m_Name = #TYPE;												\
-		}																\
-	};																	\
+#define REFLECTION_META_DEDUCE_CONTAINER(TYPE, META_TYPE, ...) \
 	template<MACRO_VA_MAPPER(class, __VA_ARGS__)>						\
 	struct MetaDeduce<TYPE<__VA_ARGS__>>								\
 	{																	\
@@ -68,7 +74,7 @@ namespace TReflection
 		using MetaValueType = MACRO_VA_INDEX(2, __VA_ARGS__, void);		\
 	public:																\
 		MetaDeduce() : Name(#TYPE) {}									\
-		using MetaType = MetaType_##TYPE;								\
+		using MetaType = META_TYPE;										\
 		const char * Name;												\
 	};
 
@@ -83,6 +89,7 @@ namespace TReflection
 #define REFLECTION_REGISTER_META_END \
 	}
 }
+
 
 #endif // FOUNDATION_REFLECTION_TYPEDECLMACRO_H
 //------------------------------------------------------------------------------

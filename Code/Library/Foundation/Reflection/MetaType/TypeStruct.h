@@ -5,8 +5,9 @@
 #ifndef FOUNDATION_REFLECTION_TYPESTRUCT_H
 #define FOUNDATION_REFLECTION_TYPESTRUCT_H
 
-
-#include "Foundation/Reflection/MetaType/Type.h"
+// Includes
+//------------------------------------------------------------------------------
+#include "Foundation/Reflection/MetaType/TypeDeclMacro.h"
 #include "Foundation/Reflection/Members/Field.h"
 #include "Foundation/Reflection/Members/Method.h"
 #include "Foundation/Container/Array.h"
@@ -14,12 +15,20 @@
 
 namespace TReflection
 {
-	class IStruct : public IType {};
+	class MetaStruct;
+
+	class IStruct : public IType 
+	{
+	public:
+		using MetaType = MetaStruct;
+	};
 
 	class MetaStruct : public IMetaType, public FieldCollection, public MethodCollection
 	{
 	public:
 		virtual bool IsStruct() { return true; }
+
+		virtual IMetaType * Create() const { return (IMetaType*)(TNEW(IStruct)); }
 
 		template<class FieldT>
 		void AddField(const FieldT * member, const char * name);		// TODO: parameter attribute
@@ -33,8 +42,12 @@ namespace TReflection
 		template<class T>
 		bool SetProperty(void * object, const char * name, const T & prop) const;
 
+		template<class T>
+		bool GetMethod(const char * name, T & method) const;
+
 	public:
-		MetaStruct * m_Super;
+		MetaStruct*			m_Super;
+		Delegate<IType*()>	m_Creator;
 	};
 
 	template<class FieldT>
@@ -79,55 +92,17 @@ namespace TReflection
 		return result;
 	}
 
-	// TODOs
-	// 1. how to add enumeration info to meta database
-	// 2. where does enumeration meta type store (store in self class as a static member)
-	// 3. add GetMetaTypeS and GetMetaTypeV(if has) interface (to avoid each class has a virtual table)
-#define _TREFLECTION_DECLARE(OBJECT, METATYPE) \
-	public:									\
-		using ObjectType = OBJECT;			\
-		static METATYPE * GetMetaTypeS();	\
-		static void RegisterMetaType();		\
-		static void RegisterProperty();		\
-		static void BindReflectionInfo();	\
-	private:								\
-		static METATYPE * s_MetaInfo;
-
-#define _TREFLECTION_BEGIN(OBJECT, SUPER, METATYPE) \
-	/*static*/ void OBJECT::RegisterMetaType()																\
-	{																										\
-		s_MetaInfo = TNEW(METATYPE);																		\
-		s_MetaInfo->m_Name = TXT(#OBJECT);																	\
-		s_MetaInfo->m_Super = static_cast<MetaStruct*>(MetaTypeDB::Instance().GetMetaType(TXT(#SUPER)));	\
-		MetaTypeDB::Instance().Register(s_MetaInfo);														\
-	}																										\
-	_TREFLECT_STRUCT_COMMON(OBJECT, METATYPE)
-
-#define _TREFLECT_STRUCT_COMMON(OBJECT, METATYPE) \
-	/*static*/ METATYPE * OBJECT::GetMetaTypeS()											\
-	{																						\
-		return static_cast<METATYPE*>(MetaTypeDB::Instance().GetMetaType(TXT(#OBJECT)));	\
-	}																						\
-	/*static*/ void OBJECT::RegisterProperty()												\
+	template<class T>
+	bool MetaStruct::GetMethod(const char * name, T & method) const
 	{
-
-#define TREFLECT_FIELD(FIELD, FNAME)	\
-		GetMetaTypeS()->AddField(&((ObjectType*)0)->FIELD, TXT(#FNAME));	\
-
-#define TREFLECT_METHOD(METHOD, FNAME)	\
-		GetMetaTypeS()->AddMethod(&ObjectType::METHOD, TXT(#FNAME));	\
-
-#define _TREFLECTION_END(OBJECT, METATYPE)	\
-	}												\
-	/*static*/ void OBJECT::BindReflectionInfo()	\
-	{												\
-		RegisterMetaType();							\
-		RegisterProperty();							\
+		bool result = MethodCollection::GetMethod<T>(name, method);
+		if (!result && m_Super)
+		{
+			result = m_Super->GetMethod<T>(name, method);
+		}
+		return result;
 	}
-
-#define TREFLECTION_STRUCT_DECLARE(STRUCT)		_TREFLECTION_DECLARE(STRUCT, MetaStruct)
-#define TREFLECT_STRUCT_BEGIN(STRUCT, SUPER)	_TREFLECTION_BEGIN(STRUCT, SUPER, MetaStruct)
-#define TREFLECT_STRUCT_END(STRUCT)				_TREFLECTION_END(STRUCT, MetaStruct)
+	REFLECTION_META_DEDUCE(IStruct, IStruct::MetaType)
 }
 
 

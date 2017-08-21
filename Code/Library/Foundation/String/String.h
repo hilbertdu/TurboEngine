@@ -28,8 +28,6 @@ public:
 	explicit String(const CharType * start, const CharType * end);
 
 	String(const String & string);
-
-	template<class = typename std::enable_if<std::is_move_assignable<Allocator>::value>::type>
 	String(String && string);
 
 	template<typename OtherAllocator>
@@ -67,7 +65,6 @@ public:
 	String & operator = (const String<CharType, OtherAllocator> & string) { Assign(string); return *this; }
 
 	// C++ 11 [new]
-	template<class = typename std::enable_if<std::is_move_assignable<Allocator>::value>::type>
 	String & operator = (String && string);
 
 	// Concatenation
@@ -153,17 +150,18 @@ public:
 
 
 protected:
-	void Grow(size_t addedSize = 0);
+	void Grow(SIZET addedSize = 0);
 	void SetCapacity(SIZET capacity, bool needCopy);
+	void Swap(String& other);
 
-	CharType * Allocate(size_t size);
-	CharType * Reallocate(size_t size);
+	CharType * Allocate(SIZET size);
+	CharType * Reallocate(SIZET size);
 	void       Deallocate();
 
-	CharType * m_Contents;			// Always points to valid null terminated string (even when empty)
-	size_t     m_Length;			// Length in CharTypeacters
-	size_t     m_Capacity;
-	Allocator  m_AllocatorInst;
+	CharType *  m_Contents;			// Always points to valid null terminated string (even when empty)
+	SIZET		m_Length;			// Length in CharTypeacters
+	SIZET		m_Capacity;
+	Allocator	m_AllocatorInst;
 
 	template<class T>
 	inline static const T * GetEmptyCStr() { return ""; };
@@ -192,7 +190,7 @@ typedef String<WCHAR> WString;
 template<int SIZE = 1024, bool SUPPORT_OVERFLOW = true>
 using AStackString = String<CHAR, StackAllocator<SIZE, SUPPORT_OVERFLOW>>;
 template<int SIZE = 1024, bool SUPPORT_OVERFLOW = true>
-using WStackString = String<CHAR, StackAllocator<SIZE, SUPPORT_OVERFLOW>>;
+using WStackString = String<WCHAR, StackAllocator<SIZE, SUPPORT_OVERFLOW>>;
 
 
 // Inl includes

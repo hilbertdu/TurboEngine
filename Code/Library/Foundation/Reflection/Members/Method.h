@@ -9,7 +9,7 @@
 // Includes
 //------------------------------------------------------------------------------
 #include "Foundation/Reflection/MetaType/Type.h"
-#include "Foundation/Env/Assert.h"
+#include "Foundation/Pattern/Delegate.h"
 
 
 namespace TReflection
@@ -33,17 +33,24 @@ namespace TReflection
 	class MethodCollection
 	{
 	public:
-		const AnyDelegate & GetMethod(const char * name) const;
+		template<class T>
+		bool GetMethod(const char * name, T& method) const;
 		inline const Array<Method> & GetMethods() const { return m_Methods; }
 
 	protected:
 		Array<Method> m_Methods;
 	};
 
-	const AnyDelegate & MethodCollection::GetMethod(const char * name) const
+	template<class T>
+	bool MethodCollection::GetMethod(const char * name, T& method) const
 	{
-		Method * iter = m_Methods.FindIf([name](const Method method) { return method.m_Name == name; });
-		return iter == m_Methods.End() ? AnyDelegate::s_EmptyDelegate : iter->GetMethod();
+		Method * pMethod = m_Methods.FindIf([name](const Method& method) { return method.m_Name == name; });
+		if (pMethod)
+		{
+			method = *(pMethod->GetMethod().Cast<T>());
+			return true;
+		}
+		return false;
 	}
 }
 

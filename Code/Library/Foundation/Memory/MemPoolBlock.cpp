@@ -18,7 +18,7 @@ MemPoolBlock::MemPoolBlock(SIZET allocSize, SIZET alignment)
 	, m_BlockSize(Math::Max(allocSize, sizeof(FreeBlock)))
 	, m_BlockAlignment(alignment)
 	, m_PageHeaderSize(T_MEM_ALIGN_ARB(sizeof(AllocatedPage), m_BlockAlignment))
-#ifdef T_MEM_STATISTICS
+#if T_MEM_STATISTICS
 	, m_NumAllocations(0)
 #endif
 {

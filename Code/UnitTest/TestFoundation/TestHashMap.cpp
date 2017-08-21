@@ -17,6 +17,7 @@ private:
 	void HashMapConstructors() const;
 	void HashMapAssignment() const;
 	void HashMapIterator() const;
+	void HashMapGrow() const;
 	void HashMapAllocator() const;
 	void HashMapMove() const;
 };
@@ -27,6 +28,7 @@ REGISTER_TESTS_BEGIN(TestHashMap)
 	REGISTER_TEST(HashMapConstructors)
 	REGISTER_TEST(HashMapAssignment)
 	REGISTER_TEST(HashMapIterator)
+	REGISTER_TEST(HashMapGrow)
 	REGISTER_TEST(HashMapAllocator)
 	REGISTER_TEST(HashMapMove)
 REGISTER_TESTS_END
@@ -38,6 +40,9 @@ void TestHashMap::HashMapConstructors() const
 {
 	Pair<int, AString> pair = { 1, AString("") };
 	HashMap<int, AString> map = { pair };
+	{
+		pair = { 2, AString("22") };
+	}
 	{
 		HashMap<int, AString> map1(map);
 		TEST_ASSERT(map1[1] == "");
@@ -96,7 +101,7 @@ void TestHashMap::HashMapIterator() const
 		HashMap<int, int> map;
 		map[1] = 1;
 		map[2] = 2;
-		for (HashMap<int, int>::Iterator iter = map.Begin(); iter != map.End(); ++iter)
+		for (HashMap<int, int>::Iter iter = map.Begin(); iter != map.End(); ++iter)
 		{
 			TEST_ASSERT((*iter).First() == (*iter).Second());
 			(*iter).Second() = 10;
@@ -107,14 +112,42 @@ void TestHashMap::HashMapIterator() const
 	}
 	{
 		HashMap<int, AString> map = { {1, AString("test")} };
-		for (HashMap<int, AString>::ConstIterator iter = map.Begin(); iter != map.End(); ++iter)
+		for (HashMap<int, AString>::ConstIter iter = map.Begin(); iter != map.End(); ++iter)
 		{
 			TEST_ASSERT((*iter).Second() == "test");
 		}
-		HashMap<int, AString>::Iterator iter1 = map.Find(1);
-		HashMap<int, AString>::ConstIterator iter2 = map.Find(1);
+		HashMap<int, AString>::Iter iter1 = map.Find(1);
+		HashMap<int, AString>::ConstIter iter2 = map.Find(1);
 		AString s1 = (*iter1).Second();
 		const AString s2 = (*iter2).Second();
+	}
+}
+
+// HashMapGrow
+//------------------------------------------------------------------------------
+#include <unordered_map>
+void TestHashMap::HashMapGrow() const
+{
+	HashMap<int64, AString> map;
+	{
+		Timer t;
+		int64 maxSize = 100000;
+		for (int64 index = 0; index < maxSize; ++index)
+		{
+			map[index] = "test";// AString("test");
+		}
+		LOUTPUT("HashMap : %2.4fs\n", t.GetElapsed());
+		TEST_ASSERT(map[100] == "test");
+	}
+	{
+		std::unordered_map<int64, AString> stdMap;
+		Timer t;
+		int64 maxSize = 100000;
+		for (int64 index = 0; index < maxSize; ++index)
+		{
+			stdMap[index] = "test";// AString("test");
+		}
+		LOUTPUT("std::unordered_map : %2.4fs\n", t.GetElapsed());
 	}
 }
 

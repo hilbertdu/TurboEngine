@@ -29,25 +29,21 @@ public:
 	explicit Array(const T * begin, const T * end, const Allocator & allocator);
 	explicit Array(SIZET initSize);
 	explicit Array(SIZET initSize, const Allocator & allocator);
-	Array(const std::initializer_list<T> & initList);
-	Array(const std::initializer_list<T> & initList, const Allocator & allocator);
-
+	explicit Array(SIZET initSize, const T & element);
+	Array(std::initializer_list<T> initList);
+	Array(std::initializer_list<T> initList, const Allocator & allocator);
 	Array(const Array & other);
 	template<class OtherAllocator>
 	Array(const Array<T, OtherAllocator> & other);
-
-	template<class = typename std::enable_if<std::is_move_assignable<Allocator>::value>::type>
 	Array(Array && other);
 
 	~Array();
 
 	// Operators
 	Array & operator = (const Array & other);
+	Array & operator = (Array && rOther);
 	template<class OtherAllocator>
 	Array & operator = (const Array<T, OtherAllocator> & other);
-
-	template<class = typename std::enable_if<std::is_move_assignable<Allocator>::value>::type>
-	Array & operator = (Array && rOther);
 
 	// Iterators
 	FORCE_INLINE Iter      Begin() { return m_Begin; }
@@ -76,13 +72,7 @@ public:
 	void Clear();
 	void SwapItem(SIZET index1, SIZET index2);
 	void SwapItem(Iter& iter1, Iter& iter2);
-
-	// Sort
-	void Sort() { ShellSort(m_Begin, m_End, AscendingCompare()); }
-	void SortDeref() { ShellSort(m_Begin, m_End, AscendingCompareDeref()); }
-	template<class COMPARER>
-	void Sort(const COMPARER & comp) { ShellSort(m_Begin, m_End, comp); }
-	void Sort(bool(*comp)(const T &, const T &)) { ShellSort(m_Begin, m_End, comp); }
+	void Swap(Array & other);
 
 	// Find
 	template<class U>
@@ -110,7 +100,7 @@ public:
 	template<class... TArgs>
 	Iter EmplaceAppend(TArgs... args);
 	template<class... TArgs>
-	Iter EmplaceInsert(ConstIter iter, TArgs... args);
+	Iter EmplaceInsert(Iter iter, TArgs... args);
 
 	void Pop(SIZET count = 1);
 	void PopFront(SIZET count = 1);
@@ -134,16 +124,16 @@ public:
 	static void InPlaceConstruct(T * mem, SIZET count, TArgs... args);
 	static void InPlaceDestruct(T * mem, SIZET count);
 	static void UninitializedCopy(T * des, const T * src, SIZET count);
+	static void UninitializedMove(T * des, const T * src, SIZET count);
 	static void UninitializedFill(T * des, const T& value, SIZET count);
-	static void Move(T * des, T * src, SIZET count);
-	static void Copy(T * des, T * src, SIZET count);
+	static void Move(T * des, const T * src, SIZET count);
+	static void Copy(T * des, const T * src, SIZET count);
 	static void Set(T * des, const T& value, SIZET count);
 
 private:
-	void  Swap(Array & other);
 	void  Resize(SIZET size, SIZET capacity);
 	void  Grow(SIZET capacity);
-	SIZET GetGrowCapacity(SIZET capacity);
+	inline SIZET GetGrowCapacity(SIZET capacity);
 
 	T*   Allocate(SIZET size);
 	T*   Reallocate(SIZET size);
@@ -156,10 +146,12 @@ private:
 	static void _InPlaceDestruct(T * mem, SIZET count, const std::false_type&);
 	static void _UninitializedCopy(T * des, const T * src, SIZET count, const std::true_type&);
 	static void _UninitializedCopy(T * des, const T * src, SIZET count, const std::false_type&);
-	static void _Move(T * des, T * src, SIZET count, const std::true_type&);
-	static void _Move(T * des, T * src, SIZET count, const std::false_type&);
-	static void _Copy(T * des, T * src, SIZET count, const std::true_type&);
-	static void _Copy(T * des, T * src, SIZET count, const std::false_type&);
+	static void _UninitializedMove(T * des, const T * src, SIZET count, const std::true_type&);
+	static void _UninitializedMove(T * des, const T * src, SIZET count, const std::false_type&);
+	static void _Move(T * des, const T * src, SIZET count, const std::true_type&);
+	static void _Move(T * des, const T * src, SIZET count, const std::false_type&);
+	static void _Copy(T * des, const T * src, SIZET count, const std::true_type&);
+	static void _Copy(T * des, const T * src, SIZET count, const std::false_type&);
 
 	T* m_Begin;
 	T* m_End;

@@ -93,7 +93,8 @@ template<
 class HashTable
 {
 public:
-	static const SIZET DEFAULT_BUCKET_COUNT = 37;
+	static constexpr SIZET DEFAULT_BUCKET_COUNT = 16;
+	static constexpr float DEFAULT_LOAD_FACTOR = 1.0;
 
 	typedef HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator> MyType;
 
@@ -104,8 +105,8 @@ public:
 	typedef EqualKey		KeyEqualType;
 	typedef Allocator		AllocatorType;
 
-	typedef HashTableIterator<MyType, false> Iterator;
-	typedef HashTableIterator<MyType, true>  ConstIterator;
+	typedef HashTableIterator<MyType, false> Iter;
+	typedef HashTableIterator<MyType, true>  ConstIter;
 
 	explicit HashTable(SIZET bucketCount, const HashFunction& rHasher, const EqualKey& rKeyEquals, const ExtractKey& rExtractKey, const Allocator& rAllocator = Allocator());
 	explicit HashTable(SIZET bucketCount, const HashFunction& rHasher, const EqualKey& rKeyEquals, const Allocator& rAllocator = Allocator());
@@ -113,7 +114,6 @@ public:
 	HashTable(const HashTable& rSource);
 	template<class OtherAllocator>
 	HashTable(const HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, OtherAllocator>& rSource);
-
 	HashTable(HashTable && rOther);
 
 	~HashTable();
@@ -121,38 +121,39 @@ public:
 	HashTable& operator=(const HashTable& rSource);
 	template<class OtherAllocator>
 	HashTable& operator=(const HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, OtherAllocator>& rSource);
-
 	HashTable& operator=(HashTable&& rOther);
-
+	
 	SIZET GetSize() const;
 	bool  IsEmpty() const;
 	void  Clear();
 	void  Shrink();
 	void  Swap(HashTable& rTable);
+	void  SetPossibleMaxSize();
 
-	Iterator      Begin();
-	Iterator      End();
-	ConstIterator Begin() const;
-	ConstIterator End() const;
+	Iter      Begin();
+	Iter      End();
+	ConstIter Begin() const;
+	ConstIter End() const;
 
-	Iterator      Find(const Key& rKey);
-	ConstIterator Find(const Key& rKey) const;
+	Iter      Find(const Key& rKey);
+	ConstIter Find(const Key& rKey) const;
 
-	Pair<Iterator, bool> InsertUnique(const Value& rValue);
-	bool                 InsertUnique(Iterator& rIterator, const Value& rValue);
-	Iterator             InsertEqual(const Value& rValue);
+	Pair<Iter, bool> InsertUnique(const Value& rValue);
+	Pair<Iter, bool> InsertUnique(Value&& rValue);
+	bool             InsertUnique(Iter& rIterator, const Value& rValue);
+	bool             InsertUnique(Iter& rIterator, Value&& rValue);
+	Iter             InsertEqual(const Value& rValue);
 
 	Value & FindOrInsert(const Value& rValue);
 
-	SIZET    Erase(const Key& rKey);
-	Iterator Erase(ConstIterator& iterator);
+	SIZET	Erase(const Key& rKey);
+	Iter	Erase(ConstIter& iterator);
 
 protected:
-	typedef Array<Value, Allocator> Bucket;
+	typedef Array<Value, Allocator> Bucket;	
 
-	Bucket* m_Buckets;
-	SIZET	m_BucketCount;
-	SIZET	m_Size;
+	Array<Bucket>	m_Buckets;
+	SIZET			m_Size;
 
 	HashFunction m_Hasher;
 	EqualKey     m_KeyEquals;
@@ -160,11 +161,13 @@ protected:
 	Allocator    m_Allocator;
 
 private:
-	void AllocateBuckets();
+	void ReHash(SIZET size);
+
+	template<class ValueT>
+	bool _InsertUnique(Iter& rIterator, ValueT&& rValue);
 
 	template<class OtherAllocator>
 	void CopyConstruct(const HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, OtherAllocator>& rSource);
-	void Finalize();
 
 	friend class HashTableIterator<MyType, false>;
 	friend class HashTableIterator<MyType, true>;

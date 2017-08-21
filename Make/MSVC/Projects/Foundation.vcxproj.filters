@@ -339,7 +339,6 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Platform\Platform.h">
       <Filter>Platform</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Library\Foundation\PrecompileHeader.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\SmartPtr.h">
       <Filter>Container</Filter>
     </ClInclude>
@@ -427,6 +426,12 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Pattern\Delegate.h">
       <Filter>Pattern</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Container\AnyClass.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Container\RBTree.h">
+      <Filter>Container</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Library\Foundation\Memory\MemPool.cpp">
@@ -447,9 +452,6 @@
     <ClCompile Include="..\..\..\Code\Library\Foundation\Math\CRC32.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Library\Foundation\Reflection\Reflection.cpp">
-      <Filter>Reflection</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Library\Foundation\Container\List.inl">
       <Filter>Container</Filter>
     </ClCompile>
@@ -468,6 +470,9 @@
     <ClCompile Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\Serializer.cpp">
       <Filter>Reflection\Serialization</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\Library\Foundation\Reflection\Reflection.inl">
+      <Filter>Reflection</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\Library\Foundation\Container\Array.inl">
@@ -481,6 +486,9 @@
     </None>
     <None Include="..\..\..\Code\Library\Foundation\Memory\Allocator.inl">
       <Filter>Memory</Filter>
+    </None>
+    <None Include="..\..\..\Code\Library\Foundation\Container\RBTree.inl">
+      <Filter>Container</Filter>
     </None>
   </ItemGroup>
 </Project>

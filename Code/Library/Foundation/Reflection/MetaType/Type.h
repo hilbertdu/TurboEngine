@@ -10,7 +10,6 @@
 //------------------------------------------------------------------------------
 #include "Foundation/Platform/Types.h"
 #include "Foundation/String/String.h"
-#include "Foundation/Pattern/Event.h"
 #include "Foundation/Math/CRC32.h"
 #include "Foundation/Reflection/Serialization/Serializer.h"
 
@@ -54,6 +53,8 @@ namespace TReflection
 		virtual bool IsStruct() { return false; }
 		virtual bool IsClass() { return false; }
 		virtual bool IsObject() { return false; }
+
+		virtual IMetaType* Create() const { return nullptr; };
 
 	protected:
 		int32			m_Size;

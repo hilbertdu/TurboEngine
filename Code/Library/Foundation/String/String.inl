@@ -51,7 +51,6 @@ String<CharType, Allocator>::String(const String & string)
 }
 
 template<typename CharType, typename Allocator>
-template<class>
 String<CharType, Allocator>::String(String && rOther)
 	: m_Contents(rOther.m_Contents)
 	, m_Length(rOther.m_Length)
@@ -119,13 +118,9 @@ bool String<CharType, Allocator>::operator == (const String<CharType, OtherAlloc
 }
 
 template<typename CharType, typename Allocator>
-template<class>
 String<CharType, Allocator> & String<CharType, Allocator>::operator = (String && rOther)
 {
-	std::swap(m_Contents, rOther.m_Contents);
-	std::swap(m_Length, rOther.m_Length);
-	std::swap(m_Capacity, rOther.m_Capacity);
-	std::swap(m_AllocatorInst, rOther.m_AllocatorInst);
+	Swap(rOther);
 	return *this;
 }
 
@@ -157,7 +152,7 @@ void String<CharType, Allocator>::Assign(const String<CharType, OtherAllocator> 
 template<typename CharType, typename Allocator>
 void String<CharType, Allocator>::Clear()
 {
-	if (m_Contents == s_EmptyStr)
+	if (m_Contents == s_EmptyCStr)
 	{
 		return;
 	}
@@ -787,7 +782,16 @@ void String<CharType, Allocator>::Tokenize(Array<String<CharType, OtherAllocator
 }
 
 template<typename CharType, typename Allocator>
-void String<CharType, Allocator>::Grow(size_t addedSize = 0)
+void String<CharType, Allocator>::Swap(String& other)
+{
+	std::swap(m_Contents, other.m_Contents);
+	std::swap(m_Length, other.m_Length);
+	std::swap(m_Capacity, other.m_Capacity);
+	std::swap(m_AllocatorInst, other.m_AllocatorInst);
+}
+
+template<typename CharType, typename Allocator>
+void String<CharType, Allocator>::Grow(SIZET addedSize = 0)
 {
 	// Grow by 1.5 times
 	size_t newCapacity = Math::Max(m_Capacity + addedSize, m_Capacity + (m_Capacity >> 1));
@@ -819,17 +823,17 @@ void String<CharType, Allocator>::SetCapacity(SIZET capacity, bool needCopy)
 		m_Length = newLength;
 		m_Capacity = capacity;
 	}
-} 
+}
 
 template<typename CharType, typename Allocator>
-CharType * String<CharType, Allocator>::Allocate(size_t size)
+CharType * String<CharType, Allocator>::Allocate(SIZET size)
 {
 	ASSERT(size > 0);
 	return m_AllocatorInst.AllocateT<CharType>(size);
 }
 
 template<typename CharType, typename Allocator>
-CharType * String<CharType, Allocator>::Reallocate(size_t size)
+CharType * String<CharType, Allocator>::Reallocate(SIZET size)
 {
 	ASSERT(size > 0);
 	return m_AllocatorInst.ReallocateT<CharType>(m_Contents, size);

@@ -1,78 +1,71 @@
-// TestAString.cpp
+// TestReflection.cpp
 //------------------------------------------------------------------------------
 
 // Includes
 //------------------------------------------------------------------------------
-#include <TestFramework/UnitTest.h>
+#include "TestFramework/UnitTest.h"
+#include "Foundation/Reflection/ReflectionMacros.h"
+#include "Foundation/Pattern/Delegate.h"
 
 
 // TestReflection
 //------------------------------------------------------------------------------
 class TestReflection : public UnitTest
 {
-public:
-	TestReflection()
-	{
-		BIND_REFLECTION( TestObject )
-		BIND_REFLECTION( TestStruct )
-	}
-
 private:
 	DECLARE_TESTS
 
+	void TestGetMetaType() const;
 	void TestGetSet() const;
-	void TestSerialization() const;
 	void TestInheritence() const;
+	void TestSerialization() const;
 };
 
 // Register Tests
 //------------------------------------------------------------------------------
-REGISTER_TESTS_BEGIN( TestReflection )
-	REGISTER_TEST( TestGetSet )
-	REGISTER_TEST( TestSerialization )
-	REGISTER_TEST( TestInheritence )
+REGISTER_TESTS_BEGIN(TestReflection)
+	REGISTER_TEST(TestGetMetaType)
+	REGISTER_TEST(TestGetSet)
+	REGISTER_TEST(TestSerialization)
+	REGISTER_TEST(TestInheritence)
 REGISTER_TESTS_END
 
 // TestStruct
 //------------------------------------------------------------------------------
 struct TestStruct
 {
-	REFLECT_STRUCT_DECLARE( TestStruct )
 public:
-	TestStruct() : m_MyInt( 851 ) {}
+	TestStruct() : m_MyInt(851) {}
+	uint32 m_MyInt;
 
-	uint32_t m_MyInt;
+	TREFLECTION_DECLARE(TestStruct, TReflection::IStruct)
 };
 
-REFLECT_STRUCT_BEGIN_BASE( TestStruct )
-	REFLECT( m_MyInt,	"MyInt",	MetaNone() )
-REFLECT_END( TestStruct )
+TREFLECT_BEGIN(TestStruct)
+	TREFLECT_FIELD(m_MyInt,	"MyInt")
+TREFLECT_END(TestStruct)
 
 // TestObject
 //------------------------------------------------------------------------------
-class TestObject : public Object
+class TestObject : public TReflection::IObject
 {
-	REFLECT_DECLARE( TestObject )
 public:
 	TestObject()
-		: m_Float( 0.0f )
-		, m_UInt8( 0 )
-		, m_UInt16( 0 )
-		, m_UInt32( 0 )
-		, m_UInt64( 0 )
-		, m_Int8( 0 )
-		, m_Int16( 0 )
-		, m_Int32( 0 )
-		, m_Int64( 0 )
-		, m_Bool( false)
-		, m_AString( "" )
-		, m_Vec2( 0.0f, 0.0f )
-		, m_Vec3( 0.0f, 0.0f, 0.0f )
-		, m_Vec4( 0.0f, 0.0f, 0.0f, 0.0f )
+		: m_Float(0.0f)
+		, m_UInt8(0)
+		, m_UInt16(0)
+		, m_UInt32(0)
+		, m_UInt64(0)
+		, m_Int8(0)
+		, m_Int16(0)
+		, m_Int32(0)
+		, m_Int64(0)
+		, m_Bool(false)
+		, m_AString("")
 	{
 	}
 
-	void PopulateWithTestData( bool addChildRef = true )
+	void PopulateWithTestData(bool addChildRef = true)
 	{
 		m_Float = 99.0f;
 		m_UInt8 = 42;
@@ -85,23 +78,17 @@ public:
 		m_Int64 = 100000000000001;
 		m_Bool = true;
 		m_AString =  "Test string.";
-		m_Vec2 = Vec2( -1.0f, -2.0f );
-		m_Vec3 = Vec3( -3.0f, -4.0f, -5.0f );
-		m_Vec4 = Vec4( -6.0f, -7.0f, -8.0f, -9.0f );
 
-		if ( addChildRef )
+		if (addChildRef)
 		{
-			m_Ref2 = (TestObject *)ReflectionInfo::CreateObject( AStackString<>( "TestObject" ) );
-			m_Ref2->PopulateWithTestData( false );
+			m_TestObjectPtr = (TestObject *)TReflection::CreateObject("TestObject");
+			m_TestObjectPtr->PopulateWithTestData(false);
 		}
 
-		m_Mat44.MakeIdentity();
-
-		m_FloatArray.Append( 111.0f );
-		m_FloatArray.Append( 222.0f );
-		m_FloatArray.Append( 333.0f );
-
-		m_StructArray.SetSize( 3 );
+		m_FloatArray.Append(111.0f);
+		m_FloatArray.Append(222.0f);
+		m_FloatArray.Append(333.0f);
+		m_StructArray.SetSize(3);
 	}
 
 private: // ensure reflection can set private members
@@ -109,95 +96,107 @@ private: // ensure reflection can set private members
 	friend class TestReflection;
 
 	float		m_Float;
-	uint8_t		m_UInt8;
-	uint16_t	m_UInt16;
-	uint32_t	m_UInt32;
-	uint64_t	m_UInt64;
-	int8_t		m_Int8;
-	int16_t		m_Int16;
-	int32_t		m_Int32;
-	int64_t		m_Int64;
+	uint8		m_UInt8;
+	uint16		m_UInt16;
+	uint32		m_UInt32;
+	uint64		m_UInt64;
+	int8		m_Int8;
+	int16		m_Int16;
+	int32		m_Int32;
+	int64		m_Int64;
 	bool		m_Bool;
 	AString		m_AString;
-	Vec2		m_Vec2;
-	Vec3		m_Vec3;
-	Vec4		m_Vec4;
-	Mat44		m_Mat44;
-	Ref< TestObject > m_Ref;
-	Ref< TestObject > m_Ref2;
-
 	TestStruct	m_TestStruct;
 
-	Array< float > m_FloatArray;
+	Array<float>			m_FloatArray;
+	Array<TestStruct>		m_StructArray;
+	StrongPtr<TestObject>	m_TestObjectPtr;
 
-	Array< TestStruct > m_StructArray;
+	TREFLECTION_DECLARE(TestObject, IObject)
 };
 
-REFLECT_BEGIN( TestObject, Object, MetaNone() )
-	REFLECT( m_Float,	"Float",	MetaNone() )
-	REFLECT( m_UInt8,	"UInt8",	MetaNone() )
-	REFLECT( m_UInt16,	"UInt16",	MetaNone() )
-	REFLECT( m_UInt32,	"UInt32",	MetaNone() )
-	REFLECT( m_UInt64,	"UInt64",	MetaNone() )
-	REFLECT( m_Int8,	"Int8",		MetaNone() )
-	REFLECT( m_Int16,	"Int16",	MetaNone() )
-	REFLECT( m_Int32,	"Int32",	MetaNone() )
-	REFLECT( m_Int64,	"Int64",	MetaNone() )
-	REFLECT( m_Bool,	"Bool",		MetaNone() )
-	REFLECT( m_AString,	"AString",	MetaNone() )
-	REFLECT( m_Vec2,	"Vec2",		MetaNone() )
-	REFLECT( m_Vec3,	"Vec3",		MetaNone() )
-	REFLECT( m_Vec4,	"Vec4",		MetaNone() )
-	REFLECT( m_Mat44,	"Mat44",	MetaNone() )
-	REFLECT( m_Ref,		"Ref",		MetaNone() )
-	REFLECT( m_Ref2,	"Ref2",		MetaNone() )
-	REFLECT_STRUCT( m_TestStruct,	"TestStruct",	TestStruct,	MetaNone() )
-	REFLECT_ARRAY( m_FloatArray, "FloatArray", MetaNone() )
-	REFLECT_ARRAY_OF_STRUCT( m_StructArray, "StructArray", TestStruct, MetaNone() )
-REFLECT_END( TestObject )
+TREFLECT_BEGIN(TestObject)
+	TREFLECT_FIELD(m_Float,		"Float")
+	TREFLECT_FIELD(m_UInt8,		"UInt8")
+	TREFLECT_FIELD(m_UInt16,	"UInt16")
+	TREFLECT_FIELD(m_UInt32,	"UInt32")
+	TREFLECT_FIELD(m_UInt64,	"UInt64")
+	TREFLECT_FIELD(m_Int8,		"Int8")
+	TREFLECT_FIELD(m_Int16,		"Int16")
+	TREFLECT_FIELD(m_Int32,		"Int32")
+	TREFLECT_FIELD(m_Int64,		"Int64")
+	TREFLECT_FIELD(m_Bool,		"Bool")
+	TREFLECT_FIELD(m_AString,	"AString")
+	TREFLECT_FIELD(m_TestStruct,	"TestStruct")
+	TREFLECT_FIELD(m_FloatArray,	"FloatArray")
+	TREFLECT_FIELD(m_StructArray,	"StructArray")
+	TREFLECT_FIELD(m_TestObjectPtr, "TestObjectPtr")
+TREFLECT_END(TestObject)
+
+
+// TestGetMetaType
+//------------------------------------------------------------------------------
+void TestReflection::TestGetMetaType() const
+{
+	using namespace TReflection;
+	Initialization();
+
+	const IMetaType* metaType1 = MetaTypeDB::Instance().GetMetaType<bool>();
+	const IMetaType* metaType2 = MetaTypeDB::Instance().GetMetaType<Array<int, HeapAllocator>>();
+	const IMetaType* metaType3 = MetaTypeDB::Instance().GetMetaType<Array<AString, HeapAllocator>>();
+	const IMetaType* metaType4 = MetaTypeDB::Instance().GetMetaType<HashMap<int, float>>();
+	const IMetaType* metaType5 = MetaTypeDB::Instance().GetMetaType<TestStruct>();
+
+	MetaDeduce<Array<int>>::MetaKeyType a = 100;
+	MetaDeduce<Array<AString>>::MetaKeyType s = AString("abc");
+	MetaDeduce<HashMap<int, float>>::MetaKeyType b1 = 100;
+	MetaDeduce<HashMap<int, float>>::MetaValueType b2 = 100;
+	MetaDeduce<Array<Array<AString>>>::MetaKeyType v1 = Array<AString>();
+	MetaDeduce<HashMap<int, Array<AString>>>::MetaValueType v2 = Array<AString>();
+}
 
 // TestGetSet
 //------------------------------------------------------------------------------
 void TestReflection::TestGetSet() const
 {
-	TestObject o;
-	const ReflectionInfo * info = o.GetReflectionInfoV();
+	TestObject::BindReflectionInfo();
 
-	#define CHECK( name, member, type, value ) \
-	{ \
-		TEST_ASSERT( info->SetProperty( &o, name, (type)value ) ); \
-		TEST_ASSERT( o.member == value ); \
-		type v; \
-		TEST_ASSERT( info->GetProperty( &o, name, &v ) ); \
-		TEST_ASSERT( v == value ); \
+	TestObject o;
+	const TReflection::MetaClass* info = TestObject::GetMetaTypeS();
+
+	#define CHECK(name, member, type, value) \
+	{															\
+		TEST_ASSERT(info->SetProperty(&o, name, (type)value));	\
+		TEST_ASSERT(o.member == value);							\
+		type v;													\
+		TEST_ASSERT(info->GetProperty(&o, name, v));			\
+		TEST_ASSERT(v == value);								\
 	}
 
-	CHECK( "Float", m_Float, float, 3.0f )
-	CHECK( "UInt8", m_UInt8, uint8_t, 7 )
-	CHECK( "UInt16", m_UInt16, uint16_t, 10101 )
-	CHECK( "UInt32", m_UInt32, uint32_t, 0x12345678 )
-	CHECK( "UInt64", m_UInt64, uint64_t, 0x8765432112345678 )
-	CHECK( "Int8", m_Int8, int8_t, 7 )
-	CHECK( "Int16", m_Int16, int16_t, 10101 )
-	CHECK( "Int32", m_Int32, int32_t, 0x12345678 )
-	CHECK( "Int64", m_Int64, int64_t, 0x7765432112345678 )
-	CHECK( "Bool", m_Bool, bool, true )
-	CHECK( "AString", m_AString, AString, AString( "hello" ) )
-	CHECK( "Vec2", m_Vec2, Vec2, Vec2( 1.0f, 2.0f ) )
-	CHECK( "Vec3", m_Vec3, Vec3, Vec3( 3.0f, 4.0f, 5.0f ) )
-	CHECK( "Vec4", m_Vec4, Vec4, Vec4( 6.0f, 7.0f, 8.0f, 9.0f ) )
-	Mat44 m;
-	m.MakeRotationX( 3.141f / 3.0f );
-	CHECK( "Mat44", m_Mat44, Mat44, m )
+	CHECK("Float", m_Float, float, 3.0f)
+	CHECK("UInt8", m_UInt8, uint8, 7)
+	CHECK("UInt16", m_UInt16, uint16, 10101)
+	CHECK("UInt32", m_UInt32, uint32, 0x12345678)
+	CHECK("UInt64", m_UInt64, uint64, 0x8765432112345678)
+	CHECK("Int8", m_Int8, int8, 7)
+	CHECK("Int16", m_Int16, int16, 10101)
+	CHECK("Int32", m_Int32, int32, 0x12345678)
+	CHECK("Int64", m_Int64, int64, 0x7765432112345678)
+	CHECK("Bool", m_Bool, bool, true)
+	CHECK("AString", m_AString, AString, AString("hello"))
 
 	{
-		TestObject * obj = (TestObject *)ReflectionInfo::CreateObject( AStackString<>( "TestObject" ) );
-		Ref< RefObject > ref( obj );
-		TEST_ASSERT( info->SetProperty( &o, "Ref2", ref ) );
-		TEST_ASSERT( o.m_Ref2.Get() == obj );
-		Ref< RefObject > v;
-		TEST_ASSERT( info->GetProperty( &o, "Ref2", &v ) );
-		TEST_ASSERT( v.Get() == obj );
+		Array<float> arr;
+		info->GetProperty(&o, "FloatArray", arr);
+		TEST_ASSERT(arr.GetSize() == 3);
+		TEST_ASSERT(arr[0] == 111.0f);
+	}
+
+	{
+		TestObject * obj = (TestObject *)TReflection::CreateObject("TestObject");
+		StrongPtr<TestObject> ref(obj);
+		TEST_ASSERT(info->SetProperty(&o, "TestObjectPtr", ref));
+		TEST_ASSERT(o.m_TestObjectPtr.Get() == obj);
 	}
 
 	#undef CHECK
@@ -207,93 +206,67 @@ void TestReflection::TestGetSet() const
 //------------------------------------------------------------------------------
 void TestReflection::TestSerialization() const
 {
-	#ifdef __WINDOWS__
-		TestObject o;
-		o.PopulateWithTestData();
-
-		MemoryStream stream;
-
-		TextWriter tw( stream );
-		tw.Write( &o );
-
-		const char * data = (const char *)stream.GetData();
-		DEBUGSPAM( "Stream1:\n%s", data );
-
-		// Create an object from the stream
-		ConstMemoryStream readStream( stream.GetData(), stream.GetSize() );
-		TextReader tr( readStream );
-		RefObject * obj = tr.Read();
-		TEST_ASSERT( obj );
-
-		// Serialize new object
-		MemoryStream stream2;
-		TextWriter tw2( stream2 );
-		tw2.Write( obj );
-
-		const char * data2 = (const char *)stream2.GetData();
-		DEBUGSPAM( "Stream2:\n%s", data2 );
-
-		// Check that streams are the same
-		bool streamsMatch = ( stream.GetSize() == stream2.GetSize() );
-		if ( streamsMatch )
-		{
-			streamsMatch = ( memcmp( data, data2, stream.GetSize() ) == 0 );
-		}
-		if ( !streamsMatch )
-		{
-			TEST_ASSERT( streamsMatch ); // Streams don't match
-		}
-
-		// Cleanup
-		FDELETE( obj );
-	#endif
 }
 
 // TestInheritence
 //------------------------------------------------------------------------------
-class BaseClass : public Object
+class BaseClass : public TReflection::IObject
 {
-	REFLECT_DECLARE( BaseClass )
 public:
-	BaseClass() : m_A( -1 ) {}
+	BaseClass() : m_A(-1) {}
 	int m_A;
+	int GetA() { return m_A; }
+	TREFLECTION_DECLARE(BaseClass, IObject)
 };
 
 class DerivedClass : public BaseClass
 {
-	REFLECT_DECLARE( DerivedClass )
 public:
-	DerivedClass() : m_B( -1 ) {}
+	DerivedClass() : m_B(-1) {}
 	int m_B;
+	TREFLECTION_DECLARE(DerivedClass, BaseClass)
 };
 
-REFLECT_BEGIN( BaseClass, Object, MetaNone() )
-	REFLECT( m_A, "a", MetaNone() )
-REFLECT_END( BaseClass )
+TREFLECT_BEGIN(BaseClass)
+	TREFLECT_FIELD(m_A, "a")
+	TREFLECT_METHOD(GetA, "GetA")
+TREFLECT_END(BaseClass)
 
-REFLECT_BEGIN( DerivedClass, BaseClass, MetaNone() )
-	REFLECT( m_B, "b", MetaNone() )
-REFLECT_END( DerivedClass )
+TREFLECT_BEGIN(DerivedClass)
+	TREFLECT_FIELD(m_B, "b")
+TREFLECT_END(DerivedClass)
 
 void TestReflection::TestInheritence() const
 {
+	BaseClass::BindReflectionInfo();
+	DerivedClass::BindReflectionInfo();
+
 	// Create an object with inheritence
 	DerivedClass obj;
 
 	// Set property on class
-	const ReflectionInfo * ri = obj.GetReflectionInfoV();
+	const TReflection::MetaClass * bi = BaseClass::GetMetaTypeS();
+	const TReflection::MetaClass * ri = DerivedClass::GetMetaTypeS();
+
+	TEST_ASSERT(ri->m_Super == bi);
+
 	int bValue = 200;
-	TEST_ASSERT( ri->SetProperty( &obj, "b", bValue ) );
+	TEST_ASSERT(ri->SetProperty(&obj, "b", bValue));
 	int bValueGet = 0;
-	TEST_ASSERT( ri->GetProperty( &obj, "b", &bValueGet ) );
-	TEST_ASSERT( bValue == bValueGet );
+	TEST_ASSERT(ri->GetProperty( &obj, "b", bValueGet));
+	TEST_ASSERT(bValue == bValueGet);
 
 	// Set property on base class
 	int aValue = 100;
-	TEST_ASSERT( ri->SetProperty( &obj, "a", aValue ) );
+	TEST_ASSERT(ri->SetProperty(&obj, "a", aValue));
 	int aValueGet = 0;
-	TEST_ASSERT( ri->GetProperty( &obj, "a", &aValueGet ) );
-	TEST_ASSERT( aValue == aValueGet );
+	TEST_ASSERT(ri->GetProperty(&obj, "a", aValueGet));
+	TEST_ASSERT(aValue == aValueGet);
+
+	// 4. Method
+	Delegate<int()> d;
+	ri->GetMethod<decltype(d)>("GetA", d);
+	int ret = d.Invoke(&obj);
 }
 
 //------------------------------------------------------------------------------

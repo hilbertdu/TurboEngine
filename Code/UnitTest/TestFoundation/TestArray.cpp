@@ -107,6 +107,7 @@ void TestArray::ArrayAssignment() const
 
 // ArrayInsertErase
 //------------------------------------------------------------------------------
+#include <vector>
 void TestArray::ArrayInsertErase() const
 {
 	Array<AString> arr1;
@@ -139,6 +140,34 @@ void TestArray::ArrayInsertErase() const
 	{
 		arr1.Clear();
 		TEST_ASSERT(arr1.GetSize() == 0);
+	}
+	{
+		arr1.EmplaceAppend("test_emplace1");
+		arr1.EmplaceAppend("test_emplace2");
+		TEST_ASSERT(arr1[0] == "test_emplace1");
+		TEST_ASSERT(arr1[1] == "test_emplace2");
+	}
+	{
+		arr1.EmplaceInsert(arr1.Begin(), "test_emplace0");
+		TEST_ASSERT(arr1[0] == "test_emplace0");
+	}
+	{
+		Array<int64> arr;
+		Timer t;
+		for (int64 idx = 0; idx < 100000; ++idx)
+		{
+			arr.Append(idx);
+		}
+		LOUTPUT("Array : %2.4fs\n", t.GetElapsed());
+	}
+	{
+		std::vector<int64> arr;
+		Timer t;
+		for (int64 idx = 0; idx < 100000; ++idx)
+		{
+			arr.push_back(idx);
+		}
+		LOUTPUT("std::vector : %2.4fs\n", t.GetElapsed());
 	}
 }
 

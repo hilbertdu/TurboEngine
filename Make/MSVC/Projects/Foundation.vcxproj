@@ -335,11 +335,13 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Library\Foundation\Analyzer\MemTracker.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Container\AnyClass.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\Array.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\List.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Container\RBTree.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\Ref.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\SmartPtr.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\BitArray.h" />
@@ -353,7 +355,6 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Pattern\Delegate.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Pattern\Event.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Pattern\Property.h" />
-    <ClInclude Include="..\..\..\Code\Library\Foundation\PrecompileHeader.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Function\Compare.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Function\Hash.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Logging\Logger.h" />
@@ -407,13 +408,14 @@
       <FileType>Document</FileType>
     </ClInclude>
     <ClCompile Include="..\..\..\Code\Library\Foundation\Process\Mutex.cpp" />
-    <ClCompile Include="..\..\..\Code\Library\Foundation\Reflection\Reflection.cpp" />
+    <ClCompile Include="..\..\..\Code\Library\Foundation\Reflection\Reflection.inl" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\Serializer.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Time\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\Library\Foundation\Container\Array.inl" />
     <None Include="..\..\..\Code\Library\Foundation\Container\HashTable.inl" />
+    <None Include="..\..\..\Code\Library\Foundation\Container\RBTree.inl" />
     <None Include="..\..\..\Code\Library\Foundation\Memory\Allocator.inl" />
     <None Include="..\..\..\Code\Library\Foundation\String\String.inl" />
   </ItemGroup>

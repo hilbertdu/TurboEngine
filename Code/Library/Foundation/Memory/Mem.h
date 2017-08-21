@@ -28,7 +28,7 @@
 
 #define T_MEM_DEFAULT_ALIGN    sizeof(void*)
 
-#define T_MEM_STATISTICS	1
+#define T_MEM_STATISTICS	0
 #define T_MEM_TRACKER		1
 #define T_MEM_TRACKER_ALL	1
 
@@ -38,15 +38,14 @@
 
 #if (T_MEM_TRACKER)
 	#include "Foundation/Analyzer/MemTracker.h"
-
 	#if (T_MEM_TRACKER_ALL)
 		#define new							MemStamp(__FILE__, __LINE__) * new
 		#define TNEW(code)					new code
 		#define TNEW_ARRAY(code)			new code
 		#define TDELETE						delete
 		#define TDELETE_ARRAY				delete[]
-		#define TDELETE_SAFE(code)			do { if (code) { delete code; } } while(0)
-		#define TDELETE_ARRAY_SAFE(code)	do { if (code) { delete[] code; } } while(0)
+		#define TDELETE_SAFE(code)			do { if (code) { delete code; (code) = nullptr; } } while(0)
+		#define TDELETE_ARRAY_SAFE(code)	do { if (code) { delete[] code; (code) = nullptr; } } while(0)
 	#else
 		#define TNEW(code)			(MemStamp(__FILE__, __LINE__) * new(MemStructNone(), MemStructNone()) code)
 		#define TNEW_ARRAY(code)	(MemStamp(__FILE__, __LINE__) * new(MemStructNone(), MemStructNone()) code)
@@ -60,10 +59,13 @@
 
 	#define TMEM_TRACKER_DUMP_INFO	MemTracker::DumpAllocations();
 #else
-	#define TNEW(code)			new code
-	#define TNEW_ARRAY(code)	new code
-	#define TDELETE				delete
-	#define TDELETE_ARRAY		delete[]
+	#include <new>
+	#define TNEW(code)					new code
+	#define TNEW_ARRAY(code)			new code
+	#define TDELETE						delete
+	#define TDELETE_ARRAY				delete[]
+	#define TDELETE_SAFE(code)			do { if (code) { delete code; } } while(0)
+	#define TDELETE_ARRAY_SAFE(code)	do { if (code) { delete[] code; } } while(0)
 
 	#define ALLOC(...)			::Alloc(__VA_ARGS__)
 	#define REALLOC(...)		::Realloc(__VA_ARGS__)

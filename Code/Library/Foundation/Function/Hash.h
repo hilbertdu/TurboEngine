@@ -7,38 +7,101 @@
 // Include
 //------------------------------------------------------------------------------
 #include "Foundation/Platform/Types.h"
+#include <type_traits>
 
 
-// Integer hash
-template<class T>
-class Hash
+// Simple
+class Hasher_Cast
 {
 public:
-	size_t operator()(const T& rKey) const
+	inline SIZET Hash(SIZET pKey) const
 	{
-		return static_cast<size_t>(rKey);
+		return pKey;
 	}
 };
 
-// Pointer hash
-template<class T>
-class Hash<T*>
+// FNV-hash
+class Hasher_FNV_1
 {
 public:
-	size_t operator()(const T* pKey) const
+	inline SIZET Hash(const uint8 * pKey, SIZET count) const
 	{
-		return reinterpret_cast<UINTPTR>(pKey);
+#if defined(__WIN64__)
+		static_assert(sizeof(SIZET) == 8, "This code is for 64-bit size_t.");
+		const SIZET _FNV_offset_basis = 14695981039346656037ULL;
+		const SIZET _FNV_prime = 1099511628211ULL;
+#else /* defined(__WIN64__) */
+		static_assert(sizeof(SIZET) == 4, "This code is for 32-bit size_t.");
+		const SIZET _FNV_offset_basis = 2166136261U;
+		const SIZET _FNV_prime = 16777619U;
+#endif /* defined(__WIN64__) */
+
+		SIZET _Val = _FNV_offset_basis;
+		for (SIZET _Next = 0; _Next < count; ++_Next)
+		{	// fold in another byte
+			_Val ^= (SIZET)pKey[_Next];
+			_Val *= _FNV_prime;
+		}
+		return (_Val);
 	}
 };
 
-// Pointer hash
-template<class T>
-class Hash<const T*>
+class Hasher_FNV_2
 {
 public:
-	size_t operator()(const T* pKey) const
+	inline SIZET Hash(const uint8 * pKey, SIZET count) const
 	{
-		return reinterpret_cast<UINTPTR>(pKey);
+#if defined(__WIN64__)
+		static_assert(sizeof(SIZET) == 8, "This code is for 64-bit size_t.");
+		const SIZET _FNV_offset_basis = 14695981039346656037ULL;
+		const SIZET _FNV_prime = 1099511628211ULL;
+#else /* defined(__WIN64__) */
+		static_assert(sizeof(SIZET) == 4, "This code is for 32-bit size_t.");
+		const SIZET _FNV_offset_basis = 2166136261U;
+		const SIZET _FNV_prime = 16777619U;
+#endif /* defined(__WIN64__) */
+
+		SIZET _Val = _FNV_offset_basis;
+		for (SIZET _Next = 0; _Next < count; ++_Next)
+		{	// fold in another byte
+			_Val ^= (SIZET)pKey[_Next];
+			_Val *= _FNV_prime;
+		}
+		return (_Val);
+	}
+};
+
+
+template<class T>
+class SimpleHasher : public Hasher_Cast
+{
+public:
+	template<bool>
+	struct _Hash
+	{
+		SIZET __Hasher(const T& rKey) { return Hash((SIZET)(&rKey)); }
+	};
+
+	template<>
+	struct _Hash<true>
+	{
+		SIZET __Hasher(const T& rKey) { return Hash((SIZET)(rKey)); }
+	};
+
+	SIZET operator()(const T& rKey) const
+	{
+		return _Hash<std::is_integral<T>::value>::__Hasher(rKey);
+	}
+};
+
+
+template<class T>
+class FNVHasher : public Hasher_FNV_1
+{
+public:
+	SIZET operator()(const T& rKey) const
+	{
+		return Hash((const unsigned char *)&rKey, sizeof(T));
 	}
 };
 

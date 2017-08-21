@@ -444,9 +444,9 @@ void TestString::StringMove() const
 	}
 	{
 		AStackString<2> a1 = AStackString<2>("12");
-		AStackString<2> a2 = std::move(a1);
+		AStackString<2> a2 = a1;
 		a2 += "34";
-		AStackString<2> a3 = std::move(a2);
+		AStackString<2> a3 = a2;
 		TEST_ASSERT(a3 == "1234");
 		AString a4 = a2;
 		TEST_ASSERT(a4 == "1234");

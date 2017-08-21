@@ -214,7 +214,7 @@ void TestDelegateEvent::TestDelegatePerformance() const
 		}
 		time3 = t3.GetElapsed();
 
-		LOUTPUT("std::function : %2.4fs\n", time2);
+		LOUTPUT("std::function : %2.4fs\n", time1);
 		LOUTPUT("fast delegate : %2.4fs\n", time2);
 		LOUTPUT("raw function  : %2.4fs\n", time3);
 	}
@@ -270,21 +270,21 @@ void TestDelegateEvent::TestAnyDelegate() const
 	AnyDelegate anyDelegate0((TestA*)0, &TestA::Test1);
 	{
 		anyDelegate = Delegate<void(int)>(&Test1_0);
-		anyDelegate.Invoke<void, int>(1000);
+		anyDelegate.Cast<Delegate<void(int)>>()->Invoke(1000);
 	}
 	{
 		TestA a;
 		anyDelegate = Delegate<void(int)>(&a, &TestA::Test1);
-		anyDelegate.Invoke<void, int>(100);
+		anyDelegate.Cast<Delegate<void(int)>>()->Invoke(100);
 	}
 	{
 		anyDelegate = Delegate<void(int)>((TestA*)0, &TestA::Test1);
 		TestA a;
-		anyDelegate.Invoke<TestA, void, int>(&a, 100);
+		anyDelegate.Cast<Delegate<void(int)>>()->Invoke(&a, 1000);
 	}
 	{
 		anyDelegate = Delegate<void(int, float)>(Test2);
-		anyDelegate.Invoke<void, int, float>(100, 100.0);
+		anyDelegate.Cast<Delegate<void(int, float)>>()->Invoke(1000, 100.0);
 	}
 }
 

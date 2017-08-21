@@ -9,11 +9,17 @@
 
 namespace TReflection
 {
-	void Initialization();
+	class IStruct;
+	class IClass;
+	class IObject;
 
-	void TestGetMetaType();
-	void TestMetaStruct();
+	void Initialization();
+	IStruct* CreateStruct(const char * name);
+	IClass*  CreateClass(const char * name);
+	IObject* CreateObject(const char * name);
 };
 
+#include "Foundation/Reflection/Reflection.inl"
 
+//------------------------------------------------------------------------------
 #endif // FOUNDATION_REFLECTION_H

@@ -46,7 +46,7 @@ namespace TReflection
 
 	IMetaType * MetaTypeDB::GetMetaType(const Name & name)
 	{
-		MetaTypeMap::Iterator iter = m_MetaTypes.Find(name.m_Hash);
+		MetaTypeMap::Iter iter = m_MetaTypes.Find(name.m_Hash);
 		return iter != m_MetaTypes.End() ? (*iter).Second() : nullptr;
 	}
 }

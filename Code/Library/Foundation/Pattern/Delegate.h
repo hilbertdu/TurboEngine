@@ -9,6 +9,7 @@
 #include "Foundation/Platform/Types.h"
 #include "Foundation/Memory/Allocator.h"
 #include "Foundation/Memory/Mem.h"
+#include "Foundation/Container/AnyClass.h"
 
 
 // Macros
@@ -34,8 +35,7 @@ public:
 	DelegateStorage & operator = (DelegateStorage && other) { Assign(std::move(other)); return *this; }
 
 	~DelegateStorage() { if (m_Mem) m_Allocator.Free(m_Mem); }
-
-	void * GetStorage() const { return m_Mem; }
+	
 	void * SetStorage(SIZET size) 
 	{
 		if (m_Mem)
@@ -55,8 +55,9 @@ public:
 
 		return m_Mem;
 	}
-
-	bool IsStackMem() const { return m_Allocator.IsInStack(m_Mem); }
+	
+	inline void * GetStorage() const { return m_Mem; }
+	inline bool IsStackMem() const { return m_Allocator.IsInStack(m_Mem); }
 
 private:
 	void Assign(const DelegateStorage & other)
@@ -71,14 +72,14 @@ private:
 		}
 	}
 
-	void Assign(DelegateStorage && rOther)
+	void Assign(DelegateStorage && other)
 	{
 		SetStorage(0);
 		if (other.m_Size > 0 && other.IsStackMem())
 		{
 			// stack move
 			m_Size = other.m_Size;
-			m_Mem = ::Allocate<char>(size, m_Allocator);
+			m_Mem = m_Allocator.Allocate(m_Size);
 			MemCopy(m_Mem, other.m_Mem, m_Size);
 		}
 		else
@@ -185,9 +186,9 @@ public:
 		INPLACE_NEW(&m_Storage) MethodFunction<C>(c, method);
 	}
 	template<class Functor>
-	Delegate(const Functor & function)
+	Delegate(Functor&& function)
 	{
-		INPLACE_NEW(&m_Storage) LambdaFunction<Functor>(function);
+		INPLACE_NEW(&m_Storage) LambdaFunction<Functor>(std::forward<Functor>(function));
 	}
 	Delegate(const Delegate& d): m_Storage(d.m_Storage) {}
 	~Delegate() { Unbind(); }
@@ -209,14 +210,7 @@ public:
 	}
 
 	template<class Functor>
-	void BindLambda(const Functor & function)
-	{
-		Unbind();
-		INPLACE_NEW(&m_Storage) LambdaFunction<Functor>(function);
-	}
-
-	template<class Functor>
-	void BindLambda(Functor && function)
+	void BindLambda(Functor&& function)
 	{
 		Unbind();
 		INPLACE_NEW(&m_Storage) LambdaFunction<Functor>(std::forward<Functor>(function));
@@ -254,128 +248,39 @@ private:
 };
 
 
-class IDelegateHolder
+// AnyDelegate
+//------------------------------------------------------------------------------
+class AnyDelegate : public AnyClass
 {
 public:
-	virtual ~IDelegateHolder() {}
-};
-
-
-template<class TReturn, class... TArgs>
-class DelegateHolder;
-
-
-template<class TReturn, class... TArgs>
-class DelegateHolder<TReturn(TArgs...)> : public IDelegateHolder
-{
-public:
-	DelegateHolder(const Delegate<TReturn(TArgs...)> & d)
-		: m_Delegate(d)
-	{}
-
-	DelegateHolder(TReturn(*function)(TArgs...))
-	{
-		m_Delegate.BindFunction(function);
-	}
-
-	template<class C>
-	DelegateHolder(C * c, TReturn(C::* method)(TArgs...))
-	{
-		m_Delegate.BindMethod(c, method);
-	}
-
-	template<class Functor>
-	DelegateHolder(const Functor & lambda)
-	{
-		m_Delegate.BindLambda(lambda);
-	}
-
-	template<class Functor>
-	DelegateHolder(Functor && lambda)
-	{
-		m_Delegate.BindLambda(std::forward<Functor>(lambda));
-	}
-
-	TReturn Invoke(TArgs... args) const { return m_Delegate.Invoke(std::forward<TArgs>(args)...); }
-	
-	template<class C>
-	TReturn Invoke(C * c, TArgs... args) const { return m_Delegate.Invoke(c, std::forward<TArgs>(args)...); }
-
-private:
-	Delegate<TReturn(TArgs...)> m_Delegate;
-};
-
-
-class AnyDelegate
-{
-public:
-	AnyDelegate() : m_DelegateHolder(0) {}
+	AnyDelegate() : AnyClass() {}
 
 	template<class TReturn, class... TArgs>
 	AnyDelegate(const Delegate<TReturn(TArgs...)> & d)
-		: m_DelegateHolder(TNEW(DelegateHolder<TReturn(TArgs...)>(d)))
+		: AnyClass(d)
+	{}
+
+	template<class TReturn, class... TArgs>
+	AnyDelegate(Delegate<TReturn(TArgs...)>&& d)
+		: AnyClass(std::move(d))
 	{}
 
 	template<class TReturn, class... TArgs>
 	AnyDelegate(TReturn(*function)(TArgs...))
-		: m_DelegateHolder(TNEW(DelegateHolder<TReturn(TArgs...)>(function)))
+		: AnyClass(Delegate<TReturn(TArgs...)>(function))
 	{}
 
 	template<class C, class TReturn, class... TArgs>
 	AnyDelegate(C * c, TReturn(C::* method)(TArgs...))
-		: m_DelegateHolder(TNEW(DelegateHolder<TReturn(TArgs...)>(c, method)))
+		: AnyClass(Delegate<TReturn(TArgs...)>(c, method))
 	{}
 
-	/*template<class Functor, class TReturn, class... TArgs>
-	AnyDelegate(const Functor & lambda)
-		: m_DelegateHolder(TNEW(DelegateHolder<TReturn(TArgs...)>(lambda)))
-	{}
-
-	template<class Functor, class TReturn, class... TArgs>
-	AnyDelegate(Functor && lambda)
-		: m_DelegateHolder(TNEW(DelegateHolder<TReturn(TArgs...)>(std::forward<Functor>(lambda))))
-	{}*/
-
-	virtual ~AnyDelegate() { TDELETE_SAFE(m_DelegateHolder); }
-
-	AnyDelegate& Swap(AnyDelegate & other)
-	{
-		std::swap(m_DelegateHolder, other.m_DelegateHolder);
-		return *this;
-	}
-
 	template<class TReturn, class... TArgs>
-	AnyDelegate& operator=(const Delegate<TReturn(TArgs...)> & d) 
+	AnyDelegate& operator=(Delegate<TReturn(TArgs...)>&& d)
 	{
-		AnyDelegate(d).Swap(*this);
+		AnyDelegate(std::forward<Delegate<TReturn(TArgs...)>>(d)).Swap(*this);
 		return *this;
 	}
-
-	AnyDelegate& operator=(AnyDelegate other)
-	{
-		other.Swap(*this);
-		return *this;
-	}
-
-	template<class TReturn, class... TArgs>
-	TReturn Invoke(TArgs... args) const
-	{
-		ASSERT(m_DelegateHolder);
-		return static_cast<DelegateHolder<TReturn(TArgs...)>*>(m_DelegateHolder)->Invoke(std::forward<TArgs>(args)...);
-	}
-
-	template<class C, class TReturn, class... TArgs>
-	TReturn Invoke(C * c, TArgs... args) const
-	{
-		ASSERT(m_DelegateHolder);
-		return static_cast<DelegateHolder<TReturn(TArgs...)>*>(m_DelegateHolder)->Invoke(c, std::forward<TArgs>(args)...);
-	}
-
-private:
-	IDelegateHolder * m_DelegateHolder;
-
-public:
-	static const AnyDelegate s_EmptyDelegate;
 };
 
 //------------------------------------------------------------------------------

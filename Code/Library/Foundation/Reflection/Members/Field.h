@@ -57,24 +57,24 @@ namespace TReflection
 	template<class T>
 	bool FieldCollection::GetProperty(void * object, const char * name, T & prop) const
 	{
-		Field * iter = m_Fields.FindIf([name](const Field field) { return field.m_Name == name; });
-		if (iter == m_Fields.End())
+		Field * pField = m_Fields.FindIf([name](const Field& field) { return field.m_Name == name; });
+		if (pField == nullptr)
 		{
 			return false;
 		}
-		iter->GetProperty<T>(object, name, prop);
+		pField->GetProperty<T>(object, name, prop);
 		return true;
 	}
 
 	template<class T>
 	bool FieldCollection::SetProperty(void * object, const char * name, const T & prop) const
 	{
-		Field * iter = m_Fields.FindIf([name](const Field field) { return field.m_Name == name; });
-		if (iter == m_Fields.End())
+		Field * pField = m_Fields.FindIf([name](const Field& field) { return field.m_Name == name; });
+		if (pField == nullptr)
 		{
 			return false;
 		}
-		iter->SetProperty<T>(object, name, prop);
+		pField->SetProperty<T>(object, name, prop);
 		return true;
 	}
 }
