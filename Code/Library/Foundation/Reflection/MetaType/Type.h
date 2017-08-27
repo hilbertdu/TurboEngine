@@ -11,10 +11,21 @@
 #include "Foundation/Platform/Types.h"
 #include "Foundation/String/String.h"
 #include "Foundation/Math/CRC32.h"
-#include "Foundation/Reflection/Serialization/Serializer.h"
+#include "Foundation/Reflection/Serialization/Serializers.h"
 
 namespace TReflection
 {
+	enum MetaFlag : uint16
+	{
+		E_NONE				= 0x00,
+		E_TYPE_BASE			= 0x01,
+		E_TYPE_STRUCT		= 0x02,
+		E_TYPE_CLASS		= 0x04,
+		E_TYPE_OBJECT		= 0x08,
+		E_TYPE_CONTAINER	= 0x0f,
+		E_TYPE_POINTER		= 0x10
+	};
+
 	struct Name
 	{
 	public:
@@ -46,19 +57,28 @@ namespace TReflection
 		IMetaType() = default;
 		IMetaType(const IMetaType&) = delete;
 		IMetaType(IMetaType&&) = delete;
-		virtual ~IMetaType() { TDELETE_SAFE(m_Serializer); }
+		virtual ~IMetaType() {}
 
-		virtual bool IsBaseType() { return false; }
-		virtual bool IsContainer() { return false; }
-		virtual bool IsStruct() { return false; }
-		virtual bool IsClass() { return false; }
-		virtual bool IsObject() { return false; }
+		bool IsBaseType() const		{ return (m_Flag & E_TYPE_BASE) != 0; }
+		bool IsContainer() const	{ return (m_Flag & E_TYPE_CONTAINER) != 0; }
+		bool IsStruct() const		{ return (m_Flag & E_TYPE_STRUCT) != 0; }
+		bool IsClass() const		{ return (m_Flag & E_TYPE_CLASS) != 0; }
+		bool IsObject() const		{ return (m_Flag & E_TYPE_OBJECT) != 0; }
+		bool IsPointer() const		{ return (m_Flag & E_TYPE_POINTER) != 0; }
 
-		virtual IMetaType* Create() const { return nullptr; };
+		void SetFlag(MetaFlag flag) { m_Flag = (MetaFlag)(m_Flag | flag); }
+		bool GetFlag(MetaFlag flag) const { return (m_Flag & flag) != 0; }
+
+		void SetLoad(SerializeType sType, SerializerLoad loadFunc) { m_Serializer.m_LoadFunc[sType] = loadFunc; }
+		void SetSave(SerializeType sType, SerializerSave saveFunc) { m_Serializer.m_SaveFunc[sType] = saveFunc; }
+
+		SerializerLoad GetLoad(SerializeType sType) const { return m_Serializer.m_LoadFunc[sType]; }
+		SerializerSave GetSave(SerializeType sType) const { return m_Serializer.m_SaveFunc[sType]; }
 
 	protected:
-		int32			m_Size;
-		ISerializer *	m_Serializer;
+		MetaFlag	m_Flag;
+		int32		m_Size;
+		Serializer	m_Serializer;
 	};
 
 	class IType	{};

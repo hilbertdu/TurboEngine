@@ -10,7 +10,7 @@
 //------------------------------------------------------------------------------
 #include "Foundation/Reflection/MetaType/Type.h"
 #include "Foundation/Reflection/MetaType/TypeContainer.h"
-#include "Foundation/Reflection/Serialization/Serializer.h"
+#include "Foundation/Reflection/Serialization/Serializers.h"
 #include "Foundation/Container/HashMap.h"
 #include "Foundation/Container/Pair.h"
 #include "Foundation/Template/Macros.h"
@@ -18,6 +18,8 @@
 
 namespace TReflection
 {
+	class MetaTypeDB;
+
 #define NAME(X)					Name(TXT(X))
 #define TPARAM_KEY_VALUE(...)	__VA_ARGS__
 
@@ -37,15 +39,14 @@ namespace TReflection
 		{													\
 			m_Name = #TYPE;									\
 			m_Size = sizeof(TYPE);							\
-			m_Serializer = TNEW(Serializer<TYPE>());		\
+			SetFlag(E_TYPE_BASE);							\
 		}													\
-		virtual bool IsBaseType() { return true; }			\
 		template<class T> void Register(const T *) {}		\
 	};														\
 	REFLECTION_META_DEDUCE(TYPE, MetaType_##TYPE)
 
 #define REFLECTION_DECLARE_METACONTAINERTYPE(TYPE, ...) \
-	class MetaType_##TYPE : public IMetaTypeContainer		\
+	class MetaType_##TYPE : public IMetaContainer			\
 	{														\
 	public:													\
 		MetaType_##TYPE()									\
@@ -78,6 +79,7 @@ namespace TReflection
 		const char * Name;												\
 	};
 
+
 #define REFLECTION_REGISTER_META_BEGIN \
 	inline void RegisterAllMetaType(HashMap<int32, IMetaType*>& metaTypes)	\
 	{
@@ -87,6 +89,18 @@ namespace TReflection
 		metaTypes[meta_##TYPE->m_Name.m_Hash] = meta_##TYPE;
 
 #define REFLECTION_REGISTER_META_END \
+	}
+
+
+#define REFLECTION_REGISTER_SERIALIZER_BEGIN \
+	inline void RegisterAllSerializer(HashMap<int32, IMetaType*>& metaTypes)	\
+	{
+
+#define REFLECTION_REGISTER_SERIALIZER(TYPE, STYPE, SCLASS) \
+		metaTypes[Name(#TYPE).m_Hash]->SetLoad(SerializeType::STYPE, &SCLASS<TYPE>::Load);	\
+		metaTypes[Name(#TYPE).m_Hash]->SetSave(SerializeType::STYPE, &SCLASS<TYPE>::Save);
+
+#define REFLECTION_REGISTER_SERIALIZER_END \
 	}
 }
 

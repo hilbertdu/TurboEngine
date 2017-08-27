@@ -29,7 +29,7 @@ public:
 	void Signal(Args... args) const
 	{
 		StrongPtr<EventImpl<T(Args...)>> temp = m_Impl;
-		temp->Signal(args...);
+		temp->Signal(std::forward<Args>(args)...);
 	}
 
 private:

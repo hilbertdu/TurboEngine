@@ -19,15 +19,10 @@ namespace TReflection
 	public:
 		Method() {}
 
-		inline const AnyDelegate & GetMethod() const { return m_Delegate; }
-
-	private:
+	public:
 		uint32		m_Index;
 		AnyDelegate m_Delegate;
-		IMetaType*	m_MetaType;		
-
-		friend class MethodCollection;
-		friend class MetaStruct;
+		IMetaType*	m_MetaType;
 	};
 
 	class MethodCollection
@@ -47,7 +42,7 @@ namespace TReflection
 		Method * pMethod = m_Methods.FindIf([name](const Method& method) { return method.m_Name == name; });
 		if (pMethod)
 		{
-			method = *(pMethod->GetMethod().Cast<T>());
+			method = *(pMethod->m_Delegate.Cast<T>());
 			return true;
 		}
 		return false;

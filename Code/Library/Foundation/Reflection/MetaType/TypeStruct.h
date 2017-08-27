@@ -26,9 +26,7 @@ namespace TReflection
 	class MetaStruct : public IMetaType, public FieldCollection, public MethodCollection
 	{
 	public:
-		virtual bool IsStruct() { return true; }
-
-		virtual IMetaType * Create() const { return (IMetaType*)(TNEW(IStruct)); }
+		MetaStruct() { SetFlag(E_TYPE_STRUCT); }
 
 		template<class FieldT>
 		void AddField(const FieldT * member, const char * name);		// TODO: parameter attribute
@@ -58,7 +56,8 @@ namespace TReflection
 		field->m_Index = m_Fields.GetSize() - 1;
 		field->m_Size = sizeof(FieldT);
 		field->m_Offset = (UINTPTR)member;
-		field->m_MetaType = MetaTypeDB::Instance().GetMetaType<FieldT>();
+		field->m_MetaType = MetaTypeDB::Instance().GetMetaType<std::remove_pointer<FieldT>::type>();
+		field->m_MetaType->SetFlag(std::is_pointer<FieldT>::value ? E_TYPE_POINTER : E_NONE);
 	}
 
 	template<class C, class TReturn, class... TArgs>

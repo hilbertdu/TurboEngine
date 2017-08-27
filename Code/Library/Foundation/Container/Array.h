@@ -88,19 +88,20 @@ public:
 
 	// Add / Remove
 	void Append(const T & item, SIZET count = 1);
+	void Append(T && item);
 	template<class U>
 	void Append(const Array<U> & other);
 	template<class U>
 	void Append(const U * begin, const U * end);
-	bool AppendUnique(const T &item);
+	bool AppendUnique(const T & item);
 
-	void Insert(SIZET index, const T & item, SIZET count = 1);
-	void Insert(Iter iter, const T & item, SIZET count = 1);
+	Iter Insert(Iter iter, const T & item, SIZET count = 1);
+	Iter Insert(Iter iter, T && item);
 
 	template<class... TArgs>
-	Iter EmplaceAppend(TArgs... args);
+	Iter EmplaceAppend(TArgs&&... args);
 	template<class... TArgs>
-	Iter EmplaceInsert(Iter iter, TArgs... args);
+	Iter EmplaceInsert(Iter iter, TArgs&&... args);
 
 	void Pop(SIZET count = 1);
 	void PopFront(SIZET count = 1);
@@ -121,7 +122,8 @@ public:
 
 	// Static helper
 	template<class... TArgs>
-	static void InPlaceConstruct(T * mem, SIZET count, TArgs... args);
+	static void InPlaceConstruct(T * mem, SIZET count, TArgs&&... args);
+	static void InPlaceConstruct(T * mem, SIZET count);
 	static void InPlaceDestruct(T * mem, SIZET count);
 	static void UninitializedCopy(T * des, const T * src, SIZET count);
 	static void UninitializedMove(T * des, const T * src, SIZET count);
@@ -139,9 +141,9 @@ private:
 	T*   Reallocate(SIZET size);
 	void Deallocate();
 
-	template<class... TArgs>
-	static void _InPlaceConstruct(T * mem, SIZET count, const std::false_type&, TArgs... args);
 	static void _InPlaceConstruct(T * mem, SIZET count, const std::true_type&);
+	template<class... TArgs>
+	static void _InPlaceConstruct(T * mem, SIZET count, const std::false_type&, TArgs&&... args);
 	static void _InPlaceDestruct(T * mem, SIZET count, const std::true_type&);
 	static void _InPlaceDestruct(T * mem, SIZET count, const std::false_type&);
 	static void _UninitializedCopy(T * des, const T * src, SIZET count, const std::true_type&);
@@ -153,10 +155,10 @@ private:
 	static void _Copy(T * des, const T * src, SIZET count, const std::true_type&);
 	static void _Copy(T * des, const T * src, SIZET count, const std::false_type&);
 
+	Allocator m_Allocator;
 	T* m_Begin;
 	T* m_End;
 	T* m_MaxEnd;
-	Allocator m_Allocator;
 };
 
 

@@ -6,6 +6,7 @@
 
 // Includes
 //------------------------------------------------------------------------------
+#include "Foundation/Reflection/MetaType/Type.h"
 
 namespace TReflection
 {
@@ -14,10 +15,14 @@ namespace TReflection
 	class IObject;
 
 	void Initialization();
+	void InitSerializerLoad(Name name, SerializeType sType, SerializerLoad loadFunc);
+	void InitSerializerSave(Name name, SerializeType sType, SerializerSave saveFunc);
+
 	IStruct* CreateStruct(const char * name);
 	IClass*  CreateClass(const char * name);
 	IObject* CreateObject(const char * name);
 };
+
 
 #include "Foundation/Reflection/Reflection.inl"
 

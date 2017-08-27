@@ -9,9 +9,9 @@
 
 // Read (AString)
 //------------------------------------------------------------------------------
-bool IOStream::Read(AString & string)
+bool IOStream::Read(AString & string) const
 {
-	uint32_t len;
+	uint32 len;
 	if (Read(len))
 	{
 		string.SetCapacity(len);
@@ -24,7 +24,7 @@ bool IOStream::Read(AString & string)
 //------------------------------------------------------------------------------
 bool IOStream::Write(const AString & string)
 {
-	uint32_t len = string.GetLength();
+	uint32 len = string.GetLength();
 	bool ok = Write(len);
 	ok &= (Write(string.Get(), len) == len);
 	return ok;
@@ -32,13 +32,13 @@ bool IOStream::Write(const AString & string)
 
 // AlignRead
 //------------------------------------------------------------------------------
-void IOStream::AlignRead(size_t alignment)
+void IOStream::AlignRead(SIZET alignment)
 {
-	const uint64_t tell = Tell();
-	const uint64_t toSkip = Math::RoundUp(tell, (uint64_t)alignment) - tell;
-	for (uint64_t i = 0; i < toSkip; ++i)
+	const uint64 tell = Tell();
+	const uint64 toSkip = Math::RoundUp(tell, (uint64)alignment) - tell;
+	for (uint64 i = 0; i < toSkip; ++i)
 	{
-		uint8_t tmp;
+		uint8 tmp;
 		Read(tmp);
 	}
 	ASSERT((Tell() % alignment) == 0);
@@ -46,13 +46,13 @@ void IOStream::AlignRead(size_t alignment)
 
 // AlignWrite
 //------------------------------------------------------------------------------
-void IOStream::AlignWrite(size_t alignment)
+void IOStream::AlignWrite(SIZET alignment)
 {
-	const uint64_t tell = Tell();
-	const uint64_t toPad = Math::RoundUp(tell, (uint64_t)alignment) - tell;
-	for (uint64_t i = 0; i < toPad; ++i)
+	const uint64 tell = Tell();
+	const uint64 toPad = Math::RoundUp(tell, (uint64)alignment) - tell;
+	for (uint64 i = 0; i < toPad; ++i)
 	{
-		uint8_t padChar(0);
+		uint8 padChar(0);
 		Write(padChar);
 	}
 	ASSERT((Tell() % alignment) == 0);

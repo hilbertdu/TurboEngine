@@ -7,7 +7,6 @@
 #include "Foundation/Reflection/ReflectionMacros.h"
 #include "Foundation/Pattern/Delegate.h"
 #include "Foundation/FileIO/MemoryStream.h"
-#include "Foundation/Logging/Logger.h"
 
 
 // TestReflection
@@ -211,25 +210,7 @@ void TestReflection::TestSerialization() const
 	TestObject o;
 	o.PopulateWithTestData();
 
-	MemoryStream wStream;
-	TReflection::Save(wStream, &o, TestObject::GetMetaTypeS(), TReflection::SerializeType::E_SERIALIZER_TEXT);
-
-	LOUTPUT("Stream: \n%s\n", wStream.GetData());
-
-	TReflection::IObject* obj;
-	TReflection::Load(wStream, &obj, TestObject::GetMetaTypeS(), TReflection::SerializeType::E_SERIALIZER_TEXT);
-
-	MemoryStream wStream1;
-	TReflection::Save(wStream1, obj, TestObject::GetMetaTypeS(), TReflection::SerializeType::E_SERIALIZER_TEXT);
-
-	LOUTPUT("Stream1: \n%s\n", wStream1.GetData());
-
-	bool streamsMatch = (wStream.GetSize() == wStream1.GetSize());
-	streamsMatch = streamsMatch && (memcmp(wStream.GetData(), wStream1.GetData(), wStream.GetSize()) == 0);
-	TEST_ASSERT(streamsMatch); // Streams don't match
-
-	TDELETE_SAFE(obj);
-
+	
 // 	TestObject o;
 // 	o.PopulateWithTestData();
 // 

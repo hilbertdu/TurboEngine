@@ -30,13 +30,11 @@ namespace TReflection
 			*(T *)((UINTPTR)object + m_Offset) = prop;
 		}
 
-	private:
+	public:
 		uint32		m_Index;
 		uint32		m_Offset;
 		uint32		m_Size;
 		IMetaType*	m_MetaType;
-
-		friend class MetaStruct;
 	};
 
 	class FieldCollection

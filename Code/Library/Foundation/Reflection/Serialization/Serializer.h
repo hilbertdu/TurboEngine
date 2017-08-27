@@ -6,111 +6,124 @@
 
 // Includes
 //------------------------------------------------------------------------------
-#include "Foundation/FileIO/IOStream.h"
+#include "Foundation/Reflection/MetaType/Type.h"
+#include "Foundation/Reflection/MetaType/TypeStruct.h"
+#include "Foundation/Reflection/MetaType/TypeClass.h"
+#include "Foundation/Reflection/MetaType/TypeContainer.h"
+#include "Foundation/Reflection/Objects/Object.h"
+#include "Foundation/Reflection/Serialization/Serializers.h"
 
 namespace TReflection
 {
-	class IMetaType;
-
-	void Save(IOStream & stream, const void * object, const IMetaType * objectType);
-	void Load(const IOStream & stream, void * object, const IMetaType * objectType);
-
-	class ISerializer
+	void SaveStruct(IOStream & stream, const void * object, const MetaStruct * objectType, SerializeType sType)
 	{
-	public:
-		virtual ~ISerializer() {}
-		virtual void Save(IOStream & stream, const void * mem) = 0;
-		virtual void Load(const IOStream & stream, void * mem) = 0;
-	};
+		if (objectType->IsPointer())
+		{
+			// TODO
+		}
 
-	template<class T>
-	class Serializer;
+		const Array<Field>& fields = ((MetaStruct*)objectType)->GetFields();
+		stream.Write((uint16)fields.GetSize());
+		for (Array<Field>::ConstIter iter = fields.Begin(); iter != fields.End(); ++iter)
+		{
+			Save(stream, (const char *)object + (*iter).m_Offset, (*iter).m_MetaType, sType);
+		}
+	}
 
-	template<>
-	class Serializer<bool> : public ISerializer
+	void SaveObject(IOStream & stream, const void * object, const MetaClass * objectType, SerializeType sType)
 	{
-		virtual void Save(IOStream & stream, const void * mem) {}
-		virtual void Load(const IOStream & stream, void * mem) {}
-	};
+		SaveStruct(stream, object, objectType, sType);
+	}
 
-	template<>
-	class Serializer<float> : public ISerializer
+	void SaveContainer(IOStream & stream, const void * object, const IMetaContainer * objectType, SerializeType sType)
 	{
-		virtual void Save(IOStream & stream, const void * mem) {}
-		virtual void Load(const IOStream & stream, void * mem) {}
-	};
+	}
 
-	template<>
-	class Serializer<double> : public ISerializer
+	void LoadStruct(const IOStream & stream, void * object, const MetaStruct * objectType, SerializeType sType)
 	{
-		virtual void Save(IOStream & stream, const void * mem) {}
-		virtual void Load(const IOStream & stream, void * mem) {}
-	};
+		if (objectType->IsPointer())
+		{
+			// TODO
+		}
 
-	template<>
-	class Serializer<uint8> : public ISerializer
-	{
-		virtual void Save(IOStream & stream, const void * mem) {}
-		virtual void Load(const IOStream & stream, void * mem) {}
-	};
+		object = (IObject*)((MetaClass*)objectType)->m_Creator.Invoke();
 
-	template<>
-	class Serializer<uint16> : public ISerializer
-	{
-		virtual void Save(IOStream & stream, const void * mem) {}
-		virtual void Load(const IOStream & stream, void * mem) {}
-	};
+		const Array<Field>& fields = ((MetaStruct*)objectType)->GetFields();
 
-	template<>
-	class Serializer<uint32> : public ISerializer
-	{
-		virtual void Save(IOStream & stream, const void * mem) {}
-		virtual void Load(const IOStream & stream, void * mem) {}
-	};
+		uint16 fieldSize;
+		stream.Read(fieldSize);
+		ASSERT(fieldSize == fields.GetSize());
 
-	template<>
-	class Serializer<uint64> : public ISerializer
-	{
-		virtual void Save(IOStream & stream, const void * mem) {}
-		virtual void Load(const IOStream & stream, void * mem) {}
-	};
+		for (Array<Field>::ConstIter iter = fields.Begin(); iter != fields.End(); ++iter)
+		{
+			Load(stream, (char*)object + (*iter).m_Offset, (*iter).m_MetaType, sType);
+		}
+	}
 
-	template<>
-	class Serializer<int8> : public ISerializer
+	void LoadObject(const IOStream & stream, void * object, const MetaClass * objectType, SerializeType sType)
 	{
-		virtual void Save(IOStream & stream, const void * mem) {}
-		virtual void Load(const IOStream & stream, void * mem) {}
-	};
+		LoadStruct(stream, object, objectType, sType);
+	}
 
-	template<>
-	class Serializer<int16> : public ISerializer
+	void LoadContainer(const IOStream & stream, void * object, const IMetaContainer * objectType, SerializeType sType)
 	{
-		virtual void Save(IOStream & stream, const void * mem) {}
-		virtual void Load(const IOStream & stream, void * mem) {}
-	};
+	}
 
-	template<>
-	class Serializer<int32> : public ISerializer
+	// Save
+	//------------------------------------------------------------------------------
+	void Save(IOStream & stream, const void * object, const IMetaType * objectType, SerializeType sType)
 	{
-		virtual void Save(IOStream & stream, const void * mem) {}
-		virtual void Load(const IOStream & stream, void * mem) {}
-	};
+		if (objectType->IsBaseType())
+		{
+			SerializerSave saveFunc = objectType->GetSave(sType);
+			saveFunc(stream, object);
+		}
+		else if (objectType->IsObject())
+		{
+			SaveObject(stream, object, (MetaClass*)objectType, sType);
+		}
+		else if (objectType->IsStruct())
+		{
+			SaveStruct(stream, object, (MetaStruct*)objectType, sType);
+		}
+		else if (objectType->IsContainer())
+		{
+			SaveContainer(stream, object, (IMetaContainer*)objectType, sType);
+		}
+		else
+		{
+			ASSERT(false, "Not a valid meta type!");
+		}
+	}
 
-	template<>
-	class Serializer<int64> : public ISerializer
+	// Load
+	//------------------------------------------------------------------------------
+	void Load(const IOStream & stream, void * object, const IMetaType * objectType, SerializeType sType)
 	{
-		virtual void Save(IOStream & stream, const void * mem) {}
-		virtual void Load(const IOStream & stream, void * mem) {}
-	};
-
-	template<>
-	class Serializer<AString> : public ISerializer
-	{
-		virtual void Save(IOStream & stream, const void * mem) {}
-		virtual void Load(const IOStream & stream, void * mem) {}
-	};
+		if (objectType->IsBaseType())
+		{
+			SerializerLoad loadFunc = objectType->GetLoad(sType);
+			loadFunc(stream, object);
+		}
+		else if (objectType->IsObject())
+		{
+			LoadObject(stream, object, (MetaClass*)objectType, sType);
+		}
+		else if (objectType->IsStruct())
+		{
+			LoadStruct(stream, object, (MetaStruct*)objectType, sType);
+		}
+		else if (objectType->IsContainer())
+		{
+			LoadContainer(stream, object, (IMetaContainer*)objectType, sType);
+		}
+		else
+		{
+			ASSERT(false, "Not a valid meta type!");
+		}
+	}
 }
 
-
+//------------------------------------------------------------------------------
 #endif // FOUNDATION_REFLECTION_SERIALIZER_H
 

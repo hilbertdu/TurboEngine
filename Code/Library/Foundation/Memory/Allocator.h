@@ -58,11 +58,11 @@ class Allocator : public AllocatorS
 {
 public:
 	template<class T>
-	T * AllocateT(SIZET size, SIZET alignment = T_MEM_DEFAULT_ALIGN);
+	FORCE_INLINE T * AllocateT(SIZET size, SIZET alignment = T_MEM_DEFAULT_ALIGN);
 	template<class T>
-	T * ReallocateT(T * ptr, SIZET size, SIZET alignment = T_MEM_DEFAULT_ALIGN);
+	FORCE_INLINE T * ReallocateT(T * ptr, SIZET size, SIZET alignment = T_MEM_DEFAULT_ALIGN);
 	template<class T>
-	void FreeT(T * ptr);
+	FORCE_INLINE void FreeT(T * ptr);
 };
 
 

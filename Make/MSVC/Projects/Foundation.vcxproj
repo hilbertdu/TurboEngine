@@ -337,10 +337,7 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Analyzer\MemTracker.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\AnyClass.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\Array.h" />
-    <ClInclude Include="..\..\..\Code\Library\Foundation\Container\List.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Container\List.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\RBTree.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\Ref.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\SmartPtr.h" />
@@ -350,6 +347,7 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\Pair.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Env\Assert.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\FileIO\IOStream.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\FileIO\MemoryStream.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Math\CRC32.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Memory\Deletor.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Pattern\Delegate.h" />
@@ -382,6 +380,9 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Reflection.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\ReflectionMacros.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\Serializer.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\Serializers.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerBinary.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerText.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\String\String.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\String\StringAnsi.inl" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\String\StringWide.inl" />
@@ -391,12 +392,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Library\Foundation\Analyzer\MemTracker.cpp" />
-    <ClCompile Include="..\..\..\Code\Library\Foundation\Container\List.inl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Container\List.inl">
+      <FileType>Document</FileType>
+    </ClInclude>
     <ClCompile Include="..\..\..\Code\Library\Foundation\Env\Assert.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\FileIO\IOStream.cpp" />
+    <ClCompile Include="..\..\..\Code\Library\Foundation\FileIO\MemoryStream.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Logging\Logger.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Math\CRC32.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Memory\Mem.cpp" />
@@ -409,7 +410,6 @@
     </ClInclude>
     <ClCompile Include="..\..\..\Code\Library\Foundation\Process\Mutex.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Reflection\Reflection.inl" />
-    <ClCompile Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\Serializer.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Time\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>

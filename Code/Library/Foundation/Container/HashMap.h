@@ -38,16 +38,18 @@ public:
 	HashMap& operator=(HashMap&& rOther) = default;
 
 	FORCE_INLINE Iter      Begin() { return m_Table.Begin(); }
-	FORCE_INLINE Iter      End() { return m_Table.End(); }
 	FORCE_INLINE ConstIter Begin() const { return m_Table.Begin(); }
+	FORCE_INLINE Iter      End() { return m_Table.End(); }
 	FORCE_INLINE ConstIter End() const { return m_Table.End(); }
+	FORCE_INLINE Iter      Last() { return m_Table.Last(); }
+	FORCE_INLINE ConstIter Last() const { return m_Table.Last(); }
 
 	FORCE_INLINE Data & operator[](const Key& key) { return m_Table.FindOrInsert(ValueType(key, Data())).Second(); }
 
 	FORCE_INLINE Iter             Find(const Key& key) { return m_Table.Find(key); }
 	FORCE_INLINE ConstIter        Find(const Key& key) const { return m_Table.Find(key); }
 	FORCE_INLINE Pair<Iter, bool> Insert(const ValueType& data) { return m_Table.InsertUnique(data); }
-	FORCE_INLINE Pair<Iter, bool> Insert(ValueType&& data) { return m_Table.InsertUnique(data); }
+	FORCE_INLINE Pair<Iter, bool> Insert(ValueType&& data) { return m_Table.InsertUnique(std::forward<ValueType>(data)); }
 	FORCE_INLINE SIZET			  Erase(const Key& key) { return m_Table.Erase(key); }
 
 	FORCE_INLINE void Shrink() { m_Table.Shrink(); };

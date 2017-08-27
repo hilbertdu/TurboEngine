@@ -262,6 +262,16 @@ void Array<T, Allocator>::Append(const T & item, SIZET count)
 // Append
 //------------------------------------------------------------------------------
 template<class T, class Allocator>
+void Array<T, Allocator>::Append(T && item)
+{
+	Grow(GetSize() + 1);
+	InPlaceConstruct(m_End, 1, std::move(item));
+	m_End += 1;
+}
+
+// Append
+//------------------------------------------------------------------------------
+template<class T, class Allocator>
 template<class U>
 void Array<T, Allocator>::Append(const Array<U> & other)
 {
@@ -313,10 +323,11 @@ SIZET Array<T, Allocator>::FindOrAppend(const T & item)
 // Insert
 //------------------------------------------------------------------------------
 template<class T, class Allocator>
-void Array<T, Allocator>::Insert(SIZET index, const T & item, SIZET count)
+typename Array<T, Allocator>::Iter Array<T, Allocator>::Insert(Iter iter, const T & item, SIZET count)
 {
 	ASSERT(index >= 0 && index <= GetSize());
 
+	const SIZET index = iter - m_Begin;
 	const SIZET oldSize = GetSize();
 	const SIZET newSize = oldSize + count;
 
@@ -356,19 +367,20 @@ void Array<T, Allocator>::Insert(SIZET index, const T & item, SIZET count)
 
 		m_End = m_Begin + oldSize + count;
 	}
+	return m_Begin + count;
 }
 
 // Insert
 //------------------------------------------------------------------------------
 template<class T, class Allocator>
-void Array<T, Allocator>::Insert(Iter iter, const T & item, SIZET count)
+typename Array<T, Allocator>::Iter Array<T, Allocator>::Insert(Iter iter, T && item)
 {
-	Insert(iter - m_Begin, item, count);
+	return EmplaceInsert(iter, std::move(item));
 }
 
 template<class T, class Allocator>
 template<class... TArgs>
-typename Array<T, Allocator>::Iter Array<T, Allocator>::EmplaceAppend(TArgs... args)
+typename Array<T, Allocator>::Iter Array<T, Allocator>::EmplaceAppend(TArgs&&... args)
 {
 	Grow(GetSize() + 1);
 	InPlaceConstruct(m_End, 1, std::forward<TArgs>(args)...);
@@ -378,7 +390,7 @@ typename Array<T, Allocator>::Iter Array<T, Allocator>::EmplaceAppend(TArgs... a
 
 template<class T, class Allocator>
 template<class... TArgs>
-typename Array<T, Allocator>::Iter Array<T, Allocator>::EmplaceInsert(Iter iter, TArgs... args)
+typename Array<T, Allocator>::Iter Array<T, Allocator>::EmplaceInsert(Iter iter, TArgs&&... args)
 {
 	ASSERT(iter >= m_Begin && iter <= m_End);
 
@@ -625,9 +637,15 @@ void Array<T, Allocator>::Deallocate()
 //------------------------------------------------------------------------------
 template<class T, class Allocator>
 template<class... TArgs>
-/*static*/ void Array<T, Allocator>::InPlaceConstruct(T * mem, SIZET count, TArgs... args)
+/*static*/ void Array<T, Allocator>::InPlaceConstruct(T * mem, SIZET count, TArgs&&... args)
 {
-	_InPlaceConstruct(mem, count, std::is_trivially_constructible<T>(), std::forward<TArgs>(args)...);
+	_InPlaceConstruct(mem, count, std::false_type(), std::forward<TArgs>(args)...);
+}
+
+template<class T, class Allocator>
+/*static*/ void Array<T, Allocator>::InPlaceConstruct(T * mem, SIZET count)
+{
+	_InPlaceConstruct(mem, count, std::is_trivially_constructible<T>());
 }
 
 template<class T, class Allocator>
@@ -638,7 +656,7 @@ template<class T, class Allocator>
 
 template<class T, class Allocator>
 template<class... TArgs>
-/*static*/ void Array<T, Allocator>::_InPlaceConstruct(T * mem, SIZET count, const std::false_type&, TArgs... args)
+/*static*/ void Array<T, Allocator>::_InPlaceConstruct(T * mem, SIZET count, const std::false_type&, TArgs&&... args)
 {
 	ASSERT(mem);
 

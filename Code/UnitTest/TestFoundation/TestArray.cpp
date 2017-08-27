@@ -1,4 +1,4 @@
-// TestMap.cpp
+// TestArray.cpp
 //------------------------------------------------------------------------------
 
 // Includes
@@ -73,8 +73,8 @@ void TestArray::ArrayAssignment() const
 	{
 		Array<AString> arr1;
 		TEST_ASSERT(arr1.IsEmpty());
-		arr1.Insert((size_t)0, AString("test0"));
-		arr1.Insert((size_t)1, AString("test1"));
+		arr1.Insert(arr1.Begin(), AString("test0"));
+		arr1.Insert(arr1.Begin() + 1, AString("test1"));
 		TEST_ASSERT(arr1[0] == "test0");
 		TEST_ASSERT(arr1[1] == "test1");
 		TEST_ASSERT(!arr1.IsEmpty());
@@ -123,7 +123,7 @@ void TestArray::ArrayInsertErase() const
 		TEST_ASSERT(arr1.GetSize() == 1);
 	}
 	{
-		arr1.Insert(1, AString("test1"));
+		arr1.Insert(arr1.Begin() + 1, AString("test1"));
 		arr1.PopFront();
 		TEST_ASSERT(arr1[0] == "test1");
 		TEST_ASSERT(arr1.GetSize() == 1);

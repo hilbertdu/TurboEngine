@@ -1,4 +1,4 @@
-// TestMap.cpp
+// TestAnyClass.cpp
 //------------------------------------------------------------------------------
 
 // Includes
@@ -45,6 +45,11 @@ void TestAnyClass::AnyClassConstructors() const
 		AnyClass anyString1(AString("abcde"));
 		AnyClass anyString2(std::move(anyString1));
 		TEST_ASSERT(anyString1.IsEmpty());
+	}
+	{
+		AnyClass any1;
+		AnyClass any2;
+		any1 = any2;
 	}
 }
 

@@ -29,8 +29,8 @@
 #define T_MEM_DEFAULT_ALIGN    sizeof(void*)
 
 #define T_MEM_STATISTICS	0
-#define T_MEM_TRACKER		1
-#define T_MEM_TRACKER_ALL	1
+#define T_MEM_TRACKER		0
+#define T_MEM_TRACKER_ALL	0
 
 // new/delete
 //------------------------------------------------------------------------------

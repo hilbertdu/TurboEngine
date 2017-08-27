@@ -43,9 +43,9 @@ public:
 
 	explicit HashTableIterator() = default;
 	HashTableIterator(const HashTableIterator& rOther) = default;
-	HashTableIterator& operator=(const HashTableIterator& rOther) = default;
-
 	HashTableIterator(const HashTableIterator<Table, !Const>& rOther);
+
+	HashTableIterator& operator=(const HashTableIterator& rOther) = default;
 	HashTableIterator& operator=(const HashTableIterator<Table, !Const>& rOther);
 
 	const ValueType& operator*() const;
@@ -131,9 +131,11 @@ public:
 	void  SetPossibleMaxSize();
 
 	Iter      Begin();
-	Iter      End();
 	ConstIter Begin() const;
+	Iter      End();
 	ConstIter End() const;
+	Iter      Last();
+	ConstIter Last() const;
 
 	Iter      Find(const Key& rKey);
 	ConstIter Find(const Key& rKey) const;
@@ -152,13 +154,13 @@ public:
 protected:
 	typedef Array<Value, Allocator> Bucket;	
 
+	Allocator		m_Allocator;
 	Array<Bucket>	m_Buckets;
 	SIZET			m_Size;
 
 	HashFunction m_Hasher;
 	EqualKey     m_KeyEquals;
 	ExtractKey   m_ExtractKey;
-	Allocator    m_Allocator;
 
 private:
 	void ReHash(SIZET size);

@@ -7,6 +7,7 @@
 // Includes
 //------------------------------------------------------------------------------
 #include "Foundation/Reflection/MetaType/TypeDecl.h"
+#include "Foundation/Reflection/Serialization/Serializer.h"
 #include "Foundation/Container/HashMap.h"
 #include "Foundation/Pattern/Singleton.h"
 
@@ -23,6 +24,7 @@ namespace TReflection
 		template<typename T>
 		IMetaType * GetMetaType();
 		IMetaType * GetMetaType(const Name & name);
+		IMetaType * GetMetaType(int32 hash);
 
 	private:
 		MetaTypeMap m_MetaTypes;
@@ -31,6 +33,7 @@ namespace TReflection
 	/*inline*/ void MetaTypeDB::RegisterAll()
 	{
 		RegisterAllMetaType(m_MetaTypes);
+		RegisterAllSerializer(m_MetaTypes);
 	}
 
 	/*inline*/ void MetaTypeDB::Register(IMetaType * metaType)
@@ -47,6 +50,12 @@ namespace TReflection
 	IMetaType * MetaTypeDB::GetMetaType(const Name & name)
 	{
 		MetaTypeMap::Iter iter = m_MetaTypes.Find(name.m_Hash);
+		return iter != m_MetaTypes.End() ? (*iter).Second() : nullptr;
+	}
+
+	IMetaType * MetaTypeDB::GetMetaType(int32 hash)
+	{
+		MetaTypeMap::Iter iter = m_MetaTypes.Find(hash);
 		return iter != m_MetaTypes.End() ? (*iter).Second() : nullptr;
 	}
 }

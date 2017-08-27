@@ -17,6 +17,7 @@ int main(int, char *[])
 	//REGISTER_TESTGROUP(TestDelegateEvent)
 	//REGISTER_TESTGROUP(TestAnyClass)
 	//REGISTER_TESTGROUP(TestMem)
+	//REGISTER_TESTGROUP(TestList)
 	REGISTER_TESTGROUP(TestReflection)
 
 	UnitTestManager utm;

@@ -56,7 +56,7 @@ template<class>
 typename HashTableIterator<Table, Const>::ValueType* HashTableIterator<Table, Const>::operator->()
 {
 	ASSERT(m_Table);
-	return m_Table->m_Buckets[m_BucketIndex][m_ElementIndex];
+	return &m_Table->m_Buckets[m_BucketIndex][m_ElementIndex];
 }
 
 template<class Table, bool Const>
@@ -364,6 +364,23 @@ HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::End() cons
 {
 	return ConstIter(this, m_Buckets.GetSize(), 0);
 }
+
+// Last
+//-----------------------------------------------------------------------------
+template<class Value, class Key, class HashFunction, class ExtractKey, class EqualKey, class Allocator>
+typename HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Iter
+HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Last()
+{
+	return --End();
+}
+
+template<class Value, class Key, class HashFunction, class ExtractKey, class EqualKey, class Allocator>
+typename HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::ConstIter
+HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Last() const
+{
+	return --End();
+}
+
 
 // Find
 //-----------------------------------------------------------------------------

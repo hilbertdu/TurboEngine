@@ -17,7 +17,7 @@ namespace TReflection
 {
 	class IContainer : public IType {};
 
-	class IMetaTypeContainer : public IMetaType
+	class IMetaContainer : public IMetaType
 	{
 	public:
 		class IIterator
@@ -50,7 +50,7 @@ namespace TReflection
 			T * m_Content;
 		};
 
-		virtual ~IMetaTypeContainer() 
+		virtual ~IMetaContainer()
 		{ 
 			TDELETE_SAFE(m_MetaTypeKey);
 			TDELETE_SAFE(m_MetaTypeValue);

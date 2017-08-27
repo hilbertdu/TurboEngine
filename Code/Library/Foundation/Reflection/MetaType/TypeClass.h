@@ -25,9 +25,7 @@ namespace TReflection
 	class MetaClass : public MetaStruct
 	{
 	public:
-		virtual bool IsClass() { return true; }
-
-		virtual IMetaType * Create() const { return (IMetaType*)(TNEW(IClass)); }
+		MetaClass() : MetaStruct() { SetFlag(E_TYPE_CLASS); }
 
 	private:
 		AnyDelegate m_Constructor;

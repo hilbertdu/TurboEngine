@@ -10,5 +10,6 @@
     <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestEvent.cpp" />
     <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestReflection.cpp" />
     <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestAnyClass.cpp" />
+    <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestList.cpp" />
   </ItemGroup>
 </Project>

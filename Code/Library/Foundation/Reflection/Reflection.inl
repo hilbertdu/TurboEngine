@@ -19,6 +19,16 @@ namespace TReflection
 		MetaTypeDB::Instance().RegisterAll();
 	}
 
+	void InitSerializerLoad(Name name, SerializeType sType, SerializerLoad loadFunc)
+	{
+		MetaTypeDB::Instance().GetMetaType(name)->SetLoad(sType, loadFunc);
+	}
+
+	void InitSerializerSave(Name name, SerializeType sType, SerializerSave saveFunc)
+	{
+		MetaTypeDB::Instance().GetMetaType(name)->SetSave(sType, saveFunc);
+	}
+
 	// CreateStruct
 	//------------------------------------------------------------------------------
 	IStruct* CreateStruct(const char * name)
