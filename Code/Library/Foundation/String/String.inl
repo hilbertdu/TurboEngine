@@ -134,7 +134,7 @@ template<typename CharType, typename Allocator>
 void String<CharType, Allocator>::Assign(const CharType * start, const CharType * end)
 {
 	ASSERT(start && end && start <= end);
-	m_Length = (size_t)(end - start);
+	m_Length = (SIZET)(end - start);
 	if (m_Length > GetCapacity())
 	{
 		SetCapacity(m_Length, false);
@@ -161,9 +161,16 @@ void String<CharType, Allocator>::Clear()
 }
 
 template<typename CharType, typename Allocator>
-void String<CharType, Allocator>::SetCapacity(size_t capacity)
+void String<CharType, Allocator>::SetCapacity(SIZET capacity)
 {
 	SetCapacity(capacity, true);
+}
+
+template<typename CharType, typename Allocator>
+void String<CharType, Allocator>::SetLength(SIZET length)
+{
+	SetCapacity(length, true);
+	m_Length = length;
 }
 
 // operator += (CharType)
@@ -186,8 +193,8 @@ String<CharType, Allocator> & String<CharType, Allocator>::operator += (CharType
 template<typename CharType, typename Allocator>
 String<CharType, Allocator> & String<CharType, Allocator>::operator += (const CharType * string)
 {
-	size_t suffixLen = StrLen(string);
-	size_t newLen = m_Length + suffixLen;
+	SIZET suffixLen = StrLen(string);
+	SIZET newLen = m_Length + suffixLen;
 	if (newLen > GetCapacity())
 	{
 		Grow(suffixLen);
@@ -207,7 +214,7 @@ String<CharType, Allocator> & String<CharType, Allocator>::operator += (const St
 }
 
 template<typename CharType, typename Allocator>
-void String<CharType, Allocator>::Append(const CharType * string, size_t len)
+void String<CharType, Allocator>::Append(const CharType * string, SIZET len)
 {
 	uint32 newLen = m_Length + (uint32)len;
 	if (newLen > GetCapacity())
@@ -232,9 +239,9 @@ void String<CharType, Allocator>::AppendFormat(const CharType * fmtString, ...)
 }
 
 template<typename CharType, typename Allocator>
-size_t String<CharType, Allocator>::Replace(CharType from, CharType to, size_t maxReplaces)
+SIZET String<CharType, Allocator>::Replace(CharType from, CharType to, SIZET maxReplaces)
 {
-	size_t replaceCount = 0;
+	SIZET replaceCount = 0;
 	CharType * pos = m_Contents;
 	const CharType * end = m_Contents + m_Length;
 	while (pos < end)
@@ -288,16 +295,16 @@ void String<CharType, Allocator>::ToUpper()
 }
 
 template<typename CharType, typename Allocator>
-size_t String<CharType, Allocator>::Replace(const CharType * from, const CharType * to, size_t maxReplaces)
+SIZET String<CharType, Allocator>::Replace(const CharType * from, const CharType * to, SIZET maxReplaces)
 {
 	AStackString< 2 * KILOBYTE > temp;
 
-	size_t replaceCount = 0;
+	SIZET replaceCount = 0;
 
 	// Loop until the last possible position for a potential match
 	const CharType * pos = m_Contents;
 	const CharType * end = m_Contents + m_Length;
-	const size_t fromLength = StrLen(from);
+	const SIZET fromLength = StrLen(from);
 	while (pos <= (end - fromLength))
 	{
 		if (StrNCmp(pos, from, fromLength) == 0)
@@ -358,7 +365,7 @@ const CharType * String<CharType, Allocator>::Find(CharType c, const CharType * 
 template<typename CharType, typename Allocator>
 const CharType * String<CharType, Allocator>::Find(const CharType * subString) const
 {
-	size_t subStrLen = StrLen(subString);
+	SIZET subStrLen = StrLen(subString);
 
 	const CharType * pos = m_Contents;
 	const CharType * end = pos + m_Length - subStrLen;
@@ -376,7 +383,7 @@ const CharType * String<CharType, Allocator>::Find(const CharType * subString) c
 template<typename CharType, typename Allocator>
 const CharType * String<CharType, Allocator>::FindI(const CharType * subString) const
 {
-	size_t subStrLen = StrLen(subString);
+	SIZET subStrLen = StrLen(subString);
 
 	const CharType * pos = m_Contents;
 	const CharType * end = pos + m_Length - subStrLen;
@@ -420,7 +427,7 @@ bool String<CharType, Allocator>::EndsWith(CharType c) const
 template<typename CharType, typename Allocator>
 bool String<CharType, Allocator>::EndsWith(const CharType * string) const
 {
-	const size_t stringLen = StrLen(string);
+	const SIZET stringLen = StrLen(string);
 	const CharType * possiblePos = m_Contents + m_Length - stringLen;
 	if (possiblePos < m_Contents)
 	{
@@ -433,7 +440,7 @@ template<typename CharType, typename Allocator>
 template<typename OtherAllocator>
 bool String<CharType, Allocator>::EndsWith(const String<CharType, OtherAllocator> & other) const
 {
-	const size_t otherLen = other.GetLength();
+	const SIZET otherLen = other.GetLength();
 	if (otherLen > GetLength())
 	{
 		return false;
@@ -444,7 +451,7 @@ bool String<CharType, Allocator>::EndsWith(const String<CharType, OtherAllocator
 template<typename CharType, typename Allocator>
 bool String<CharType, Allocator>::EndsWithI(const CharType * other) const
 {
-	const size_t otherLen = StrLen(other);
+	const SIZET otherLen = StrLen(other);
 	if (otherLen > GetLength())
 	{
 		return false;
@@ -456,7 +463,7 @@ template<typename CharType, typename Allocator>
 template<typename OtherAllocator>
 bool String<CharType, Allocator>::EndsWithI(const String<CharType, OtherAllocator> & other) const
 {
-	const size_t otherLen = other.GetLength();
+	const SIZET otherLen = other.GetLength();
 	if (otherLen > GetLength())
 	{
 		return false;
@@ -477,7 +484,7 @@ bool String<CharType, Allocator>::BeginsWith(CharType c) const
 template<typename CharType, typename Allocator>
 bool String<CharType, Allocator>::BeginsWith(const CharType * string) const
 {
-	size_t otherLen = StrLen(string);
+	SIZET otherLen = StrLen(string);
 	if (otherLen > GetLength())
 	{
 		return false;
@@ -500,7 +507,7 @@ bool String<CharType, Allocator>::BeginsWith(const String<CharType, OtherAllocat
 template<typename CharType, typename Allocator>
 bool String<CharType, Allocator>::BeginsWithI(const CharType * string) const
 {
-	size_t otherLen = StrLen(string);
+	SIZET otherLen = StrLen(string);
 	if (otherLen > GetLength())
 	{
 		return false;
@@ -609,7 +616,7 @@ test_match:
 }
 
 template<typename CharType, typename Allocator>
-/*static*/ void String<CharType, Allocator>::Copy(const CharType * src, CharType * dst, size_t len)
+/*static*/ void String<CharType, Allocator>::Copy(const CharType * src, CharType * dst, SIZET len)
 {
 	if (len == 0)
 	{
@@ -624,7 +631,7 @@ template<typename CharType, typename Allocator>
 }
 
 template<typename CharType, typename Allocator>
-/*static*/ size_t String<CharType, Allocator>::StrLen(const CharType * string)
+/*static*/ SIZET String<CharType, Allocator>::StrLen(const CharType * string)
 {
 	const CharType * pos = string;
 	while (*pos != (CharType)'\000')
@@ -635,7 +642,7 @@ template<typename CharType, typename Allocator>
 }
 
 template<typename CharType, typename Allocator>
-/*static*/ uint32 String<CharType, Allocator>::StrNCmp(const CharType * a, const CharType * b, size_t num)
+/*static*/ uint32 String<CharType, Allocator>::StrNCmp(const CharType * a, const CharType * b, SIZET num)
 {
 	while (num > 0)
 	{
@@ -660,7 +667,7 @@ template<typename CharType, typename Allocator>
 }
 
 template<typename CharType, typename Allocator>
-/*static*/ uint32 String<CharType, Allocator>::StrNCmpI(const CharType * a, const CharType * b, size_t num)
+/*static*/ uint32 String<CharType, Allocator>::StrNCmpI(const CharType * a, const CharType * b, SIZET num)
 {
 	while (num > 0)
 	{
@@ -767,7 +774,7 @@ void String<CharType, Allocator>::Tokenize(Array<String<CharType, OtherAllocator
 
 	// pre-size output to avoid reallocations
 	tokens.Clear();
-	const size_t numTokens(tokenStarts.GetSize());
+	const SIZET numTokens(tokenStarts.GetSize());
 	if (tokens.GetCapacity() < numTokens)
 	{
 		tokens.SetCapacity(numTokens);
@@ -775,7 +782,7 @@ void String<CharType, Allocator>::Tokenize(Array<String<CharType, OtherAllocator
 	tokens.SetSize(numTokens);
 
 	// copy tokens
-	for (size_t i = 0; i < numTokens; ++i)
+	for (SIZET i = 0; i < numTokens; ++i)
 	{
 		tokens[i].Assign(tokenStarts[i], tokenEnds[i]);
 	}
@@ -794,7 +801,7 @@ template<typename CharType, typename Allocator>
 void String<CharType, Allocator>::Grow(SIZET addedSize = 0)
 {
 	// Grow by 1.5 times
-	size_t newCapacity = Math::Max(m_Capacity + addedSize, m_Capacity + (m_Capacity >> 1));
+	SIZET newCapacity = Math::Max(m_Capacity + addedSize, m_Capacity + (m_Capacity >> 1));
 	SetCapacity(newCapacity, true);
 }
 
@@ -842,8 +849,7 @@ CharType * String<CharType, Allocator>::Reallocate(SIZET size)
 template<typename CharType, typename Allocator>
 void String<CharType, Allocator>::Deallocate()
 {
-	ASSERT(m_Contents);
-	if (m_Capacity > 0)
+	if (m_Contents && m_Capacity > 0)
 	{
 		m_AllocatorInst.FreeT(m_Contents);
 	}

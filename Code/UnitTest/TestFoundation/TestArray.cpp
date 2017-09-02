@@ -112,8 +112,8 @@ void TestArray::ArrayInsertErase() const
 {
 	Array<AString> arr1;
 	{
-		arr1.Insert((size_t)0, AString("test1"));
-		arr1.Insert((size_t)0, AString("test0"));
+		arr1.Insert(arr1.Begin(), AString("test1"));
+		arr1.Insert(arr1.Begin(), AString("test0"));
 		TEST_ASSERT(arr1[0] == "test0");
 		TEST_ASSERT(arr1[1] == "test1");
 	}

@@ -70,6 +70,9 @@
     <Filter Include="Math">
       <UniqueIdentifier>{6387f6d1-210f-41ec-9661-a93e079d9fa8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Reflection\Container">
+      <UniqueIdentifier>{e402bb7e-cf00-4ee7-847d-cf7a9ba82805}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Library\Foundation\Platform\Types.h">
@@ -372,9 +375,6 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeStruct.h">
       <Filter>Reflection\MetaType</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\Serializer.h">
-      <Filter>Reflection\Serialization</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeDeclMacro.h">
       <Filter>Reflection\MetaType</Filter>
     </ClInclude>
@@ -408,9 +408,6 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeContainer.h">
       <Filter>Reflection\MetaType</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Library\Foundation\FileIO\IOStream.h">
-      <Filter>FileIO</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Library\Foundation\Template\Template.h">
       <Filter>Template</Filter>
     </ClInclude>
@@ -429,22 +426,34 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\RBTree.h">
       <Filter>Container</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Library\Foundation\FileIO\MemoryStream.h">
-      <Filter>FileIO</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerText.h">
-      <Filter>Reflection\Serialization</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\List.inl">
       <Filter>Container</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerBinary.h">
-      <Filter>Reflection\Serialization</Filter>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Container\Iterator.h">
+      <Filter>Reflection\Container</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\Serializers.h">
-      <Filter>Reflection\Serialization</Filter>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Container\Iterators.h">
+      <Filter>Reflection\Container</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Reflection.h">
+      <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\FileIO\IOStream.h">
+      <Filter>FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\FileIO\MemRStream.h">
+      <Filter>FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\FileIO\MemWStream.h">
+      <Filter>FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\Serializer.h">
+      <Filter>Reflection\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerProperty.h">
+      <Filter>Reflection\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerText.h">
       <Filter>Reflection\Serialization</Filter>
     </ClInclude>
   </ItemGroup>
@@ -476,13 +485,16 @@
     <ClCompile Include="..\..\..\Code\Library\Foundation\Env\Assert.cpp">
       <Filter>Env</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Library\Foundation\FileIO\IOStream.cpp">
-      <Filter>FileIO</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Library\Foundation\Reflection\Reflection.inl">
       <Filter>Reflection</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Library\Foundation\FileIO\MemoryStream.cpp">
+    <ClCompile Include="..\..\..\Code\Library\Foundation\FileIO\IOStream.cpp">
+      <Filter>FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Library\Foundation\FileIO\MemRStream.cpp">
+      <Filter>FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Library\Foundation\FileIO\MemWStream.cpp">
       <Filter>FileIO</Filter>
     </ClCompile>
   </ItemGroup>

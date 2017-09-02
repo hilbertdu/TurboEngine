@@ -26,6 +26,9 @@ namespace TReflection
 		IMetaType * GetMetaType(const Name & name);
 		IMetaType * GetMetaType(int32 hash);
 
+		void Clear();
+		void Shrink();
+
 	private:
 		MetaTypeMap m_MetaTypes;
 	};
@@ -41,10 +44,25 @@ namespace TReflection
 		m_MetaTypes[metaType->m_Name.m_Hash] = metaType;
 	}
 
+	void MetaTypeDB::Clear()
+	{
+		for (MetaTypeMap::Iter iter = m_MetaTypes.Begin(); iter != m_MetaTypes.End(); ++iter)
+		{
+			LOUTPUT("Clear metatype: %s\n", (*iter).Second()->m_Name.m_Name.Get());
+			TDELETE_SAFE((*iter).Second());
+		}
+		m_MetaTypes.Clear();
+	}
+
+	void MetaTypeDB::Shrink()
+	{
+		m_MetaTypes.Shrink();
+	}
+
 	template<typename T>
 	IMetaType * MetaTypeDB::GetMetaType()
 	{
-		return GetMetaType(MetaDeduce<T>().Name);
+		return GetMetaType(MetaType<T>().m_Name);
 	}
 
 	IMetaType * MetaTypeDB::GetMetaType(const Name & name)

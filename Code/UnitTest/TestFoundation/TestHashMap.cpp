@@ -131,18 +131,18 @@ void TestHashMap::HashMapGrow() const
 	HashMap<int64, AString> map;
 	{
 		Timer t;
-		int64 maxSize = 100000;
+		int64 maxSize = 100;
 		for (int64 index = 0; index < maxSize; ++index)
 		{
 			map[index] = "test";// AString("test");
 		}
 		LOUTPUT("HashMap : %2.4fs\n", t.GetElapsed());
-		TEST_ASSERT(map[100] == "test");
+		TEST_ASSERT(map[10] == "test");
 	}
 	{
 		std::unordered_map<int64, AString> stdMap;
 		Timer t;
-		int64 maxSize = 100000;
+		int64 maxSize = 100;
 		for (int64 index = 0; index < maxSize; ++index)
 		{
 			stdMap[index] = "test";// AString("test");
@@ -156,6 +156,21 @@ void TestHashMap::HashMapGrow() const
 void TestHashMap::HashMapAllocator() const
 {
 	{
+		HashMap<int, int*> map;
+		map[1] = new int(1);
+		map[2] = new int(2);
+		map[3] = new int(1);
+		map[4] = new int(2);
+		map[5] = new int(1);
+		map[6] = new int(2);
+		map[7] = new int(1);
+		map[8] = new int(2);
+
+		for (HashMap<int, int*>::Iter iter = map.Begin(); iter != map.End(); ++iter)
+		{
+			TDELETE_SAFE((*iter).Second());
+		}
+		map.Clear();
 	}
 }
 

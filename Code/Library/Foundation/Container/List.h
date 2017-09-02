@@ -104,6 +104,8 @@ public:
 	explicit LinkedList(const Allocator & allocator = Allocator());
 	explicit LinkedList(SIZET initSize, const Allocator & allocator = Allocator());
 
+	~LinkedList();
+
 	template<class OtherAllocator>
 	LinkedList(const LinkedList<T, OtherAllocator> & other);
 	template<class OtherAllocator>

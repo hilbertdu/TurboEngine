@@ -9,6 +9,7 @@
 #define MACRO_CAT(A, B)			A##B
 #define MACRO_SELECT(NAME, NUM)	MACRO_CAT(NAME##_, NUM)
 
+#define MACRO_GET_INDEX_0(...) void
 #define MACRO_GET_INDEX_1(INDEX, ...) INDEX
 #define MACRO_GET_INDEX_2(_1, INDEX, ...) INDEX
 #define MACRO_GET_INDEX_3(_1, _2, INDEX, ...) INDEX
@@ -34,7 +35,6 @@
 #define MACRO_VA_UNPACK_9(PREFIX, _1, ...)	PREFIX _1, MACRO_EXPAND(MACRO_VA_UNPACK_8(PREFIX, __VA_ARGS__))
 
 #define MACRO_VA_MAPPER(PREFIX, ...)	MACRO_EXPAND(MACRO_VA_SELECT(MACRO_VA_UNPACK, PREFIX, __VA_ARGS__))
-
 
 //------------------------------------------------------------------------------
 #endif // FOUNDATION_TEMPLATE_MACROS_H

@@ -27,6 +27,7 @@ public:
 	virtual bool Seek(uint64 pos) const = 0;
 	virtual uint64 Tell() const = 0;
 	virtual SIZET GetSize() const = 0;
+	virtual const void* GetCurData() const = 0;
 
 	// helper read wrappers
 	inline uint64 Read(void * b, SIZET s) const { return ReadBuffer(b, s); }

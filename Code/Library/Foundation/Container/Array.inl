@@ -577,6 +577,16 @@ void Array<T, Allocator>::Resize(SIZET size, SIZET capacity)
 	const SIZET oldCapacity = GetCapacity();
 	const SIZET oldSize = GetSize();
 
+	if (capacity == 0)
+	{
+		InPlaceDestruct(m_Begin, m_End - m_Begin);
+		Deallocate();
+		m_Begin = nullptr;
+		m_End = nullptr;
+		m_MaxEnd = nullptr;
+		return;
+	}
+	
 	if (capacity != oldCapacity)
 	{
 		T * newMem = Reallocate(capacity);

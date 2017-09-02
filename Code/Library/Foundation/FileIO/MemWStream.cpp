@@ -3,7 +3,7 @@
 
 // Includes
 //------------------------------------------------------------------------------
-#include "Foundation/FileIO/MemoryStream.h"
+#include "Foundation/FileIO/MemWStream.h"
 #include "Foundation/Memory/Mem.h"
 
 // Defines
@@ -11,7 +11,7 @@
 
 // CONSTRUCTOR
 //------------------------------------------------------------------------------
-MemoryStream::MemoryStream()
+MemWStream::MemWStream()
 	: m_Begin(nullptr)
 	, m_End(nullptr)
 	, m_MaxEnd(nullptr)
@@ -21,7 +21,7 @@ MemoryStream::MemoryStream()
 
 // CONSTRUCTOR
 //------------------------------------------------------------------------------
-MemoryStream::MemoryStream(SIZET initialBufferSize, SIZET minGrowthFactor)
+MemWStream::MemWStream(SIZET initialBufferSize, SIZET minGrowthFactor)
 	: m_Begin((char *)ALLOC(initialBufferSize))
 	, m_End(m_Begin)
 	, m_MaxEnd(m_Begin + initialBufferSize)
@@ -31,14 +31,14 @@ MemoryStream::MemoryStream(SIZET initialBufferSize, SIZET minGrowthFactor)
 
 // DESTRUCTOR
 //------------------------------------------------------------------------------
-MemoryStream::~MemoryStream()
+MemWStream::~MemWStream()
 {
 	FREE(m_Begin);
 }
 
 // Read
 //------------------------------------------------------------------------------
-uint64 MemoryStream::ReadBuffer(void * buffer, uint64 bytesToRead) const
+uint64 MemWStream::ReadBuffer(void * buffer, uint64 bytesToRead) const
 {
 	(void)buffer; (void)bytesToRead;
 	ASSERT(false); // Not implemented - implement if required
@@ -47,7 +47,7 @@ uint64 MemoryStream::ReadBuffer(void * buffer, uint64 bytesToRead) const
 
 // Write
 //------------------------------------------------------------------------------
-uint64 MemoryStream::WriteBuffer(const void * buffer, uint64 bytesToWrite)
+uint64 MemWStream::WriteBuffer(const void * buffer, uint64 bytesToWrite)
 {
 	if ((m_End + bytesToWrite) > m_MaxEnd)
 	{
@@ -62,14 +62,14 @@ uint64 MemoryStream::WriteBuffer(const void * buffer, uint64 bytesToWrite)
 
 // Flush
 //------------------------------------------------------------------------------
-void MemoryStream::Flush()
+void MemWStream::Flush()
 {
 	// nothing to do
 }
 
 // Tell
 //------------------------------------------------------------------------------
-uint64 MemoryStream::Tell() const
+uint64 MemWStream::Tell() const
 {
 	ASSERT(false); // Not implemented - implement if required
 	return 0;
@@ -77,7 +77,7 @@ uint64 MemoryStream::Tell() const
 
 // Seek
 //------------------------------------------------------------------------------
-bool MemoryStream::Seek(uint64 pos) const
+bool MemWStream::Seek(uint64 pos) const
 {
 	(void)pos;
 	ASSERT(false); // Not implemented - implement if required
@@ -86,7 +86,7 @@ bool MemoryStream::Seek(uint64 pos) const
 
 // Grow
 //------------------------------------------------------------------------------
-void MemoryStream::GrowToAccomodate(uint64 bytesToAccomodate)
+void MemWStream::GrowToAccomodate(uint64 bytesToAccomodate)
 {
 	// grow by at least MinGrowth
 	SIZET newCapacity = (m_MaxEnd - m_Begin) + Math::Max<SIZET>((SIZET)bytesToAccomodate, m_MinGrowth);

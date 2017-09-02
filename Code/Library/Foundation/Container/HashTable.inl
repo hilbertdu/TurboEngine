@@ -299,6 +299,7 @@ void HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Clear
 	{
 		m_Buckets[bucketIdx].Clear();
 	}
+	m_Buckets.Clear();
 	m_Size = 0;
 }
 
@@ -311,6 +312,7 @@ void HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Shrin
 	{
 		(*iter).Shrink();
 	}
+	m_Buckets.Shrink();
 }
 
 // Begin

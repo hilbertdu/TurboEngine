@@ -52,7 +52,8 @@ public:
 	FORCE_INLINE Pair<Iter, bool> Insert(ValueType&& data) { return m_Table.InsertUnique(std::forward<ValueType>(data)); }
 	FORCE_INLINE SIZET			  Erase(const Key& key) { return m_Table.Erase(key); }
 
-	FORCE_INLINE void Shrink() { m_Table.Shrink(); };
+	FORCE_INLINE void Shrink() { m_Table.Shrink(); }
+	FORCE_INLINE void Clear() { m_Table.Clear(); }
 
 private:
 	Table m_Table;

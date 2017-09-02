@@ -347,7 +347,8 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Container\Pair.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Env\Assert.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\FileIO\IOStream.h" />
-    <ClInclude Include="..\..\..\Code\Library\Foundation\FileIO\MemoryStream.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\FileIO\MemRStream.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\FileIO\MemWStream.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Math\CRC32.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Memory\Deletor.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Pattern\Delegate.h" />
@@ -366,6 +367,8 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Platform\Platform.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Platform\Types.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Process\Mutex.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Container\Iterator.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Container\Iterators.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Members\Field.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Members\Method.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\MetaType\Type.h" />
@@ -380,8 +383,7 @@
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Reflection.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\ReflectionMacros.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\Serializer.h" />
-    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\Serializers.h" />
-    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerBinary.h" />
+    <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerProperty.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerText.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\String\String.h" />
     <ClInclude Include="..\..\..\Code\Library\Foundation\String\StringAnsi.inl" />
@@ -397,7 +399,8 @@
     </ClInclude>
     <ClCompile Include="..\..\..\Code\Library\Foundation\Env\Assert.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\FileIO\IOStream.cpp" />
-    <ClCompile Include="..\..\..\Code\Library\Foundation\FileIO\MemoryStream.cpp" />
+    <ClCompile Include="..\..\..\Code\Library\Foundation\FileIO\MemRStream.cpp" />
+    <ClCompile Include="..\..\..\Code\Library\Foundation\FileIO\MemWStream.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Logging\Logger.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Math\CRC32.cpp" />
     <ClCompile Include="..\..\..\Code\Library\Foundation\Memory\Mem.cpp" />

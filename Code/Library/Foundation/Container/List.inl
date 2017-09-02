@@ -157,6 +157,15 @@ LinkedList<T, Allocator>::LinkedList(LinkedList<T, OtherAllocator> && other)
 	other.m_Size = 0;
 }
 
+// Destructors
+//------------------------------------------------------------------------------
+template<class T, class Allocator>
+LinkedList<T, Allocator>::~LinkedList()
+{
+	Clear();
+	DeallocateNode(m_Head);
+}
+
 // Copy constructors
 //------------------------------------------------------------------------------
 template<class T, class Allocator>
@@ -222,6 +231,7 @@ typename LinkedList<T, Allocator>::Iter LinkedList<T, Allocator>::Erase(ConstIte
 
 	pCurr->m_Prev->m_Next = pNext;
 	pNext->m_Prev = pCurr->m_Prev;
+	pCurr->m_Value.~T();
 	DeallocateNode(pCurr);
 	--m_Size;
 	return Iter(pNext);

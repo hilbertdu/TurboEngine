@@ -9,8 +9,12 @@
 // Includes
 //------------------------------------------------------------------------------
 #include "Foundation/Reflection/MetaType/Type.h"
+#include "Foundation/Reflection/Container/Iterators.h"
 #include "Foundation/Container/Array.h"
+#include "Foundation/Container/HashMap.h"
+#include "Foundation/Container/List.h"
 #include "Foundation/Container/Pair.h"
+#include "Foundation/Container/SmartPtr.h"
 
 
 namespace TReflection
@@ -20,77 +24,20 @@ namespace TReflection
 	class IMetaContainer : public IMetaType
 	{
 	public:
-		class IIterator
-		{
-		public:
-			virtual void Begin() const = 0;
-			virtual void End() const = 0;
-			virtual void Next() = 0;
-			virtual void Length() = 0;
-			virtual void * GetKey() const = 0;
-			virtual void * GetValue() const = 0;
-		};
+		IMetaContainer() { SetFlag(E_TYPE_CONTAINER); }
 
-		template<class...>
-		class Iterator;
-
-		template<class T>
-		class Iterator<Array<T, HeapAllocator>> : public IIterator
-		{
-		public:
-			Iterator(const T * content)
-				: m_Content(content) {}
-			virtual void Begin() const {}
-			virtual void End() const {}
-			virtual void Next() {}
-			virtual void Length() {}
-			virtual void * GetKey() const { return nullptr; }
-			virtual void * GetValue() const { return nullptr; }
-		private:
-			T * m_Content;
-		};
-
-		virtual ~IMetaContainer()
+		virtual ~IMetaContainer() 
 		{ 
-			TDELETE_SAFE(m_MetaTypeKey);
-			TDELETE_SAFE(m_MetaTypeValue);
-			TDELETE_SAFE(m_Iterator);
+			TDELETE_SAFE(m_ReadIterator);
+			TDELETE_SAFE(m_WriteIterator);
 		}
 
-		virtual bool IsContainer() { return true; }
-
-		template<class T>
-		void Register(const T * t)
-		{
-			m_Iterator = TNEW(Iterator<T>(t));
-			RegisterKeyType<GetMetaType<T>::MetaKeyType>(t);
-			RegisterValueType<GetMetaType<T>::MetaValueType>(t);
-		}
-
-	private:
-		template<class T>
-		void RegisterKeyType(const T * t)
-		{
-			m_MetaTypeKey = MetaTypeDB::Instance().GetMetaType<T>();
-			m_MetaTypeKey->Register<T>(t);
-		}
-
-		template<class T>
-		void RegisterValueType(const T * t)
-		{
-			m_MetaTypeValue = MetaTypeDB::Instance().GetMetaType<T>();
-			m_MetaTypeValue->Register<T>(t);
-		}
-
-		template<> void RegisterKeyType<void>(const void * t) {};
-		template<> void RegisterValueType<void>(const void * t) {};
-
-		IMetaType * m_MetaTypeKey;
-		IMetaType * m_MetaTypeValue;
-		IIterator * m_Iterator;
+	public:
+		IMetaType*		m_MetaTypeKey{ 0 };
+		IMetaType*		m_MetaTypeValue{ 0 };
+		IReadIterator*	m_ReadIterator{ 0 };
+		IWriteIterator*	m_WriteIterator{ 0 };
 	};
-
-	
 }
 
 #endif // FOUNDATION_REFLECTION_TYPECONTAINER_H

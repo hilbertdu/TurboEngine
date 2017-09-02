@@ -5,8 +5,10 @@
 //------------------------------------------------------------------------------
 #include "TestFramework/UnitTest.h"
 #include "Foundation/Reflection/ReflectionMacros.h"
+#include "Foundation/Reflection/Serialization/SerializerText.h"
 #include "Foundation/Pattern/Delegate.h"
-#include "Foundation/FileIO/MemoryStream.h"
+#include "Foundation/FileIO/MemWStream.h"
+#include "Foundation/FileIO/MemRStream.h"
 #include "Foundation/Logging/Logger.h"
 
 
@@ -21,6 +23,7 @@ private:
 	void TestGetSet() const;
 	void TestInheritence() const;
 	void TestSerialization() const;
+	void TestClearDB() const;
 };
 
 // Register Tests
@@ -30,6 +33,7 @@ REGISTER_TESTS_BEGIN(TestReflection)
 	REGISTER_TEST(TestGetSet)
 	REGISTER_TEST(TestSerialization)
 	REGISTER_TEST(TestInheritence)
+	REGISTER_TEST(TestClearDB)
 REGISTER_TESTS_END
 
 // TestStruct
@@ -64,6 +68,7 @@ public:
 		, m_Int64(0)
 		, m_Bool(false)
 		, m_AString("")
+		, m_FloatArray({ 1.0, 2.0, 3.0 })
 	{
 	}
 
@@ -149,18 +154,19 @@ void TestReflection::TestGetMetaType() const
 	const IMetaType* metaType4 = MetaTypeDB::Instance().GetMetaType<HashMap<int, float>>();
 	const IMetaType* metaType5 = MetaTypeDB::Instance().GetMetaType<TestStruct>();
 
-	MetaDeduce<Array<int>>::MetaKeyType a = 100;
-	MetaDeduce<Array<AString>>::MetaKeyType s = AString("abc");
-	MetaDeduce<HashMap<int, float>>::MetaKeyType b1 = 100;
-	MetaDeduce<HashMap<int, float>>::MetaValueType b2 = 100;
-	MetaDeduce<Array<Array<AString>>>::MetaKeyType v1 = Array<AString>();
-	MetaDeduce<HashMap<int, Array<AString>>>::MetaValueType v2 = Array<AString>();
+	MetaType<Array<int>>::MetaValueType a = 100;
+	MetaType<Array<AString>>::MetaValueType s = AString("abc");
+	MetaType<HashMap<int, float>>::MetaKeyType b1 = 100;
+	MetaType<HashMap<int, float>>::MetaValueType b2 = 100;
+	MetaType<Array<Array<AString>>>::MetaValueType v1 = Array<AString>();
+	MetaType<HashMap<int, Array<AString>>>::MetaValueType v2 = Array<AString>();
 }
 
 // TestGetSet
 //------------------------------------------------------------------------------
 void TestReflection::TestGetSet() const
 {
+	TestStruct::BindReflectionInfo();
 	TestObject::BindReflectionInfo();
 
 	TestObject o;
@@ -191,7 +197,7 @@ void TestReflection::TestGetSet() const
 		Array<float> arr;
 		info->GetProperty(&o, "FloatArray", arr);
 		TEST_ASSERT(arr.GetSize() == 3);
-		TEST_ASSERT(arr[0] == 111.0f);
+		TEST_ASSERT(arr[0] == 1.0f);
 	}
 
 	{
@@ -211,16 +217,19 @@ void TestReflection::TestSerialization() const
 	TestObject o;
 	o.PopulateWithTestData();
 
-	MemoryStream wStream;
-	TReflection::Save(wStream, &o, TestObject::GetMetaTypeS(), TReflection::SerializeType::E_SERIALIZER_TEXT);
-
+	MemWStream wStream;
+	TReflection::TextSerializer writer1;
+	writer1.Save(&wStream, &o, TestObject::GetMetaTypeS());
 	LOUTPUT("Stream: \n%s\n", wStream.GetData());
 
-	TReflection::IObject* obj;
-	TReflection::Load(wStream, &obj, TestObject::GetMetaTypeS(), TReflection::SerializeType::E_SERIALIZER_TEXT);
+	MemRStream rStream(wStream.GetData(), wStream.GetSize());
+	TestObject obj;
+	TReflection::TextSerializer reader;
+	reader.Load(&rStream, &obj, TestObject::GetMetaTypeS());
 
-	MemoryStream wStream1;
-	TReflection::Save(wStream1, obj, TestObject::GetMetaTypeS(), TReflection::SerializeType::E_SERIALIZER_TEXT);
+	MemWStream wStream1;
+	TReflection::TextSerializer writer2;
+	writer2.Save(&wStream1, &obj, TestObject::GetMetaTypeS());
 
 	LOUTPUT("Stream1: \n%s\n", wStream1.GetData());
 
@@ -228,46 +237,6 @@ void TestReflection::TestSerialization() const
 	streamsMatch = streamsMatch && (memcmp(wStream.GetData(), wStream1.GetData(), wStream.GetSize()) == 0);
 	TEST_ASSERT(streamsMatch); // Streams don't match
 
-	TDELETE_SAFE(obj);
-
-// 	TestObject o;
-// 	o.PopulateWithTestData();
-// 
-// 	MemoryStream stream;
-// 
-// 	TextWriter tw(stream);
-// 	tw.Write(&o);
-// 
-// 	const char * data = (const char *)stream.GetData();
-// 	DEBUGSPAM("Stream1:\n%s", data);
-// 
-// 	// Create an object from the stream
-// 	ConstMemoryStream readStream(stream.GetData(), stream.GetSize());
-// 	TextReader tr(readStream);
-// 	RefObject * obj = tr.Read();
-// 	TEST_ASSERT(obj);
-// 
-// 	// Serialize new object
-// 	MemoryStream stream2;
-// 	TextWriter tw2(stream2);
-// 	tw2.Write(obj);
-// 
-// 	const char * data2 = (const char *)stream2.GetData();
-// 	DEBUGSPAM("Stream2:\n%s", data2);
-// 
-// 	// Check that streams are the same
-// 	bool streamsMatch = (stream.GetSize() == stream2.GetSize());
-// 	if (streamsMatch)
-// 	{
-// 		streamsMatch = (memcmp(data, data2, stream.GetSize()) == 0);
-// 	}
-// 	if (!streamsMatch)
-// 	{
-// 		TEST_ASSERT(streamsMatch); // Streams don't match
-// 	}
-// 
-// 	// Cleanup
-// 	FDELETE(obj);
 }
 
 // TestInheritence
@@ -329,6 +298,14 @@ void TestReflection::TestInheritence() const
 	Delegate<int()> d;
 	ri->GetMethod<decltype(d)>("GetA", d);
 	int ret = d.Invoke(&obj);
+}
+
+// TestClearDB
+//------------------------------------------------------------------------------
+void TestReflection::TestClearDB() const
+{
+	TReflection::MetaTypeDB::Instance().Clear();
+	TReflection::MetaTypeDB::Instance().Shrink();
 }
 
 //------------------------------------------------------------------------------

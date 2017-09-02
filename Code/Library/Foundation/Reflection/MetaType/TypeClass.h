@@ -26,12 +26,7 @@ namespace TReflection
 	{
 	public:
 		MetaClass() : MetaStruct() { SetFlag(E_TYPE_CLASS); }
-
-	private:
-		AnyDelegate m_Constructor;
-		AnyDelegate m_Destructor;
 	};
-	REFLECTION_META_DEDUCE(IClass, IClass::MetaType)
 }
 
 

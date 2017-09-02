@@ -25,9 +25,16 @@
 		inline static MetaType * GetMetaTypeS();
 
 #define _TREFLECTION_BEGIN(OBJECT) \
+	namespace TReflection										\
+	{															\
+		REFLECTION_DECLARE_METAOBJECT(OBJECT, OBJECT::MetaType)	\
+	}															\
+	_TREFLECTION_BEGIN_COMMON(OBJECT)
+
+#define _TREFLECTION_BEGIN_COMMON(OBJECT) \
 	/*static*/ void OBJECT::RegisterMetaType()														\
 	{																								\
-		MetaType * info = GetMetaTypeS();															\
+		MetaType * info = TNEW(TReflection::MetaType<OBJECT>);										\
 		info->m_Name = TXT(#OBJECT);																\
 		info->m_Super = static_cast<MetaStruct*>(MetaTypeDB::Instance().GetMetaType<BaseType>());	\
 		info->m_Creator = &OBJECT::Create;															\
@@ -36,16 +43,15 @@
 	_TREFLECT_STRUCT_COMMON(OBJECT)
 
 #define _TREFLECT_STRUCT_COMMON(OBJECT) \
-	/*static*/ OBJECT::IType * OBJECT::Create()						\
-	{																\
-		return (OBJECT::IType*)(TNEW(OBJECT));						\
-	}																\
-	/*static*/ inline OBJECT::MetaType * OBJECT::GetMetaTypeS()		\
-	{																\
-		static MetaType * info = TNEW(MetaType);					\
-		return info;												\
-	}																\
-	/*static*/ void OBJECT::RegisterProperty()						\
+	/*static*/ OBJECT::IType* OBJECT::Create()									\
+	{																			\
+		return (OBJECT::IType*)(TNEW(OBJECT));									\
+	}																			\
+	/*static*/ inline OBJECT::MetaType * OBJECT::GetMetaTypeS()					\
+	{																			\
+		return (OBJECT::MetaType*)MetaTypeDB::Instance().GetMetaType<OBJECT>();	\
+	}																			\
+	/*static*/ void OBJECT::RegisterProperty()									\
 	{
 
 #define TREFLECT_FIELD(FIELD, FNAME)	\
@@ -55,15 +61,11 @@
 		GetMetaTypeS()->AddMethod(&ObjectType::METHOD, TXT(FNAME));	\
 
 #define _TREFLECTION_END(OBJECT)	\
-	}														\
-	/*static*/ void OBJECT::BindReflectionInfo()			\
-	{														\
-		RegisterMetaType();									\
-		RegisterProperty();									\
-	}														\
-	namespace TReflection									\
-	{														\
-		REFLECTION_META_DEDUCE(OBJECT, OBJECT::MetaType)	\
+	}												\
+	/*static*/ void OBJECT::BindReflectionInfo()	\
+	{												\
+		RegisterMetaType();							\
+		RegisterProperty();							\
 	}
 
 #define TREFLECTION_DECLARE(OBJECT, BASE)	_TREFLECTION_DECLARE(OBJECT, BASE)

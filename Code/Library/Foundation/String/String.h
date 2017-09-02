@@ -34,7 +34,7 @@ public:
 	String(const String<CharType, OtherAllocator> & string);
 	~String();
 
-	FORCE_INLINE size_t GetLength() const { return m_Length; }
+	FORCE_INLINE SIZET GetLength() const { return m_Length; }
 	FORCE_INLINE bool   IsEmpty() const { return (m_Length == 0); }
 
 	// C-style compatibility
@@ -42,8 +42,8 @@ public:
 	FORCE_INLINE const CharType * Get() const { return m_Contents; }
 	FORCE_INLINE CharType *       GetEnd() { return (m_Contents + m_Length); }
 	FORCE_INLINE const CharType * GetEnd() const { return (m_Contents + m_Length); }
-	FORCE_INLINE CharType &	      operator [] (size_t index) { ASSERT(index < m_Length); return m_Contents[index]; }
-	FORCE_INLINE const CharType & operator [] (size_t index)  const { ASSERT(index < m_Length); return m_Contents[index]; }
+	FORCE_INLINE CharType &	      operator [] (SIZET index) { ASSERT(index < m_Length); return m_Contents[index]; }
+	FORCE_INLINE const CharType & operator [] (SIZET index)  const { ASSERT(index < m_Length); return m_Contents[index]; }
 
 	// A pre-constructed global empty string for convenience
 	static const String &   GetEmpty() { return s_EmptyStr; }
@@ -55,8 +55,9 @@ public:
 	template<typename OtherAllocator>
 	void Assign(const String<CharType, OtherAllocator> & string);
 	void Clear();
-	void SetCapacity(size_t capacity);
-	FORCE_INLINE size_t GetCapacity() const { return m_Capacity; }
+	void SetCapacity(SIZET capacity);
+	void SetLength(SIZET length);		// NOTE: be careful to use this function
+	FORCE_INLINE SIZET GetCapacity() const { return m_Capacity; }
 
 	// Overwrite default operator = !!!!
 	String & operator = (const CharType * string) { Assign(string); return *this; }
@@ -74,7 +75,7 @@ public:
 	String<CharType, Allocator> & operator += (const String<CharType, OtherAllocator> & string);
 	template<typename OtherAllocator>
 	FORCE_INLINE void Append(const String<CharType, OtherAllocator> & string) { this->operator += (string); }
-	void Append(const CharType * string, size_t len);
+	void Append(const CharType * string, SIZET len);
 	void AppendFormat(const CharType * fmtString, ...);
 
 	// Comparison
@@ -88,8 +89,8 @@ public:
 	FORCE_INLINE bool operator < (const String<CharType, OtherAllocator> & other) const { return (CompareI(other) < 0); }
 
 	// Transformations
-	size_t Replace(CharType from, CharType to, size_t maxReplaces = 0);
-	size_t Replace(const CharType * from, const CharType * to, size_t maxReplaces = 0);
+	SIZET Replace(CharType from, CharType to, SIZET maxReplaces = 0);
+	SIZET Replace(const CharType * from, const CharType * to, SIZET maxReplaces = 0);
 	void ToLower();
 	void ToUpper();
 
@@ -127,10 +128,10 @@ public:
 	void Tokenize(Array<String<CharType, OtherAllocator>> & tokens, CharType splitCharType = ' ') const;
 
 	// String manipulation helpers
-	static void Copy(const CharType * src, CharType * dst, size_t len);
-	static size_t StrLen(const CharType * string);
-	static uint32 StrNCmp(const CharType * a, const CharType * b, size_t num);
-	static uint32 StrNCmpI(const CharType * a, const CharType * b, size_t num);
+	static void Copy(const CharType * src, CharType * dst, SIZET len);
+	static SIZET StrLen(const CharType * string);
+	static uint32 StrNCmp(const CharType * a, const CharType * b, SIZET num);
+	static uint32 StrNCmpI(const CharType * a, const CharType * b, SIZET num);
 
 public:
 	template<typename OtherAllocator, class = typename std::enable_if<std::is_same<CharType, CHAR>::value>::type>
@@ -147,7 +148,6 @@ public:
 	void VFormat(const CHAR * fmtString, va_list arg);
 	template<class = typename std::enable_if<std::is_same<CharType, WCHAR>::value>::type>
 	void VFormat(const WCHAR * fmtString, va_list arg);
-
 
 protected:
 	void Grow(SIZET addedSize = 0);

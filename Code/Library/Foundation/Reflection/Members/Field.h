@@ -34,6 +34,7 @@ namespace TReflection
 		uint32		m_Index;
 		uint32		m_Offset;
 		uint32		m_Size;
+		bool		m_IsPointer;
 		IMetaType*	m_MetaType;
 	};
 
