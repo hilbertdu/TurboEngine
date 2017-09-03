@@ -21,6 +21,8 @@ namespace TReflection
 		virtual void MoveNext() = 0;
 		virtual bool IsValid() const = 0;
 		virtual void ResetContainer(const void *container) = 0;
+		virtual bool IsKeyPointer() { return false; }
+		virtual bool IsValuePointer() { return false; }
 	};
 
 	struct IWriteIterator
@@ -31,6 +33,8 @@ namespace TReflection
 		virtual void* AddEmpty() = 0;
 		virtual void* AddEmpty(void* key) = 0;
 		virtual void ResetContainer(const void *container) = 0;
+		virtual bool IsKeyPointer() { return false; }
+		virtual bool IsValuePointer() { return false; }
 	};
 }
 

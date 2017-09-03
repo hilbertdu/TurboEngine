@@ -14,14 +14,24 @@
 #include "Foundation/Reflection/Container/Iterators.h"
 #include "Foundation/Container/HashMap.h"
 #include "Foundation/Template/Macros.h"
+#include <type_traits>
 
 
 namespace TReflection
 {
-#define NAME(X)				Name(TXT(X))
-#define KEY(K)				K
-#define VALUE(V)			V
-#define TEMPLATE(...)		__VA_ARGS__
+#define RFL_NAME(X)							Name(TXT(X))
+#define RFL_KEY(K)							K
+#define RFL_VALUE(V)						V
+#define RFL_TEMPLATE(...)					__VA_ARGS__
+#define RFL_STATIC_CONST_STR(NAME, VALUE)	static constexpr const char* NAME = #VALUE;
+#define NRFL_STATIC_CONST_STR(NAME, VALUE)	RFL_STATIC_CONST_STR(NAME, VALUE);
+#define RFL_STATIC_NAME(NAME) \
+	static const StackName& StaticName(const char* name = nullptr)	\
+	{																\
+		static StackName sName = #NAME;								\
+		if (name) { sName = name; }									\
+		return sName;												\
+	}
 
 #define REFLECTION_DECLARE_META_BEGIN \
 	template<class T>								\
@@ -29,43 +39,53 @@ namespace TReflection
 	{												\
 	public:											\
 		using Type = T;								\
-		using IsContainerType = std::false_type;	\
+		using IsVoid = std::true_type;				\
+		RFL_STATIC_NAME(void)						\
 	};
 
 #define REFLECTION_DECLARE_META_END
 
 #define REFLECTION_DECLARE_METABASE(TYPE) \
-	template<>										\
-	class MetaType<TYPE> : public IMetaType			\
-	{												\
-	public:											\
-		using Type = TYPE;							\
-		using IsContainerType = std::false_type;	\
-		MetaType()  {								\
-			m_Name = #TYPE;							\
-			m_Size = sizeof(TYPE);					\
-			SetFlag(E_TYPE_BASE);					\
-		}											\
-		void* Create() { return TNEW(TYPE);	}		\
+	template<>											\
+	class MetaType<TYPE> : public IMetaType				\
+	{													\
+	public:												\
+		using Type = TYPE;								\
+		using IsVoid = std::false_type;					\
+		MetaType()  {									\
+			m_Name = #TYPE;								\
+			m_Size =  sizeof(TYPE);						\
+			SetFlag(E_TYPE_BASE);						\
+		}												\
+		virtual void* Create() { return TNEW(TYPE);	}	\
+		RFL_STATIC_NAME(TYPE)							\
 	};
 
 #define REFLECTION_DECLARE_METACONTAINERTYPE(TYPE, KEY_IDX, VALUE_IDX, ...) \
-	template<MACRO_VA_MAPPER(class, __VA_ARGS__)>							\
-	class MetaType<TYPE<__VA_ARGS__>> : public IMetaContainer				\
-	{																		\
-	public:																	\
-		using Type = TYPE<__VA_ARGS__>;										\
-		using IsContainerType = std::true_type;								\
-		using MetaKeyType = MACRO_VA_INDEX(KEY_IDX, __VA_ARGS__);			\
-		using MetaValueType = MACRO_VA_INDEX(VALUE_IDX, __VA_ARGS__);		\
-		MetaType() {														\
-			m_Name = #TYPE;													\
-			m_Name += MetaType<MetaKeyType>().m_Name;						\
-			m_Name += MetaType<MetaValueType>().m_Name;						\
-			m_ReadIterator = TNEW(TYPE##ReadIterator<__VA_ARGS__>);			\
-			m_WriteIterator = TNEW(TYPE##WriteIterator<__VA_ARGS__>);		\
-		}																	\
-		void* Create() { return TNEW(TYPE<__VA_ARGS__>); }					\
+	template<MACRO_VA_MAPPER(class, __VA_ARGS__)>										\
+	class MetaType<TYPE<__VA_ARGS__>> : public IMetaContainer							\
+	{																					\
+	public:																				\
+		using Type = TYPE<__VA_ARGS__>;													\
+		using IsVoid = std::false_type;													\
+		using MetaKeyType = MACRO_VA_INDEX(KEY_IDX, __VA_ARGS__);						\
+		using MetaValueType = MACRO_VA_INDEX(VALUE_IDX, __VA_ARGS__);					\
+		MetaType() {																	\
+			using KeyType = std::remove_pointer<MetaKeyType>::type;						\
+			using ValueType = std::remove_pointer<MetaValueType>::type;					\
+			m_MetaTypeKey = MetaTypeDB::Instance().ObtainMetaType<KeyType>();			\
+			m_MetaTypeValue = MetaTypeDB::Instance().ObtainMetaType<ValueType>();		\
+			m_ReadIterator = TNEW(TYPE##ReadIterator<__VA_ARGS__>);						\
+			m_WriteIterator = TNEW(TYPE##WriteIterator<__VA_ARGS__>);					\
+			m_Name = #TYPE;																\
+			m_Name += MetaType<KeyType>::StaticName();									\
+			m_Name += std::is_pointer<MetaKeyType>::value ? "*" : "";					\
+			m_Name += MetaType<ValueType>::StaticName();								\
+			m_Name += std::is_pointer<MetaValueType>::value ? "*" : "";					\
+			StaticName(m_Name.m_Name.Get());											\
+		}																				\
+		virtual void* Create() { return TNEW(TYPE<__VA_ARGS__>); }						\
+		RFL_STATIC_NAME(void)															\
 	};
 
 #define REFLECTION_DECLARE_METAOBJECT(OBJECT, BASE) \
@@ -73,12 +93,13 @@ namespace TReflection
 	{													\
 	public:												\
 		using Type = OBJECT;							\
-		using IsContainerType = std::false_type;		\
+		using IsVoid = std::false_type;					\
 		MetaType()  {									\
 			m_Name = #OBJECT;							\
 			m_Size = sizeof(OBJECT);					\
 		}												\
-		void* Create() { return TNEW(OBJECT); }			\
+		virtual void* Create() { return TNEW(OBJECT); }	\
+		RFL_STATIC_NAME(OBJECT)							\
 	};
 
 #define REFLECTION_REGISTER_META_BEGIN \

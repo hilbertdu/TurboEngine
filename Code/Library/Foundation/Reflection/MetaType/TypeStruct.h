@@ -43,44 +43,10 @@ namespace TReflection
 		template<class T>
 		bool GetMethod(const char * name, T & method) const;
 
-	private:
-		template<class FieldT>
-		void _AddField(Field& field, const std::false_type& UNUSED(isContainer));
-
-		template<class FieldT>
-		void _AddField(Field& field, const std::true_type& UNUSED(isContainer));
-
 	public:
 		MetaStruct*			m_Super{ 0 };
 		Delegate<IType*()>	m_Creator;
 	};
-
-	template<class FieldT>
-	void MetaStruct::_AddField(Field& field, const std::true_type&)
-	{
-		using FieldType = std::remove_pointer<FieldT>::type;
-		using KeyType = MetaType<FieldType>::MetaKeyType;
-		using ValueType = MetaType<FieldType>::MetaValueType;
-
-		const Name& name = MetaType<FieldType>().m_Name;
-		IMetaContainer* metaType = (IMetaContainer*)MetaTypeDB::Instance().GetMetaType(name);
-		if (!metaType)
-		{
-			metaType = TNEW(MetaType<FieldType>);
-			metaType->m_Name = name;
-			metaType->m_MetaTypeKey = MetaTypeDB::Instance().GetMetaType<KeyType>();
-			metaType->m_MetaTypeValue = MetaTypeDB::Instance().GetMetaType<ValueType>();
-			MetaTypeDB::Instance().Register(metaType);
-		}
-		field.m_MetaType = metaType;
-	}
-
-	template<class FieldT>
-	void MetaStruct::_AddField(Field& field, const std::false_type&)
-	{
-		using FieldType = std::remove_pointer<FieldT>::type;
-		field.m_MetaType = MetaTypeDB::Instance().GetMetaType<FieldType>();
-	}
 
 	template<class FieldT>
 	void MetaStruct::AddField(const FieldT * member, const char * name)
@@ -92,7 +58,7 @@ namespace TReflection
 		field->m_Size = sizeof(FieldT);
 		field->m_Offset = (UINTPTR)member;
 		field->m_IsPointer = std::is_pointer<FieldT>::value;
-		_AddField<FieldT>(*field, MetaType<FieldType>::IsContainerType());
+		field->m_MetaType = MetaTypeDB::Instance().ObtainMetaType<FieldType>();
 		ASSERT(field->m_MetaType);
 	}
 
@@ -137,6 +103,7 @@ namespace TReflection
 		}
 		return result;
 	}
+	REFLECTION_DECLARE_METAOBJECT(IStruct, IStruct::MetaType)
 }
 
 

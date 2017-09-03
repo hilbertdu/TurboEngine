@@ -60,10 +60,10 @@ public:
 	FORCE_INLINE SIZET GetCapacity() const { return m_Capacity; }
 
 	// Overwrite default operator = !!!!
-	String & operator = (const CharType * string) { Assign(string); return *this; }
-	String & operator = (const String & string) { Assign(string); return *this; }
+	FORCE_INLINE String & operator = (const CharType * string) { Assign(string); return *this; }
+	FORCE_INLINE String & operator = (const String & string) { Assign(string); return *this; }
 	template<typename OtherAllocator>
-	String & operator = (const String<CharType, OtherAllocator> & string) { Assign(string); return *this; }
+	FORCE_INLINE String & operator = (const String<CharType, OtherAllocator> & string) { Assign(string); return *this; }
 
 	// C++ 11 [new]
 	String & operator = (String && string);
@@ -73,10 +73,10 @@ public:
 	String<CharType, Allocator> & operator += (const CharType * string);
 	template<typename OtherAllocator>
 	String<CharType, Allocator> & operator += (const String<CharType, OtherAllocator> & string);
-	template<typename OtherAllocator>
-	FORCE_INLINE void Append(const String<CharType, OtherAllocator> & string) { this->operator += (string); }
 	void Append(const CharType * string, SIZET len);
 	void AppendFormat(const CharType * fmtString, ...);
+	template<typename OtherAllocator>
+	FORCE_INLINE void Append(const String<CharType, OtherAllocator> & string) { this->operator += (string); }
 
 	// Comparison
 	bool operator == (const CharType * other) const;

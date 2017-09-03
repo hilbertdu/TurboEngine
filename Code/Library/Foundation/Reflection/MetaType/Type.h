@@ -25,36 +25,60 @@ namespace TReflection
 		E_TYPE_CONTAINER	= 0x10
 	};
 
-	struct Name
+	template<class STRING>
+	struct NameBase
 	{
 	public:
-		Name() {};
-		Name(const AString & name)
+		NameBase() {};
+		NameBase(const STRING & name)
 			: m_Name(name)
 			, m_Hash(CRC32::Calc(name))
 		{}
-		Name(const char * name)
+		NameBase(const char * name)
 			: m_Name(name)
-			, m_Hash(CRC32::Calc(name, AString::StrLen(name)))
+			, m_Hash(CRC32::Calc(name, STRING::StrLen(name)))
 		{}
 
-		Name& Extend(const Name& other)
+		template<class OTHER>
+		NameBase& Extend(const NameBase<OTHER>& other)
 		{
 			return operator+=(other);
 		}
 
-		Name& operator+=(const Name& other)
+		NameBase& operator=(const char* other)
+		{
+			m_Name = other;
+			m_Hash = CRC32::Calc(m_Name.Get(), m_Name.GetLength());
+			return *this;
+		}
+
+		NameBase& operator+=(const char * other)
+		{
+			m_Name += other;
+			m_Hash = CRC32::Calc(m_Name.Get(), m_Name.GetLength());
+			return *this;
+		}
+
+		template<class OTHER>
+		NameBase& operator+=(const NameBase<OTHER>& other)
 		{
 			m_Name += other.m_Name;
 			m_Hash = CRC32::Calc(m_Name.Get(), m_Name.GetLength());
 			return *this;
 		}
 
+	public:
 		int32	m_Hash;
-		AString	m_Name;
+		STRING	m_Name;
 	};
 
-	bool operator==(const Name& lhs, const char * rhs) { return lhs.m_Name == rhs; }
+	template<class STRING>
+	bool operator==(const NameBase<STRING>& lhs, const char * rhs) { return lhs.m_Name == rhs; }
+	template<class STRING>
+	bool operator!=(const NameBase<STRING>& lhs, const char * rhs) { return lhs.m_Name != rhs; }
+
+	using Name = NameBase<AString>;
+	using StackName = NameBase<AStackString<256, false>>;
 
 	struct Primitive
 	{
@@ -86,7 +110,7 @@ namespace TReflection
 		SerializerLoad GetLoad(SerializeType sType) const { return m_Serializer.m_LoadFunc[sType]; }
 		SerializerSave GetSave(SerializeType sType) const { return m_Serializer.m_SaveFunc[sType]; }
 
-		void* Create() const { return nullptr; }
+		virtual void* Create() const { return nullptr; }
 
 	protected:
 		MetaFlag			m_Flag{ E_NONE };

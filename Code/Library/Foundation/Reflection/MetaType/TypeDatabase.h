@@ -24,7 +24,14 @@ namespace TReflection
 		template<typename T>
 		IMetaType * GetMetaType();
 		IMetaType * GetMetaType(const Name & name);
+		IMetaType * GetMetaType(const StackName & name);
 		IMetaType * GetMetaType(int32 hash);
+
+		template<typename T>
+		IMetaType* CreateMetaType();
+
+		template<typename T>
+		IMetaType* ObtainMetaType();
 
 		void Clear();
 		void Shrink();
@@ -62,10 +69,16 @@ namespace TReflection
 	template<typename T>
 	IMetaType * MetaTypeDB::GetMetaType()
 	{
-		return GetMetaType(MetaType<T>().m_Name);
+		return GetMetaType(MetaType<T>::StaticName());;
 	}
 
 	IMetaType * MetaTypeDB::GetMetaType(const Name & name)
+	{
+		MetaTypeMap::Iter iter = m_MetaTypes.Find(name.m_Hash);
+		return iter != m_MetaTypes.End() ? (*iter).Second() : nullptr;
+	}
+
+	IMetaType * MetaTypeDB::GetMetaType(const StackName & name)
 	{
 		MetaTypeMap::Iter iter = m_MetaTypes.Find(name.m_Hash);
 		return iter != m_MetaTypes.End() ? (*iter).Second() : nullptr;
@@ -75,6 +88,22 @@ namespace TReflection
 	{
 		MetaTypeMap::Iter iter = m_MetaTypes.Find(hash);
 		return iter != m_MetaTypes.End() ? (*iter).Second() : nullptr;
+	}
+
+	template<typename T>
+	IMetaType* MetaTypeDB::CreateMetaType()
+	{
+		ASSERT(GetMetaType<T>() == nullptr);
+		IMetaType* metaType = TNEW(MetaType<T>);
+		Register(metaType);
+		return metaType;
+	}
+
+	template<typename T>
+	IMetaType* MetaTypeDB::ObtainMetaType()
+	{
+		IMetaType* metaType = GetMetaType<T>();
+		return metaType || MetaType<T>::IsVoid::value ? metaType : CreateMetaType<T>();
 	}
 }
 

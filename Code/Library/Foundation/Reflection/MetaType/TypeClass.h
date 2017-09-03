@@ -27,6 +27,7 @@ namespace TReflection
 	public:
 		MetaClass() : MetaStruct() { SetFlag(E_TYPE_CLASS); }
 	};
+	REFLECTION_DECLARE_METAOBJECT(IClass, IClass::MetaType)
 }
 
 

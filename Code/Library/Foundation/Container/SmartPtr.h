@@ -63,7 +63,7 @@ public:
 	T& operator* () const  { return *m_RefPointHolder->GetPointer(); };
 	T* operator-> () const { return m_RefPointHolder->GetPointer(); };
 
-	T*   Get() { return m_RefPointHolder->GetPointer(); };
+	T*   Get() { return m_RefPointHolder ? m_RefPointHolder->GetPointer() : nullptr; };
 	void Set(T* pointer);
 
 	void Swap(StrongPtr& other);
@@ -100,7 +100,7 @@ public:
 	T& operator* () const { return *m_RefPointHolder->GetPointer(); };
 	T* operator-> () const { return m_RefPointHolder->GetPointer(); };
 
-	T* Get() const { return m_RefPointHolder->GetPointer(); };
+	T* Get() const { return m_RefPointHolder ? m_RefPointHolder->GetPointer() : nullptr; };
 
 	void Reset();
 	bool Expired();

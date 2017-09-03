@@ -204,81 +204,24 @@ void LinkedList<T, Allocator>::Swap(MyType& other)
 	std::swap(m_Allocator, other.m_Allocator);
 }
 
-// Insert
-//------------------------------------------------------------------------------
-template<class T, class Allocator>
-typename LinkedList<T, Allocator>::Iter LinkedList<T, Allocator>::Insert(Iter pos, const T& value)
-{
-	_Insert(pos, value);
-	return --pos;
-}
-
-template<class T, class Allocator>
-typename LinkedList<T, Allocator>::Iter LinkedList<T, Allocator>::Insert(Iter pos, T&& value)
-{
-	_Insert(pos, value);
-	return --pos;
-}
-
-// Erase
-//------------------------------------------------------------------------------
-template<class T, class Allocator>
-typename LinkedList<T, Allocator>::Iter LinkedList<T, Allocator>::Erase(ConstIter pos)
-{
-	ASSERT(pos.m_Pos != m_Head);
-	ListNodePtr pCurr = pos.GetNode();
-	ListNodePtr pNext = (ListNodePtr)pCurr->m_Next;
-
-	pCurr->m_Prev->m_Next = pNext;
-	pNext->m_Prev = pCurr->m_Prev;
-	pCurr->m_Value.~T();
-	DeallocateNode(pCurr);
-	--m_Size;
-	return Iter(pNext);
-}
-
-template<class T, class Allocator>
-typename LinkedList<T, Allocator>::Iter LinkedList<T, Allocator>::Erase(ConstIter first, ConstIter last)
-{
-	while (first != last)
-	{
-		first = Erase(first);
-	}
-	return Iter(last);
-}
-
 // Emplace
 //------------------------------------------------------------------------------
 template<class T, class Allocator>
 template<class... TArgs>
-void LinkedList<T, Allocator>::EmplaceFront(TArgs&&... args)
+typename LinkedList<T, Allocator>::Iter LinkedList<T, Allocator>::Emplace(Iter& pos, TArgs&&... args)
 {
-	Emplace(Begin(), std::forward<TArgs>(args)...);
-}
-
-template<class T, class Allocator>
-template<class... TArgs>
-void LinkedList<T, Allocator>::EmplaceBack(TArgs&&... args)
-{
-	Emplace(End(), std::forward<TArgs>(args)...);
-}
-
-template<class T, class Allocator>
-template<class... TArgs>
-typename LinkedList<T, Allocator>::Iter LinkedList<T, Allocator>::Emplace(ConstIter pos, TArgs&&... args)
-{
-	_Insert(pos, std::forward<TArgs>(args)...);
+	_Insert(pos.GetNode(), std::forward<TArgs>(args)...);
 	return (pos--);
 }
 
 // Insert range
 //------------------------------------------------------------------------------
 template<class T, class Allocator>
-typename LinkedList<T, Allocator>::Iter LinkedList<T, Allocator>::Insert(Iter pos, SIZET size, const T& value)
+typename LinkedList<T, Allocator>::Iter LinkedList<T, Allocator>::Insert(Iter& pos, SIZET size, const T& value)
 {
 	while (size-- > 0)
 	{
-		_Insert(pos, value);
+		_Insert(pos.GetNode(), value);
 		--pos;
 	}
 	return pos;
@@ -286,7 +229,7 @@ typename LinkedList<T, Allocator>::Iter LinkedList<T, Allocator>::Insert(Iter po
 
 template<class T, class Allocator>
 template<class InputIter>
-typename LinkedList<T, Allocator>::Iter LinkedList<T, Allocator>::Insert(Iter pos, InputIter first, InputIter last)
+typename LinkedList<T, Allocator>::Iter LinkedList<T, Allocator>::Insert(Iter& pos, InputIter& first, InputIter& last)
 {
 	Iter start = Begin();
 	while (first++ != last)
@@ -317,21 +260,13 @@ void LinkedList<T, Allocator>::Resize(SIZET newSize)
 	}
 }
 
-// Clear
-//------------------------------------------------------------------------------
-template<class T, class Allocator>
-void LinkedList<T, Allocator>::Clear()
-{
-	Erase(Begin(), End());
-}
-
 // _Insert
 //------------------------------------------------------------------------------
 template<class T, class Allocator>
 template<class U>
-void LinkedList<T, Allocator>::_Insert(Iter pos, U&& item)
+void LinkedList<T, Allocator>::_Insert(ListNodePtr pos, U&& item)
 {
-	ListNodePtr pNext = pos.GetNode();
+	ListNodePtr pNext = pos;
 	ListNodePtr pNode = AllocateNode();
 	INPLACE_NEW(&pNode->m_Value) T(std::forward<U>(item));
 
@@ -340,6 +275,23 @@ void LinkedList<T, Allocator>::_Insert(Iter pos, U&& item)
 	pNode->m_Next = pNext;
 	pNext->m_Prev = pNode;
 	++m_Size;
+}
+
+// _Erase
+//------------------------------------------------------------------------------
+template<class T, class Allocator>
+typename LinkedList<T, Allocator>::Iter LinkedList<T, Allocator>::_Erase(ListNodePtr pos)
+{
+	ASSERT(pos != m_Head);
+	ListNodePtr pCurr = pos;
+	ListNodePtr pNext = (ListNodePtr)pCurr->m_Next;
+
+	pCurr->m_Prev->m_Next = pNext;
+	pNext->m_Prev = pCurr->m_Prev;
+	pCurr->m_Value.~T();
+	DeallocateNode(pCurr);
+	--m_Size;
+	return Iter(pNext);
 }
 
 // AllocateNode

@@ -69,6 +69,7 @@ public:
 		, m_Bool(false)
 		, m_AString("")
 		, m_FloatArray({ 1.0, 2.0, 3.0 })
+		, m_StructPtrArray({ nullptr })
 	{
 	}
 
@@ -115,9 +116,11 @@ private: // ensure reflection can set private members
 	AString		m_AString;
 	TestStruct	m_TestStruct;
 
-	Array<float>			m_FloatArray;
-	Array<TestStruct>		m_StructArray;
-	StrongPtr<TestObject>	m_TestObjectPtr;
+	Array<float>					m_FloatArray;
+	Array<TestStruct>				m_StructArray;
+	Array<TestStruct*>				m_StructPtrArray;
+	StrongPtr<TestObject>			m_TestObjectPtr;
+	Array<StrongPtr<TestObject>>	m_TestObjectPtrArray;
 
 	TREFLECTION_DECLARE(TestObject, IObject)
 };
@@ -134,10 +137,12 @@ TREFLECT_BEGIN(TestObject)
 	TREFLECT_FIELD(m_Int64,		"Int64")
 	TREFLECT_FIELD(m_Bool,		"Bool")
 	TREFLECT_FIELD(m_AString,	"AString")
-	TREFLECT_FIELD(m_TestStruct,	"TestStruct")
-	TREFLECT_FIELD(m_FloatArray,	"FloatArray")
-	TREFLECT_FIELD(m_StructArray,	"StructArray")
-	TREFLECT_FIELD(m_TestObjectPtr, "TestObjectPtr")
+	TREFLECT_FIELD(m_TestStruct,			"TestStruct")
+	TREFLECT_FIELD(m_FloatArray,			"FloatArray")
+	TREFLECT_FIELD(m_StructArray,			"StructArray")
+	TREFLECT_FIELD(m_StructPtrArray,		"StructPtrArray")
+	TREFLECT_FIELD(m_TestObjectPtrArray,	"TestObjectPtrArray")
+	TREFLECT_FIELD(m_TestObjectPtr,			"TestObjectPtr")
 TREFLECT_END(TestObject)
 
 

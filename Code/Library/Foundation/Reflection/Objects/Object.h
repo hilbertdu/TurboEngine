@@ -47,7 +47,7 @@ namespace TReflection
 // 		virtual void PreDeserialize();
 // 		virtual void PostDeserialize();
 	};
-	//REFLECTION_META_DEDUCE(IObject, IObject::MetaType)
+	REFLECTION_DECLARE_METAOBJECT(IObject, IObject::MetaType)
 }
 
 

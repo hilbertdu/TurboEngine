@@ -7,6 +7,8 @@
 
 #define MACRO_EXPAND(X)			X			// https://stackoverflow.com/questions/5134523/msvc-doesnt-expand-va-args-correctly
 #define MACRO_CAT(A, B)			A##B
+#define MACRO_CAT3(A, B, C)		A##B##C
+#define NMACRO_CAT3(A, B, C)	MACRO_CAT3(A, B, C)			// Nested macro
 #define MACRO_SELECT(NAME, NUM)	MACRO_CAT(NAME##_, NUM)
 
 #define MACRO_GET_INDEX_0(...) void

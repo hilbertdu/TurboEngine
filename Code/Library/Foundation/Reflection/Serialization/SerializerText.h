@@ -24,19 +24,21 @@ namespace TReflection
 		void Load(const IOStream* stream, void * object, const IMetaType * objectType);
 
 	private:
-		void SaveItem(IOStream* stream, const void * object, const IMetaType * objectType);
-		void LoadItem(const IOStream* stream, void * object, const IMetaType * objectType);
+		void SaveItem(IOStream* stream, const void * object, const IMetaType * objectType, bool isPointer = false);
+		void LoadItem(const IOStream* stream, void * object, const IMetaType * objectType, bool isPointer = false);
 
 		void SaveStruct(IOStream* stream, const void * object, const MetaStruct * objectType);
 		void SaveObject(IOStream* stream, const void * object, const MetaClass * objectType);
 		void SaveContainer(IOStream* stream, const void * object, const IMetaContainer * objectType);
+		void SavePointer(IOStream* stream, const void * object, const IMetaType * objectType);
 
 		void LoadStruct(const IOStream* stream, void * object, const MetaStruct * objectType);
 		void LoadObject(const IOStream* stream, void * object, const MetaClass * objectType);
 		void LoadContainer(const IOStream* stream, void * object, const IMetaContainer * objectType);
+		void LoadPointer(const IOStream* stream, void * object, const IMetaType * objectType);
 		
-		void SaveHead(IOStream* stream, const void * object, const Name& name, uint32 size);
-		void LoadHead(const IOStream* stream, void * object, const Name& name, uint32 &size);
+		void SaveHead(IOStream* stream, const void * object, const Name& name, uint32 size, bool isPointer = false);
+		void LoadHead(const IOStream* stream, void * object, const Name& name, uint32 &size, bool isPointer = false);
 
 		void SaveIndent(IOStream* stream);
 		void LoadIndent(const IOStream* stream);
@@ -59,7 +61,7 @@ namespace TReflection
 
 	// SaveHead
 	//------------------------------------------------------------------------------
-	void TextSerializer::SaveHead(IOStream* stream, const void * object, const Name& name, uint32 size)
+	void TextSerializer::SaveHead(IOStream* stream, const void * object, const Name& name, uint32 size, bool isPointer)
 	{
 		stream->Write("NAME: ", 6);
 		stream->Write(name.m_Name.Get(), name.m_Name.GetLength());
@@ -69,22 +71,33 @@ namespace TReflection
 		fieldSize.Format("%u", size);
 		stream->Write("FIELD SIZE: ", 12);
 		stream->Write(fieldSize.Get(), fieldSize.GetLength());
+		stream->Write(" ", 1);
+
+		AStackString<> pointer;
+		pointer.Format("%d", int(isPointer));
+		stream->Write("Pointer: ", 9);
+		stream->Write(pointer.Get(), pointer.GetLength());
 	}
 
 	// LoadHead
 	//------------------------------------------------------------------------------
-	void TextSerializer::LoadHead(const IOStream* stream, void * object, const Name& name, uint32 &size)
+	void TextSerializer::LoadHead(const IOStream* stream, void * object, const Name& name, uint32 &size, bool isPointer)
 	{
 		char temp[1024];
 		char readName[1024]{ 0 };
+		int pointer;
 
 		stream->Read(temp, 6);
 		stream->Read(readName, name.m_Name.GetLength());
 		stream->Read(temp, 1);
 		stream->Read(temp, 12);
 		STREAM_READ_SCANF(stream, %u, &size);
+		stream->Read(temp, 1);
+		stream->Read(temp, 9);
+		STREAM_READ_SCANF(stream, %d, &pointer);
 
 		ASSERT(name == readName);
+		ASSERT(pointer == int(isPointer));
 	}
 
 	// SaveIndent
@@ -119,15 +132,7 @@ namespace TReflection
 		
 		for (Array<Field>::ConstIter iter = fields.Begin(); iter != fields.End(); ++iter)
 		{
-			if ((*iter).m_IsPointer)
-			{
-				// TODO, pointer only support IObject class
-				ASSERT(false);
-			}
-			else
-			{
-				SaveItem(stream, (const char *)object + (*iter).m_Offset, (*iter).m_MetaType);
-			}
+			SaveItem(stream, (const char *)object + (*iter).m_Offset, (*iter).m_MetaType, (*iter).m_IsPointer);
 		}
 	}
 
@@ -150,8 +155,8 @@ namespace TReflection
 		{
 			while (readIter->IsValid())
 			{
-				SaveItem(stream, readIter->GetKey(), objectType->m_MetaTypeKey);
-				SaveItem(stream, readIter->GetValue(), objectType->m_MetaTypeValue);
+				SaveItem(stream, readIter->GetKey(), objectType->m_MetaTypeKey, readIter->IsKeyPointer());
+				SaveItem(stream, readIter->GetValue(), objectType->m_MetaTypeValue, readIter->IsKeyPointer());
 				readIter->MoveNext();
 			}
 		}
@@ -159,10 +164,18 @@ namespace TReflection
 		{
 			while (readIter->IsValid())
 			{
-				SaveItem(stream, readIter->GetValue(), objectType->m_MetaTypeValue);
+				SaveItem(stream, readIter->GetValue(), objectType->m_MetaTypeValue, readIter->IsValuePointer());
 				readIter->MoveNext();
 			}
 		}
+	}
+
+	// SavePointer
+	//------------------------------------------------------------------------------
+	void TextSerializer::SavePointer(IOStream* stream, const void * object, const IMetaType * objectType)
+	{
+		// TODO, pointer only support IObject class
+		ASSERT(objectType->IsObject());
 	}
 
 	// LoadStruct
@@ -178,14 +191,7 @@ namespace TReflection
 
 		for (Array<Field>::ConstIter iter = fields.Begin(); iter != fields.End(); ++iter)
 		{
-			if ((*iter).m_IsPointer)
-			{
-				// TODO, pointer only support IObject class
-				ASSERT(false);
-			}
-			{
-				LoadItem(stream, (char*)object + (*iter).m_Offset, (*iter).m_MetaType);
-			}
+			LoadItem(stream, (char*)object + (*iter).m_Offset, (*iter).m_MetaType, (*iter).m_IsPointer);
 		}
 	}
 
@@ -202,6 +208,8 @@ namespace TReflection
 	{
 		IWriteIterator* writeIter = objectType->m_WriteIterator;
 		writeIter->ResetContainer(object);
+
+		//LOUTPUT("Container %s value is pointer: %d\n", objectType->m_Name.m_Name.Get(), writeIter->IsValuePointer());
 		
 		uint32 count;
 		LoadHead(stream, object, objectType->m_Name, count);
@@ -211,9 +219,9 @@ namespace TReflection
 			void* key = keyType->Create();
 			for (uint32 i = 0; i < count; i++)
 			{
-				LoadItem(stream, key, keyType);
+				LoadItem(stream, key, keyType, writeIter->IsKeyPointer());
 				void* valueObject = writeIter->AddEmpty(key);
-				LoadItem(stream, valueObject, objectType->m_MetaTypeValue);
+				LoadItem(stream, valueObject, objectType->m_MetaTypeValue, writeIter->IsValuePointer());
 			}
 			TDELETE_SAFE(key);
 		}
@@ -222,19 +230,31 @@ namespace TReflection
 			for (uint32 i = 0; i < count; i++)
 			{
 				void* value_object = writeIter->AddEmpty();
-				LoadItem(stream, value_object, objectType->m_MetaTypeValue);
+				LoadItem(stream, value_object, objectType->m_MetaTypeValue, writeIter->IsValuePointer());
 			}
 		}
 	}
 
+	// LoadPointer
+	//------------------------------------------------------------------------------
+	void TextSerializer::LoadPointer(const IOStream* stream, void * object, const IMetaType * objectType)
+	{
+		// TODO, pointer only support IObject class
+		ASSERT(objectType->IsObject());
+	}
+
 	// Save
 	//------------------------------------------------------------------------------
-	void TextSerializer::SaveItem(IOStream* stream, const void * object, const IMetaType * objectType)
+	void TextSerializer::SaveItem(IOStream* stream, const void * object, const IMetaType * objectType, bool isPointer)
 	{
 		SaveIndent(stream);
 
 		++m_Indent;
-		if (objectType->IsBaseType())
+		if (isPointer)
+		{
+			SavePointer(stream, object, objectType);
+		}
+		else if (objectType->IsBaseType())
 		{
 			SerializerSave saveFunc = objectType->GetSave(E_SERIALIZER_TEXT);
 			saveFunc(stream, object);
@@ -260,12 +280,16 @@ namespace TReflection
 
 	// Load
 	//------------------------------------------------------------------------------
-	void TextSerializer::LoadItem(const IOStream* stream, void * object, const IMetaType * objectType)
+	void TextSerializer::LoadItem(const IOStream* stream, void * object, const IMetaType * objectType, bool isPointer)
 	{
 		LoadIndent(stream);
 
 		++m_Indent;
-		if (objectType->IsBaseType())
+		if (isPointer)
+		{
+			LoadPointer(stream, object, objectType);
+		}
+		else if (objectType->IsBaseType())
 		{
 			SerializerLoad loadFunc = objectType->GetLoad(E_SERIALIZER_TEXT);
 			loadFunc(stream, object);

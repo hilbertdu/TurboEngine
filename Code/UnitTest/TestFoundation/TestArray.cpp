@@ -158,7 +158,7 @@ void TestArray::ArrayInsertErase() const
 		{
 			arr.Append(idx);
 		}
-		LOUTPUT("Array : %2.4fs\n", t.GetElapsed());
+		LOUTPUT("Array<int> : %2.4fs\n", t.GetElapsed());
 	}
 	{
 		std::vector<int64> arr;
@@ -167,7 +167,25 @@ void TestArray::ArrayInsertErase() const
 		{
 			arr.push_back(idx);
 		}
-		LOUTPUT("std::vector : %2.4fs\n", t.GetElapsed());
+		LOUTPUT("std::vector<int> : %2.4fs\n", t.GetElapsed());
+	}
+	{
+		Array<AString> arr;
+		Timer t;
+		for (int64 idx = 0; idx < 100000; ++idx)
+		{
+			arr.Append(AString("abcdef"));
+		}
+		LOUTPUT("Array<String> : %2.4fs\n", t.GetElapsed());
+	}
+	{
+		std::vector<AString> arr;
+		Timer t;
+		for (int64 idx = 0; idx < 100000; ++idx)
+		{
+			arr.push_back(AString("abcdef"));
+		}
+		LOUTPUT("std::vector<String> : %2.4fs\n", t.GetElapsed());
 	}
 }
 

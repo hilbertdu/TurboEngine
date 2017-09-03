@@ -128,26 +128,47 @@ void TestHashMap::HashMapIterator() const
 #include <unordered_map>
 void TestHashMap::HashMapGrow() const
 {
-	HashMap<int64, AString> map;
 	{
+		HashMap<int64, AString> map;
 		Timer t;
-		int64 maxSize = 100;
+		int64 maxSize = 10000;
 		for (int64 index = 0; index < maxSize; ++index)
 		{
 			map[index] = "test";// AString("test");
 		}
-		LOUTPUT("HashMap : %2.4fs\n", t.GetElapsed());
+		LOUTPUT("HashMap string : %2.4fs\n", t.GetElapsed());
 		TEST_ASSERT(map[10] == "test");
 	}
 	{
 		std::unordered_map<int64, AString> stdMap;
 		Timer t;
-		int64 maxSize = 100;
+		int64 maxSize = 10000;
 		for (int64 index = 0; index < maxSize; ++index)
 		{
 			stdMap[index] = "test";// AString("test");
 		}
-		LOUTPUT("std::unordered_map : %2.4fs\n", t.GetElapsed());
+		LOUTPUT("std::unordered_map string : %2.4fs\n", t.GetElapsed());
+	}
+	{
+		HashMap<int64, int64> map;
+		Timer t;
+		int64 maxSize = 10000;
+		for (int64 index = 0; index < maxSize; ++index)
+		{
+			map[index] = index;
+		}
+		LOUTPUT("HashMap int : %2.4fs\n", t.GetElapsed());
+		TEST_ASSERT(map[10] == 10);
+	}
+	{
+		std::unordered_map<int64, int64> stdMap;
+		Timer t;
+		int64 maxSize = 10000;
+		for (int64 index = 0; index < maxSize; ++index)
+		{
+			stdMap[index] = index;
+		}
+		LOUTPUT("std::unordered_map int : %2.4fs\n", t.GetElapsed());
 	}
 }
 

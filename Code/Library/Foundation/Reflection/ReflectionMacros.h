@@ -32,14 +32,14 @@
 	_TREFLECTION_BEGIN_COMMON(OBJECT)
 
 #define _TREFLECTION_BEGIN_COMMON(OBJECT) \
-	/*static*/ void OBJECT::RegisterMetaType()														\
-	{																								\
-		MetaType * info = TNEW(TReflection::MetaType<OBJECT>);										\
-		info->m_Name = TXT(#OBJECT);																\
-		info->m_Super = static_cast<MetaStruct*>(MetaTypeDB::Instance().GetMetaType<BaseType>());	\
-		info->m_Creator = &OBJECT::Create;															\
-		MetaTypeDB::Instance().Register(info);														\
-	}																								\
+	/*static*/ void OBJECT::RegisterMetaType()															\
+	{																									\
+		MetaType* metaType = (MetaType*)MetaTypeDB::Instance().CreateMetaType<OBJECT>();				\
+		metaType->m_Name = TXT(#OBJECT);																\
+		metaType->m_Super = static_cast<MetaStruct*>(MetaTypeDB::Instance().GetMetaType<BaseType>());	\
+		metaType->m_Creator = &OBJECT::Create;															\
+		metaType->SetFlag(TReflection::E_TYPE_OBJECT);													\
+	}																									\
 	_TREFLECT_STRUCT_COMMON(OBJECT)
 
 #define _TREFLECT_STRUCT_COMMON(OBJECT) \

@@ -59,6 +59,7 @@ public:
 	FORCE_INLINE const T &	TopItem() const { ASSERT(m_Begin < m_End); return m_End[-1]; }
 	FORCE_INLINE SIZET		Index(ConstIter iter) const { return iter - m_Begin; }
 	FORCE_INLINE SIZET		Index(Iter iter) { return iter - m_Begin; }
+	FORCE_INLINE Iter		Iterator(SIZET index) const { return m_Begin + index; }
 
 	// C iterator
 	FORCE_INLINE Iter      begin() { return m_Begin; }
@@ -70,8 +71,7 @@ public:
 	void SetCapacity(SIZET capacity);
 	void SetSize(SIZET size);
 	void Clear();
-	void SwapItem(SIZET index1, SIZET index2);
-	void SwapItem(Iter& iter1, Iter& iter2);
+	void SwapItem(Iter iter1, Iter iter2);
 	void Swap(Array & other);
 
 	// Find
@@ -114,32 +114,32 @@ public:
 	FORCE_INLINE bool	IsEmpty() const { return (m_Begin == m_End); }
 
 	// Quick operation to be implement
+	FORCE_INLINE void EraseSwap(T * const iter, SIZET count = 1) { EraseSwapIndex(iter - m_Begin, count); }
 	void EraseSwapIndex(SIZET index, SIZET count = 1);
-	void EraseSwap(T * const iter, SIZET count = 1) { EraseSwapIndex(iter - m_Begin, count); }
 
 	// Optimization
 	void Shrink();
 
 	// Static helper
 	template<class... TArgs>
-	static void InPlaceConstruct(T * mem, SIZET count, TArgs&&... args);
-	static void InPlaceConstruct(T * mem, SIZET count);
-	static void InPlaceDestruct(T * mem, SIZET count);
-	static void UninitializedCopy(T * des, const T * src, SIZET count);
-	static void UninitializedMove(T * des, const T * src, SIZET count);
-	static void UninitializedFill(T * des, const T& value, SIZET count);
-	static void Move(T * des, const T * src, SIZET count);
-	static void Copy(T * des, const T * src, SIZET count);
-	static void Set(T * des, const T& value, SIZET count);
+	FORCE_INLINE static void InPlaceConstruct(T * mem, SIZET count, TArgs&&... args);
+	FORCE_INLINE static void InPlaceConstruct(T * mem, SIZET count);
+	FORCE_INLINE static void InPlaceDestruct(T * mem, SIZET count);
+	FORCE_INLINE static void UninitializedCopy(T * des, const T * src, SIZET count);
+	FORCE_INLINE static void UninitializedMove(T * des, T * src, SIZET count);
+	FORCE_INLINE static void UninitializedFill(T * des, const T& value, SIZET count);
+	FORCE_INLINE static void Move(T * des, T * src, SIZET count);
+	FORCE_INLINE static void Copy(T * des, T * src, SIZET count);
+	FORCE_INLINE static void Set(T * des, const T& value, SIZET count);
 
 private:
 	void  Resize(SIZET size, SIZET capacity);
-	void  Grow(SIZET capacity);
-	inline SIZET GetGrowCapacity(SIZET capacity);
+	FORCE_INLINE SIZET GetGrowCapacity(SIZET capacity);
+	FORCE_INLINE void  Grow(SIZET capacity);
 
-	T*   Allocate(SIZET size);
-	T*   Reallocate(SIZET size);
-	void Deallocate();
+	FORCE_INLINE T*   Allocate(SIZET size);
+	FORCE_INLINE T*   Reallocate(SIZET size);
+	FORCE_INLINE void Deallocate();
 
 	static void _InPlaceConstruct(T * mem, SIZET count, const std::true_type&);
 	template<class... TArgs>
@@ -148,11 +148,11 @@ private:
 	static void _InPlaceDestruct(T * mem, SIZET count, const std::false_type&);
 	static void _UninitializedCopy(T * des, const T * src, SIZET count, const std::true_type&);
 	static void _UninitializedCopy(T * des, const T * src, SIZET count, const std::false_type&);
-	static void _UninitializedMove(T * des, const T * src, SIZET count, const std::true_type&);
-	static void _UninitializedMove(T * des, const T * src, SIZET count, const std::false_type&);
-	static void _Move(T * des, const T * src, SIZET count, const std::true_type&);
-	static void _Move(T * des, const T * src, SIZET count, const std::false_type&);
-	static void _Copy(T * des, const T * src, SIZET count, const std::true_type&);
+	static void _UninitializedMove(T * des, T * src, SIZET count, const std::true_type&);
+	static void _UninitializedMove(T * des, T * src, SIZET count, const std::false_type&);
+	static void _Move(T * des, T * src, SIZET count, const std::true_type&);
+	static void _Move(T * des, T * src, SIZET count, const std::false_type&);
+	static void _Copy(T * des, T * src, SIZET count, const std::true_type&);
 	static void _Copy(T * des, const T * src, SIZET count, const std::false_type&);
 
 	Allocator m_Allocator;

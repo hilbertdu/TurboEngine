@@ -125,43 +125,47 @@ public:
 	FORCE_INLINE ConstIter Begin() const { return ConstIter(m_Head->m_Next); }
 	FORCE_INLINE Iter      End() { return Iter(m_Head); }
 	FORCE_INLINE ConstIter End() const { return ConstIter(m_Head); }
-	FORCE_INLINE Iter	   Last() { return --End(); }
-	FORCE_INLINE ConstIter Last() const { return --End(); }
+	FORCE_INLINE Iter	   Last() { return Iter(m_Head->m_Prev); }
+	FORCE_INLINE ConstIter Last() const { return ConstIter(m_Head->m_Prev); }
 
 	FORCE_INLINE bool  IsEmpty() const { return m_Size == 0; }
 	FORCE_INLINE SIZET GetSize() const { return m_Size; }
 	
 	// Insert/Remove
-	FORCE_INLINE void PushFront(const T& value) { Insert(Begin(), value); }
-	FORCE_INLINE void PushFront(T&& value) { Insert(Begin(), std::move(value)); }
-	FORCE_INLINE void PopFront() { Erase(Begin()); }
+	FORCE_INLINE void PushFront(const T& value) { _Insert(m_Head->m_Next, value); }
+	FORCE_INLINE void PushFront(T&& value) { _Insert(m_Head->m_Next, std::move(value)); }
+	FORCE_INLINE void PopFront() { _Erase((ListNodePtr)m_Head->m_Next); }
 
-	FORCE_INLINE void PushBack(const T& value) { Insert(End(), value); }
-	FORCE_INLINE void PushBack(T&& value) { Insert(End(), std::move(value)); }
-	FORCE_INLINE void PopBack() { Erase(Last()); }
+	FORCE_INLINE void PushBack(const T& value) { _Insert(m_Head, value); }
+	FORCE_INLINE void PushBack(T&& value) { _Insert(m_Head, std::move(value)); }
+	FORCE_INLINE void PopBack() { _Erase((ListNodePtr)m_Head->m_Prev); }
 
-	FORCE_INLINE Iter Insert(Iter pos, const T& value);
-	FORCE_INLINE Iter Insert(Iter pos, T&& value);
-	FORCE_INLINE Iter Erase(ConstIter pos);
-	FORCE_INLINE Iter Erase(ConstIter first, ConstIter last);
+	FORCE_INLINE Iter Insert(Iter& pos, const T& value) { _Insert(pos.GetNode(), value); return --pos; }
+	FORCE_INLINE Iter Insert(Iter& pos, T&& value) { _Insert(pos.GetNode(), std::move(value)); return --pos; }
+	FORCE_INLINE Iter Erase(Iter& pos) { return _Erase(pos.GetNode()); }
+	FORCE_INLINE Iter Erase(ConstIter& pos) { return _Erase(pos.GetNode()); }
+	FORCE_INLINE Iter Erase(Iter& first, Iter& last) { while (first != last) { first = Erase(first); } return Iter(last); }
+	FORCE_INLINE Iter Erase(ConstIter& first, ConstIter& last) { while (first != last) { first = Erase(first); } return Iter(last); }
+
+	FORCE_INLINE void Clear() { Erase(Begin(), End()); }
 
 	template<class... TArgs>
-	void EmplaceFront(TArgs&&... args);
+	FORCE_INLINE void EmplaceFront(TArgs&&... args) { Emplace(Begin(), std::forward<TArgs>(args)...); }
 	template<class... TArgs>
-	void EmplaceBack(TArgs&&... args);
+	FORCE_INLINE void EmplaceBack(TArgs&&... args) { Emplace(End(), std::forward<TArgs>(args)...); }
 	template<class... TArgs>
-	Iter Emplace(ConstIter pos, TArgs&&... args);
+	FORCE_INLINE Iter Emplace(Iter& pos, TArgs&&... args);
 
-	Iter Insert(Iter pos, SIZET size, const T& value);
+	FORCE_INLINE Iter Insert(Iter& pos, SIZET size, const T& value);
 	template<class InputIter>
-	Iter Insert(Iter pos, InputIter first, InputIter last);
+	FORCE_INLINE Iter Insert(Iter& pos, InputIter& first, InputIter& last);
 
 	void Resize(SIZET newSize);
-	void Clear();
 
 private:
 	template<class U>
-	void _Insert(Iter pos, U&& item);
+	void _Insert(ListNodePtr pos, U&& item);
+	Iter _Erase(ListNodePtr pos);
 
 	FORCE_INLINE ListNodePtr AllocateNode();
 	FORCE_INLINE void		 DeallocateNode(ListNodePtr pNode);

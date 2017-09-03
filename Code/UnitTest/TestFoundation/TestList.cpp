@@ -159,11 +159,30 @@ void TestList::ListAllocator() const
 	{
 		using AllocatorType = PoolAllocator<TAllocForm<sizeof(ListNode<AString>)>>;
 		LinkedList<AString, AllocatorType> list;
-		
-		for (uint16 idx = 0; idx < 10000; ++idx)
+		Timer t;
+		for (uint64 idx = 0; idx < 100000; ++idx)
 		{
-			list.PushBack(AStackString<>("test string"));
+			list.PushBack(AString("test string"));
 		}
+		LOUTPUT("[ListAllocator] List<PoolAllocator> : %2.4fs\n", t.GetElapsed());
+	}
+	{
+		LinkedList<AString> list;
+		Timer t;
+		for (uint64 idx = 0; idx < 100000; ++idx)
+		{
+			list.PushBack(AString("test string"));
+		}
+		LOUTPUT("[ListAllocator] List : %2.4fs\n", t.GetElapsed());
+	}
+	{
+		std::list<AString> list;
+		Timer t;
+		for (uint64 idx = 0; idx < 100000; ++idx)
+		{
+			list.push_back(AString("test string"));
+		}
+		LOUTPUT("[ListAllocator] std::list : %2.4fs\n", t.GetElapsed());
 	}
 }
 
