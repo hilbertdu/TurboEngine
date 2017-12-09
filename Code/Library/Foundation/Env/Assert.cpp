@@ -18,12 +18,16 @@
 //------------------------------------------------------------------------------
 bool IsDebuggerAttached()
 {
-#if defined(__WINDOWS__)
-	return (IsDebuggerPresent() == TRUE);
-#elif defined(__APPLE__)
-	return false; // TODO:MAC Implement IsDebugerAttached
+#ifdef ASSERT_ENABLED
+	#if defined(__WINDOWS__)
+		return (IsDebuggerPresent() == TRUE);
+	#elif defined(__APPLE__)
+		return false; // TODO:MAC Implement IsDebugerAttached
+	#else
+		#error Unknown platform
+	#endif
 #else
-	#error Unknown platform
+	return false;
 #endif
 }
 

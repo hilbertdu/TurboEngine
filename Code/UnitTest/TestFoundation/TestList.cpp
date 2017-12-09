@@ -164,6 +164,7 @@ void TestList::ListAllocator() const
 		{
 			list.PushBack(AString("test string"));
 		}
+		TEST_ASSERT(*list.Last() == "test string");
 		LOUTPUT("[ListAllocator] List<PoolAllocator> : %2.4fs\n", t.GetElapsed());
 	}
 	{
@@ -173,6 +174,7 @@ void TestList::ListAllocator() const
 		{
 			list.PushBack(AString("test string"));
 		}
+		TEST_ASSERT(*list.Last() == "test string");
 		LOUTPUT("[ListAllocator] List : %2.4fs\n", t.GetElapsed());
 	}
 	{

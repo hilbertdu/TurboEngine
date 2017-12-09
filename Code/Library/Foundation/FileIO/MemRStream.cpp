@@ -4,7 +4,6 @@
 // Includes
 //------------------------------------------------------------------------------
 #include "Foundation/FileIO/MemRStream.h"
-#include <memory.h> // for memcpy
 
 // Defines
 //------------------------------------------------------------------------------
@@ -41,7 +40,7 @@ uint64 MemRStream::ReadBuffer(void * buffer, uint64 bytesToRead) const
 	SIZET actualBytesToRead = Math::Min(availBytes, (SIZET)bytesToRead);
 	if (buffer)
 	{
-		memcpy(buffer, (void *)((SIZET)m_Buffer + m_CurrentPos), actualBytesToRead);
+		MemCopy(buffer, (void *)((SIZET)m_Buffer + m_CurrentPos), actualBytesToRead);
 	}
 	m_CurrentPos += actualBytesToRead;
 	return actualBytesToRead;

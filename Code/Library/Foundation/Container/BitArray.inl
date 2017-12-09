@@ -1,0 +1,242 @@
+// BitArray.inl
+//------------------------------------------------------------------------------
+
+// Constructors
+//------------------------------------------------------------------------------
+template<bool Const>
+BitArrayElement<Const>::BitArrayElement(InnerType& element, InnerType mask)
+	: m_Element(element)
+	, m_Mask(mask)
+{}
+
+template<bool Const>
+BitArrayElement<Const>::operator bool() const
+{
+	return (m_Element & m_Mask) != 0;
+}
+
+template<bool Const>
+bool BitArrayElement<Const>::operator==(bool bValue) const
+{
+	return bool(*this) == bValue;
+}
+
+template<bool Const>
+bool BitArrayElement<Const>::operator!=(bool bValue) const
+{
+	return bool(*this) != bValue;
+}
+
+template<bool Const>
+template<bool rConst>
+bool BitArrayElement<Const>::operator==(const BitArrayElement<rConst>& rOther) const
+{
+	return bool(*this) == bool(rOther);
+}
+
+template<bool Const>
+template<bool rConst>
+bool BitArrayElement<Const>::operator!=(const BitArrayElement<rConst>& rOther) const
+{
+	return bool(*this) != bool(rOther);
+}
+
+
+// Constructors
+//------------------------------------------------------------------------------
+template<class Allocator>
+BitArray<Allocator>::BitArray()
+	: m_Size(0)
+{}
+
+template<class Allocator>
+BitArray<Allocator>::BitArray(const Allocator& allocator)
+	: m_Size(0)
+	, m_Content(allocator)
+{
+}
+
+template<class Allocator>
+BitArray<Allocator>::BitArray(SIZET initSize)
+	: m_Size(initSize)
+	, m_Content(GetInnerIndex(initSize))
+{
+}
+
+template<class Allocator>
+template<class OtherAllocator>
+BitArray<Allocator>::BitArray(const BitArray<OtherAllocator>& other)
+{
+	m_Size = other.m_Size;
+	m_Content = other.m_Content;
+}
+
+// operators
+template<class Allocator>
+template<class OtherAllocator>
+BitArray<Allocator>& BitArray<Allocator>::operator=(const BitArray<OtherAllocator>& other)
+{
+	m_Size = other.m_Size;
+	m_Content = other.m_Content;
+}
+
+// access
+template<class Allocator>
+typename BitArray<Allocator>::Element BitArray<Allocator>::operator[](SIZET index)
+{
+}
+
+template<class Allocator>
+typename BitArray<Allocator>::ConstElement BitArray<Allocator>::operator[](SIZET index) const
+{
+}
+
+template<class Allocator>
+void BitArray<Allocator>::Set(SIZET index, bool value)
+{
+	ASSERT(index < m_Size);
+	ASSERT(index < m_Content.GetSize() * 8);
+
+	SIZET innerIdx = GetInnerIndex(index);
+	SIZET innerOffset = GetInnerOffset(index);
+
+	if (value)
+	{
+		m_Content[innerIdx] |= (1 << innerOffset);
+	}
+	else
+	{
+		m_Content[innerIdx] &= ~(1 << innerOffset);
+	}
+}
+
+template<class Allocator>
+void BitArray<Allocator>::Toggle(SIZET index)
+{
+	ASSERT(index < m_Size);
+	ASSERT(index < m_Content.GetSize() * EBITSIZE);
+
+	SIZET innerIdx = GetInnerIndex(index);
+	SIZET innerOffset = GetInnerOffset(index);
+	m_Content[innerIdx] ^= (1 << innerOffset);
+}
+
+template<class Allocator>
+void BitArray<Allocator>::SetAll(bool value)
+{
+	ASSERT(GetInnerIndex(m_Size - 1) + 1 == m_Content.GetSize());
+	InnerType * inner = m_Content.GetPointer();
+	MemSet(inner, value ? 0xFF : 0x00, GetInnerIndex(m_Size) * sizeof(InnerType));
+}
+
+template<class Allocator>
+void BitArray<Allocator>::ToggleAll()
+{
+	ASSERT(GetInnerIndex(m_Size - 1) + 1 == m_Content.GetSize());
+	for (InnerArray::Iter iter = m_Content.Begin(); iter != m_Content.End(); ++iter)
+	{
+		(*iter) = ~(*iter);
+	}
+}
+
+template<class Allocator>
+void BitArray<Allocator>::SetRange(SIZET begin, SIZET end, bool value)
+{
+	ASSERT(begin > 0 && begin < m_Size);
+	ASSERT(end > 0 && end < m_Size);
+
+	SIZET leftIdx = GetInnerIndex(begin);
+	SIZET leftOffset = GetInnerOffset(begin);
+	SIZET rightIdx = GetInnerIndex(end);
+	SIZET rightOffset = GetInnerOffset(end);
+
+	InnerType * inner = m_Content.GetPointer();	
+	if (rightIdx > leftIdx)
+	{
+		SetInnerRange(leftIdx, leftOffset, EBITSIZE, value);
+		if (rightIdx - leftIdx > 1)
+		{
+			MemSet(inner + leftIdx + 1, value ? 0xFF : 0x00, (rightIdx - leftIdx) * sizeof(InnerType));
+		}
+		SetInnerRange(rightIdx, 0, rightOffset + 1, value);
+	}
+	else
+	{
+		SetInnerRange(leftIdx, leftOffset, rightOffset + 1, value);
+	}
+}
+
+template<class Allocator>
+void BitArray<Allocator>::ToggleRange(SIZET beign, SIZET end)
+{
+	ASSERT(begin > 0 && begin < m_Size);
+	ASSERT(end > 0 && end < m_Size);
+
+	SIZET leftIdx = GetInnerIndex(begin);
+	SIZET leftOffset = GetInnerOffset(begin);
+	SIZET rightIdx = GetInnerIndex(end);
+	SIZET rightOffset = GetInnerOffset(end);
+
+	InnerType * inner = m_Content.GetPointer();
+	if (rightIdx > leftIdx)
+	{
+		ToggleInnerRange(leftIdx, leftOffset, EBITSIZE);
+		for (SIZET idx = 1; idx < rightIdx - leftIdx; ++idx)
+		{
+			m_Content[idx] ~= m_Content[idx];
+		}
+		ToggleInnerRange(rightIdx, 0, rightOffset + 1);
+	}
+	else
+	{
+		ToggleInnerRange(leftIdx, leftOffset, rightOffset + 1);
+	}
+}
+
+template<class Allocator>
+void BitArray<Allocator>::SetInnerRange(SIZET index, SIZET begin, SIZET end, bool value)
+{
+	// bitset: begin -> end - 1
+	ASSERT(begin >= 0 && begin < EBITSIZE);
+	ASSERT(end >= 0 && end < EBITSIZE);
+	if (value)
+	{
+		m_Content[index] |= ((0xFFFFF << begin) - (0xFFFF << end));
+	}
+	else
+	{
+		m_Content[index] &= ~((0xFFFFF << begin) - (0xFFFF << end));
+	}
+}
+
+template<class Allocator>
+void BitArray<Allocator>::ToggleInnerRange(SIZET index, SIZET begin, SIZET end)
+{
+	// bitset: begin -> end - 1
+	ASSERT(begin >= 0 && begin < EBITSIZE);
+	ASSERT(end >= 0 && end < EBITSIZE);
+	if (value)
+	{
+		m_Content[index] ^= ~((0xFFFFF << begin) - (0xFFFF << end));
+	}
+	else
+	{
+		m_Content[index] ^= ((0xFFFFF << begin) - (0xFFFF << end));
+	}
+}
+
+template<class Allocator>
+void BitArray<Allocator>::Append(bool value, SIZET count = 1)
+{
+	ASSERT(GetInnerIndex(m_Size - 1) + 1 == m_Content.GetSize());
+
+	SIZET newSize = m_Size + count;
+	SIZET newInnerSize = GetInnerIndex(newSize - 1) + 1;
+	if (newInnerSize > m_Content.GetCapacity())
+	{
+		m_Content.SetCapacity(newInnerSize);
+	}
+
+	// set current last bitset
+
+}

@@ -54,7 +54,7 @@ uint64 MemWStream::WriteBuffer(const void * buffer, uint64 bytesToWrite)
 		GrowToAccomodate(bytesToWrite);
 	}
 
-	memcpy(m_End, buffer, (SIZET)bytesToWrite);
+	MemCopy(m_End, buffer, (SIZET)bytesToWrite);
 	m_End += bytesToWrite;
 
 	return bytesToWrite;

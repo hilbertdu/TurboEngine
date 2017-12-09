@@ -48,6 +48,7 @@ namespace TReflection
 
 	/*inline*/ void MetaTypeDB::Register(IMetaType * metaType)
 	{
+		ASSERT(m_MetaTypes.Find(metaType->m_Name.m_Hash) == m_MetaTypes.End());
 		m_MetaTypes[metaType->m_Name.m_Hash] = metaType;
 	}
 

@@ -65,7 +65,7 @@ public:
 	FORCE_INLINE Iter      begin() { return m_Begin; }
 	FORCE_INLINE ConstIter begin() const { return m_Begin; }
 	FORCE_INLINE Iter      end() { return m_End; }
-	FORCE_INLINE ConstIter end() const { return m_End; }
+	FORCE_INLINE ConstIter end() const { return m_End; }	
 
 	// Capacity and size
 	void SetCapacity(SIZET capacity);
@@ -119,6 +119,9 @@ public:
 
 	// Optimization
 	void Shrink();
+
+	// Get raw
+	FORCE_INLINE T * GetPointer() { return m_Begin; }
 
 	// Static helper
 	template<class... TArgs>

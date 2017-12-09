@@ -35,6 +35,8 @@ public:
 		mach_timebase_info_data_t info;
 		mach_timebase_info(&info);
 		Timer::s_Frequency = (int64_t)(info.numer / info.denom) * 1000000000;
+#else
+		Timer::s_Frequency = 1000000000ULL;
 #endif
 		Timer::s_FrequencyInvFloat = (float)(1.0 / (double)Timer::s_Frequency);
 		Timer::s_FrequencyInvFloatMS = (float)(1.0 / (double)Timer::s_Frequency * 1000.0);
