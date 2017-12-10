@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D8C047DB-C0A8-4727-8389-90E962B78D1D}</ProjectGuid>
+    <RootNamespace>Foundation</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)Build\Lib\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\Tmp\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)Build\Lib\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\Tmp\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)Build\Lib\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\Tmp\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)Build\Lib\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\Tmp\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Analyzer\MemTracker.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Analyzer\Profile.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Analyzer\ProfileManager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Container\AnyClass.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Container\Array.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Container\List.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Container\RBTree.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Container\Ref.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Container\SmartPtr.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Container\BitArray.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Container\HashMap.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Container\HashTable.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Container\Pair.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Env\Assert.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\FileIO\IOStream.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\FileIO\MemRStream.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\FileIO\MemWStream.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Math\CRC32.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Memory\Deletor.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Pattern\Delegate.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Pattern\Event.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Pattern\Property.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Function\Compare.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Function\Hash.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Logging\Logger.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Math\Conversion.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Memory\Allocator.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Memory\Mem.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Memory\MemPool.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Memory\MemPoolBlock.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Pattern\Singleton.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Platform\Misc.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Platform\Platform.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Platform\Types.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Process\Mutex.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Process\Thread.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Container\Iterator.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Container\Iterators.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Members\Field.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Members\Method.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\MetaType\Type.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeClass.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeContainer.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeDatabase.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeDecl.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeDeclMacro.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeEnum.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeStruct.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Objects\Object.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Reflection.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\ReflectionMacros.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Serialization\Serializer.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerProperty.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerText.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\String\String.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\String\StringAnsi.inl" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\String\StringWide.inl" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Template\Macros.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Template\Template.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Time\Timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Analyzer\MemTracker.cpp" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Container\List.inl">
+      <FileType>Document</FileType>
+    </ClInclude>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Analyzer\ProfileManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Env\Assert.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\FileIO\IOStream.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\FileIO\MemRStream.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\FileIO\MemWStream.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Logging\Logger.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Math\CRC32.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Memory\Mem.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Memory\MemPool.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Memory\MemPoolBlock.cpp" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Pattern\Event.inl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </ClInclude>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Process\Mutex.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Process\Thread.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Reflection\Reflection.inl" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Time\Timer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\Code\Library\Foundation\Container\Array.inl" />
+    <None Include="..\..\..\..\Code\Library\Foundation\Container\BitArray.inl" />
+    <None Include="..\..\..\..\Code\Library\Foundation\Container\HashTable.inl" />
+    <None Include="..\..\..\..\Code\Library\Foundation\Container\RBTree.inl" />
+    <None Include="..\..\..\..\Code\Library\Foundation\Memory\Allocator.inl" />
+    <None Include="..\..\..\..\Code\Library\Foundation\String\String.inl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -11,6 +11,7 @@ int main(int, char *[])
 {
 	// Tests to run
 	REGISTER_TESTGROUP(TestArray)
+	REGISTER_TESTGROUP(TestBitArray)
 	REGISTER_TESTGROUP(TestString)
 	REGISTER_TESTGROUP(TestHashMap)
 	REGISTER_TESTGROUP(TestSmartPtr)

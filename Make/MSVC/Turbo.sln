@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Foundation", "Projects\Foundation.vcxproj", "{D8C047DB-C0A8-4727-8389-90E962B78D1D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Foundation", "Projects\Library\Foundation.vcxproj", "{D8C047DB-C0A8-4727-8389-90E962B78D1D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. External", "0. External", "{ECF1FCDA-D085-46FE-8C48-5F09A95F6733}"
 EndProject
@@ -17,7 +17,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestFoundation", "Projects\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestFramework", "Projects\UnitTests\TestFramework.vcxproj", "{5DD3894D-13D1-46EE-88D6-AEB419445CBE}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UIFramework", "Projects\UIFramework.vcxproj", "{8AEC3445-1655-486B-A4E8-C223CC32CAEA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Projects\Library\Engine.vcxproj", "{8AEC3445-1655-486B-A4E8-C223CC32CAEA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imgui", "Projects\External\imgui.vcxproj", "{A7173BA5-1B7C-4178-8E5A-89879A776F1D}"
 EndProject

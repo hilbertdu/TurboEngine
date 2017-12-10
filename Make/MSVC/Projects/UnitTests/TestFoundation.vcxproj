@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestAnyClass.cpp" />
     <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestArray.cpp" />
+    <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestBitArray.cpp" />
     <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestEvent.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -155,7 +156,7 @@
     <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Foundation.vcxproj">
+    <ProjectReference Include="..\Library\Foundation.vcxproj">
       <Project>{d8c047db-c0a8-4727-8389-90e962b78d1d}</Project>
     </ProjectReference>
     <ProjectReference Include="TestFramework.vcxproj">

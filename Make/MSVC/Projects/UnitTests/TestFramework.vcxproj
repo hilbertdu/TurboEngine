@@ -137,7 +137,7 @@
     <ClCompile Include="..\..\..\..\Code\UnitTest\TestFramework\UnitTestManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Foundation.vcxproj">
+    <ProjectReference Include="..\Library\Foundation.vcxproj">
       <Project>{d8c047db-c0a8-4727-8389-90e962b78d1d}</Project>
     </ProjectReference>
   </ItemGroup>

@@ -134,6 +134,13 @@
       <Project>{d8c047db-c0a8-4727-8389-90e962b78d1d}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\Code\Application\UIEditor\Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\Code\Application\UIEditor\App\Application.h" />
+    <ClInclude Include="..\..\..\..\Code\Application\UIEditor\App\ApplicationWin32.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

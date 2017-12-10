@@ -1,7 +1,7 @@
 // BitArray.inl
 //------------------------------------------------------------------------------
 
-// Constructors
+// BitArrayElement
 //------------------------------------------------------------------------------
 template<bool Const>
 BitArrayElement<Const>::BitArrayElement(InnerType& element, InnerType mask)
@@ -42,7 +42,111 @@ bool BitArrayElement<Const>::operator!=(const BitArrayElement<rConst>& rOther) c
 }
 
 
-// Constructors
+// BitArrayIterator
+//------------------------------------------------------------------------------
+template<bool Const>
+BitArrayIterator<Const>::BitArrayIterator(InnerType* element, InnerType mask)
+	: m_Element(element)
+	, m_Mask(mask)
+{
+}
+
+template<bool Const>
+BitArrayIterator<Const>::BitArrayIterator(const BitArrayIterator<!Const>& rOther)
+{
+	m_Element = rOther.m_Element;
+	m_Mask = rOther.m_Mask;
+}
+
+template<bool Const>
+typename BitArrayIterator<Const>::ConstElement& BitArrayIterator<Const>::operator*() const
+{
+	return ConstElement(*m_Element, m_Mask);
+}
+
+template<bool Const>
+template<class>
+typename BitArrayIterator<Const>::Element& BitArrayIterator<Const>::operator*()
+{
+	return Element(*m_Element, m_Mask);
+}
+
+template<bool Const>
+BitArrayIterator<Const>& BitArrayIterator<Const>::operator++()
+{
+	if (!(m_Mask <<= 1))
+	{
+		++m_Element;
+		m_Mask = 1;
+	}
+	return *this;
+}
+
+template<bool Const>
+BitArrayIterator<Const> BitArrayIterator<Const>::operator++(int)
+{
+	BitArrayIterator<Const> result = *this;
+	++(*this);
+	return result;
+}
+
+template<bool Const>
+BitArrayIterator<Const>& BitArrayIterator<Const>::operator--()
+{
+	if (!(m_Mask >>= 1))
+	{
+		--m_Element;
+		m_Mask = 1 << (EBITSIZE - 1);
+	}
+	return *this;
+}
+
+template<bool Const>
+BitArrayIterator<Const> BitArrayIterator<Const>::operator--(int)
+{
+	BitArrayIterator<Const> result = *this;
+	--(*this);
+	return result;
+}
+
+template<bool Const>
+bool BitArrayIterator<Const>::operator==(const BitArrayIterator<Const>& rOther) const
+{
+	return m_Element == rOther.m_Element && m_Mask == rOther.m_Mask;
+}
+
+template<bool Const>
+bool BitArrayIterator<Const>::operator!=(const BitArrayIterator<Const>& rOther) const
+{
+	return m_Element != rOther.m_Element || m_Mask != rOther.m_Mask;
+}
+
+template<bool Const>
+bool BitArrayIterator<Const>::operator<(const BitArrayIterator<Const>& rOther) const
+{
+	return m_Element < rOther.m_Element || (m_Element == rOther.m_Element && m_Mask < rOther.m_Mask);
+}
+
+template<bool Const>
+bool BitArrayIterator<Const>::operator>(const BitArrayIterator<Const>& rOther) const
+{
+	return m_Element > rOther.m_Element || (m_Element == rOther.m_Element && m_Mask > rOther.m_Mask);
+}
+
+template<bool Const>
+bool BitArrayIterator<Const>::operator<=(const BitArrayIterator<Const>& rOther) const
+{
+	return m_Element < rOther.m_Element || (m_Element == rOther.m_Element && m_Mask <= rOther.m_Mask);
+}
+
+template<bool Const>
+bool BitArrayIterator<Const>::operator>=(const BitArrayIterator<Const>& rOther) const
+{
+	return m_Element > rOther.m_Element || (m_Element == rOther.m_Element && m_Mask >= rOther.m_Mask);
+}
+
+
+// BitArray
 //------------------------------------------------------------------------------
 template<class Allocator>
 BitArray<Allocator>::BitArray()
@@ -84,11 +188,13 @@ BitArray<Allocator>& BitArray<Allocator>::operator=(const BitArray<OtherAllocato
 template<class Allocator>
 typename BitArray<Allocator>::Element BitArray<Allocator>::operator[](SIZET index)
 {
+	return Element(m_Content[GetInnerIndex(index)], GetInnerOffset(index));
 }
 
 template<class Allocator>
 typename BitArray<Allocator>::ConstElement BitArray<Allocator>::operator[](SIZET index) const
 {
+	return ConstElement(m_Content[GetInnerIndex(index)], GetInnerOffset(index));
 }
 
 template<class Allocator>
@@ -236,7 +342,13 @@ void BitArray<Allocator>::Append(bool value, SIZET count = 1)
 	{
 		m_Content.SetCapacity(newInnerSize);
 	}
+	m_Size = newSize;
+	SetRange(m_Size - count, m_Size, value);
+}
 
-	// set current last bitset
-
+template<class Allocator>
+void BitArray<Allocator>::SetSize(SIZET size)
+{
+	m_Size = size;
+	m_Content.SetSize(GetInnerIndex(size - 1) + 1);
 }

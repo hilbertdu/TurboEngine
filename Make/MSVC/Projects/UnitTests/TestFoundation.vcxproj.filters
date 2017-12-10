@@ -11,5 +11,6 @@
     <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestReflection.cpp" />
     <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestAnyClass.cpp" />
     <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestList.cpp" />
+    <ClCompile Include="..\..\..\..\Code\UnitTest\TestFoundation\TestBitArray.cpp" />
   </ItemGroup>
 </Project>
