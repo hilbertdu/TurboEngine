@@ -61,7 +61,37 @@ void TestBitArray::BitArrayAssignment() const
 	}
 	{
 		bitArr.SetAll(false);
-
+		TEST_ASSERT(bitArr[0] == false);
+		bitArr.Toggle(0);
+		TEST_ASSERT(bitArr[0] == true);
+	}
+	{
+		bitArr.ToggleAll();
+		TEST_ASSERT(bitArr[0] == false);
+		TEST_ASSERT(bitArr[1] == true);
+		TEST_ASSERT(bitArr[7] == true);
+	}
+	{
+		bitArr.Toggle(7);
+		TEST_ASSERT(bitArr[0] == false);
+		TEST_ASSERT(bitArr[1] == true);
+		TEST_ASSERT(bitArr[7] == false);
+	}
+	{
+		bitArr.Append(true, 2);		
+		TEST_ASSERT(bitArr[0] == false);
+		TEST_ASSERT(bitArr[1] == true);
+		TEST_ASSERT(bitArr[8] == true);
+		TEST_ASSERT(bitArr[9] == true);
+		TEST_ASSERT(bitArr.GetSize() == 10);
+	}
+	{
+		bitArr.SetAll(true);
+		bitArr.SetRange(1, 8, false);
+		TEST_ASSERT(bitArr[0] == true);
+		TEST_ASSERT(bitArr[9] == true);
+		TEST_ASSERT(bitArr[1] == false);
+		TEST_ASSERT(bitArr[7] == false);
 	}
 }
 
@@ -69,12 +99,27 @@ void TestBitArray::BitArrayAssignment() const
 //------------------------------------------------------------------------------
 void TestBitArray::BitArrayIterator() const
 {
+	{
+		BitArray<> bitArr(12);
+		bitArr.SetAll(true);
+		for (auto& iter = bitArr.Begin(); iter != bitArr.End(); ++iter)
+		{
+			TEST_ASSERT((*iter) == true);
+		}
+	}
 }
 
 // ArrayAllocator
 //------------------------------------------------------------------------------
 void TestBitArray::BitArrayAllocator() const
 {
+	{
+		BitArray<StackAllocator<16, false>> bitArr(24);
+		bitArr.SetAll(false);
+		bitArr.Append(true, 40);
+		TEST_ASSERT(bitArr[0] == false);
+		TEST_ASSERT(bitArr[63] == true);
+	}
 }
 
 //------------------------------------------------------------------------------

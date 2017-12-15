@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Foundation", "Projects\Library\Foundation.vcxproj", "{D8C047DB-C0A8-4727-8389-90E962B78D1D}"
 EndProject
@@ -24,6 +24,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestImGui", "Projects\UnitTests\TestImGui.vcxproj", "{59E5A20B-7296-4F5E-B08A-5A0A98A8FD35}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UIEditor", "Projects\Application\UIEditor.vcxproj", "{58548CAF-3124-4E04-BD95-388726017720}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bgfx", "Projects\External\bgfx.vcxproj", "{3A10DB54-CB0B-4766-AF07-1C44A8162BBE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,14 @@ Global
 		{58548CAF-3124-4E04-BD95-388726017720}.Release|x64.Build.0 = Release|x64
 		{58548CAF-3124-4E04-BD95-388726017720}.Release|x86.ActiveCfg = Release|Win32
 		{58548CAF-3124-4E04-BD95-388726017720}.Release|x86.Build.0 = Release|Win32
+		{3A10DB54-CB0B-4766-AF07-1C44A8162BBE}.Debug|x64.ActiveCfg = Debug|x64
+		{3A10DB54-CB0B-4766-AF07-1C44A8162BBE}.Debug|x64.Build.0 = Debug|x64
+		{3A10DB54-CB0B-4766-AF07-1C44A8162BBE}.Debug|x86.ActiveCfg = Debug|Win32
+		{3A10DB54-CB0B-4766-AF07-1C44A8162BBE}.Debug|x86.Build.0 = Debug|Win32
+		{3A10DB54-CB0B-4766-AF07-1C44A8162BBE}.Release|x64.ActiveCfg = Release|x64
+		{3A10DB54-CB0B-4766-AF07-1C44A8162BBE}.Release|x64.Build.0 = Release|x64
+		{3A10DB54-CB0B-4766-AF07-1C44A8162BBE}.Release|x86.ActiveCfg = Release|Win32
+		{3A10DB54-CB0B-4766-AF07-1C44A8162BBE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,5 +111,6 @@ Global
 		{A7173BA5-1B7C-4178-8E5A-89879A776F1D} = {ECF1FCDA-D085-46FE-8C48-5F09A95F6733}
 		{59E5A20B-7296-4F5E-B08A-5A0A98A8FD35} = {0C9092CC-2B6E-41C6-85CB-C9B8FA60B3EB}
 		{58548CAF-3124-4E04-BD95-388726017720} = {C2028ACC-17F0-46D9-A647-9D94CD8FAD69}
+		{3A10DB54-CB0B-4766-AF07-1C44A8162BBE} = {ECF1FCDA-D085-46FE-8C48-5F09A95F6733}
 	EndGlobalSection
 EndGlobal

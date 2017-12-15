@@ -53,16 +53,17 @@ public:
 	static_assert(T_IS_POWER_OF_2(EBITSIZE) && EBITSIZE <= sizeof(int) * 8, "bit size is large than int size");
 
 	explicit BitArrayIterator() = default;
+	explicit BitArrayIterator(InnerType* element, InnerType mask);
 	BitArrayIterator(const BitArrayIterator& rOther) = default;
 	BitArrayIterator(const BitArrayIterator<!Const>& rOther);
 
 	BitArrayIterator& operator=(const BitArrayIterator& rOther) = default;
 	BitArrayIterator& operator=(const BitArrayIterator<!Const>& rOther);
 
-	ConstElement& operator*() const;
+	ConstElement operator*() const;
 
 	template<class = std::enable_if<!Const>::type>
-	Element& operator*();
+	Element operator*();
 
 	BitArrayIterator& operator++();
 	BitArrayIterator  operator++(int);
@@ -78,9 +79,7 @@ public:
 
 protected:
 	InnerType* m_Element;
-	InnerType  m_Mask;
-
-	explicit BitArrayIterator(InnerType* element, InnerType mask);
+	InnerType  m_Mask;	
 };
 
 
@@ -92,6 +91,8 @@ class BitArray
 public:
 	typedef BitArrayElement<false>	Element;
 	typedef BitArrayElement<true>	ConstElement;
+	typedef BitArrayIterator<false> Iter;
+	typedef BitArrayIterator<true>	ConstIter;
 	typedef Array<InnerType, Allocator>	InnerArray;
 
 	static constexpr SIZET EBITSIZE = sizeof(InnerType) * 8;
@@ -124,12 +125,17 @@ public:
 	void Append(bool value, SIZET count = 1);
 
 	void SetSize(SIZET size);
+	void Shrink();
 
 	// Iterator
+	FORCE_INLINE Iter		Begin();
+	FORCE_INLINE Iter		End();
+	FORCE_INLINE ConstIter	Begin() const;
+	FORCE_INLINE ConstIter	End() const;
 
 	// Access
-	Element			operator[](SIZET index);
-	ConstElement	operator[](SIZET index) const;
+	FORCE_INLINE Element		operator[](SIZET index);
+	FORCE_INLINE ConstElement	operator[](SIZET index) const;
 
 	FORCE_INLINE bool  IsEmpty() const { return m_Content.IsEmpty(); }
 	FORCE_INLINE SIZET GetSize() const { return m_Size; }
@@ -137,7 +143,7 @@ public:
 
 private:
 	FORCE_INLINE SIZET GetInnerIndex(SIZET index) const { return index >> Math::Log2(EBITSIZE); }	// Get array index
-	FORCE_INLINE InnerType GetInnerOffset(SIZET index) const { return (InnerType)(index & ~Math::Log2(EBITSIZE)); }	// Get bitset offset
+	FORCE_INLINE InnerType GetInnerOffset(SIZET index) const { return (InnerType)(index & (EBITSIZE - 1)); }	// Get bitset offset
 
 	void SetInnerRange(SIZET index, SIZET begin, SIZET end, bool value);
 	void ToggleInnerRange(SIZET index, SIZET begin, SIZET end);

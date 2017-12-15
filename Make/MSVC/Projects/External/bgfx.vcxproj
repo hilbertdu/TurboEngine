@@ -1,0 +1,338 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\include\bgfx\bgfx.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\include\bgfx\c99\bgfx.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\include\bgfx\c99\platform.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\include\bgfx\defines.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\include\bgfx\embedded_shader.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\include\bgfx\platform.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\bgfx_p.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\charset.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\config.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\debug_renderdoc.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\glcontext_eagl.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\glcontext_egl.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\glcontext_glx.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\glcontext_nsgl.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\glcontext_wgl.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\glimports.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\hmd.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\hmd_openvr.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\hmd_ovr.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\nvapi.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\renderer.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\renderer_d3d.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\renderer_d3d11.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\renderer_d3d12.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\renderer_d3d9.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\renderer_gl.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\renderer_mtl.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\renderer_vk.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\shader.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\shader_dx9bc.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\shader_dxbc.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\shader_spirv.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\topology.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bgfx\src\vertexdecl.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bimg\include\bimg\bimg.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bimg\include\bimg\decode.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bimg\include\bimg\encode.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\allocator.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\bx.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\commandline.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\config.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\cpu.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\debug.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\easing.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\endian.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\error.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\file.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\filepath.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\float4x4_t.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\handlealloc.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\hash.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\macros.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\maputil.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\math.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\mpscqueue.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\mutex.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\os.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\pixelformat.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\platform.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\process.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\readerwriter.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\ringbuffer.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\rng.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\semaphore.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\settings.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\simd_t.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\sort.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\spscqueue.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\string.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\thread.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\timer.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\uint32_t.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\bx\url.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\compat\freebsd\alloca.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\compat\freebsd\dirent.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\compat\freebsd\malloc.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\compat\freebsd\signal.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\compat\ios\malloc.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\compat\mingw\alloca.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\compat\mingw\dirent.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\compat\mingw\sal.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\compat\mingw\specstrings_strict.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\compat\mingw\specstrings_undef.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\compat\msvc\alloca.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\compat\msvc\dirent.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\compat\msvc\inttypes.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\compat\msvc\pre1600\stdint.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\compat\msvc\stdbool.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\compat\osx\malloc.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\tinystl\allocator.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\tinystl\buffer.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\tinystl\hash.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\tinystl\hash_base.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\tinystl\new.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\tinystl\stddef.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\tinystl\string.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\tinystl\traits.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\tinystl\unordered_map.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\tinystl\unordered_set.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\include\tinystl\vector.h" />
+    <ClInclude Include="..\..\..\..\Code\External\bgfx\bx\src\bx_p.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\amalgamated.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\bgfx.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\debug_renderdoc.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\glcontext_egl.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\glcontext_glx.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\glcontext_wgl.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\hmd.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\hmd_openvr.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\hmd_ovr.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\nvapi.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\renderer_d3d11.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\renderer_d3d12.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\renderer_d3d9.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\renderer_gl.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\renderer_gnm.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\renderer_noop.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\renderer_vk.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\shader.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\shader_dx9bc.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\shader_dxbc.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\shader_spirv.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\topology.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\vertexdecl.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bimg\src\image.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bimg\src\image_gnf.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\allocator.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\amalgamated.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\bx.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\commandline.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\crtnone.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\debug.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\dtoa.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\easing.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\file.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\filepath.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\hash.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\math.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\mutex.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\os.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\process.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\semaphore.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\settings.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\sort.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\string.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\thread.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\timer.cpp" />
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\url.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\Code\External\bgfx\bgfx\src\glcontext_eagl.mm" />
+    <None Include="..\..\..\..\Code\External\bgfx\bgfx\src\glcontext_nsgl.mm" />
+    <None Include="..\..\..\..\Code\External\bgfx\bgfx\src\makefile" />
+    <None Include="..\..\..\..\Code\External\bgfx\bgfx\src\renderer_mtl.mm" />
+    <None Include="..\..\..\..\Code\External\bgfx\bgfx\src\varying.def.sc" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\allocator.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\bx.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\cpu.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\easing.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\endian.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\error.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\float4x4_t.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\handlealloc.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\hash.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\math.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\mpscqueue.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\mutex.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\pixelformat.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\readerwriter.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\ringbuffer.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\rng.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\simd128_langext.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\simd128_neon.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\simd128_ref.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\simd128_sse.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\simd128_swizzle.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\simd256_avx.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\simd256_ref.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\simd_ni.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\sort.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\spscqueue.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\string.inl" />
+    <None Include="..\..\..\..\Code\External\bgfx\bx\include\bx\inline\uint32_t.inl" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3A10DB54-CB0B-4766-AF07-1C44A8162BBE}</ProjectGuid>
+    <RootNamespace>bgfx</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)Build\Lib\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\Tmp\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)Build\Lib\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\Tmp\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)Build\Lib\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\Tmp\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)Build\Lib\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\Tmp\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\External\bgfx\bx\include;$(SolutionDir)..\..\Code\External\bgfx\bx\include\compat\msvc;$(SolutionDir)..\..\Code\External\bgfx\bx\3rdparty;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty\dxsdk\include;$(SolutionDir)..\..\Code\External\bgfx\bgfx\include;$(SolutionDir)..\..\Code\External\bgfx\bimg\include;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty\khronos</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>__STDC_LIMIT_MACROS;__STDC_FORMAT_MACROS;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>
+      </AdditionalOptions>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\External\bgfx\bx\include;$(SolutionDir)..\..\Code\External\bgfx\bx\include\compat\msvc;$(SolutionDir)..\..\Code\External\bgfx\bx\3rdparty;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty\dxsdk\include;$(SolutionDir)..\..\Code\External\bgfx\bgfx\include;$(SolutionDir)..\..\Code\External\bgfx\bimg\include;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty\khronos</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>__STDC_LIMIT_MACROS;__STDC_FORMAT_MACROS;__STDC_CONSTANT_MACROS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/wd4201 /wd4324 /Ob2  %(AdditionalOptions)</AdditionalOptions>
+      <SuppressStartupBanner>false</SuppressStartupBanner>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\External\bgfx\bx\include;$(SolutionDir)..\..\Code\External\bgfx\bx\include\compat\msvc;$(SolutionDir)..\..\Code\External\bgfx\bx\3rdparty;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty\dxsdk\include;$(SolutionDir)..\..\Code\External\bgfx\bgfx\include;$(SolutionDir)..\..\Code\External\bgfx\bimg\include;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty\khronos</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>__STDC_LIMIT_MACROS;__STDC_FORMAT_MACROS;__STDC_CONSTANT_MACROS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/wd4201 /wd4324 /Ob2  %(AdditionalOptions)</AdditionalOptions>
+      <SuppressStartupBanner>false</SuppressStartupBanner>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\External\bgfx\bx\include;$(SolutionDir)..\..\Code\External\bgfx\bx\include\compat\msvc;$(SolutionDir)..\..\Code\External\bgfx\bx\3rdparty;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty\dxsdk\include;$(SolutionDir)..\..\Code\External\bgfx\bgfx\include;$(SolutionDir)..\..\Code\External\bgfx\bimg\include;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty\khronos</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>__STDC_LIMIT_MACROS;__STDC_FORMAT_MACROS;__STDC_CONSTANT_MACROS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/wd4201 /wd4324 /Ob2  %(AdditionalOptions)</AdditionalOptions>
+      <SuppressStartupBanner>false</SuppressStartupBanner>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
