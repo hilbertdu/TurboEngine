@@ -33,6 +33,7 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+Make/MSVC/Build/
 
 # Windows shortcuts
 *.lnk
