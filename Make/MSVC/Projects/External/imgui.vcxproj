@@ -133,11 +133,17 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Code\External\imgui\imconfig.h" />
     <ClInclude Include="..\..\..\..\Code\External\imgui\imgui.h" />
+    <ClInclude Include="..\..\..\..\Code\External\imgui\imgui_dock.h" />
     <ClInclude Include="..\..\..\..\Code\External\imgui\imgui_internal.h" />
+    <ClInclude Include="..\..\..\..\Code\External\imgui\imgui_user.h" />
     <ClInclude Include="..\..\..\..\Code\External\imgui\impl_dx9\imgui_impl_dx9.h" />
     <ClInclude Include="..\..\..\..\Code\External\imgui\stb_rect_pack.h" />
     <ClInclude Include="..\..\..\..\Code\External\imgui\stb_textedit.h" />
     <ClInclude Include="..\..\..\..\Code\External\imgui\stb_truetype.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\Code\External\imgui\imgui_dock.inl" />
+    <None Include="..\..\..\..\Code\External\imgui\imgui_user.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

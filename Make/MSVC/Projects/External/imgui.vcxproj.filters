@@ -23,5 +23,11 @@
     <ClInclude Include="..\..\..\..\Code\External\imgui\stb_rect_pack.h" />
     <ClInclude Include="..\..\..\..\Code\External\imgui\stb_textedit.h" />
     <ClInclude Include="..\..\..\..\Code\External\imgui\stb_truetype.h" />
+    <ClInclude Include="..\..\..\..\Code\External\imgui\imgui_dock.h" />
+    <ClInclude Include="..\..\..\..\Code\External\imgui\imgui_user.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\Code\External\imgui\imgui_dock.inl" />
+    <None Include="..\..\..\..\Code\External\imgui\imgui_user.inl" />
   </ItemGroup>
 </Project>
