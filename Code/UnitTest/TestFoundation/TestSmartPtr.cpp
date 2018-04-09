@@ -111,7 +111,7 @@ void TestSmartPtr::TestDeletor() const
 		StrongPtr<char, PoolDeletor<TAllocForm<32, 4>>> ptr1((char*)poolAllocator.Allocate(30), poolAllocator.GetDeletor());
 
 		auto& deletor = poolAllocator.GetDeletor();
-		StrongPtr<char, decltype(deletor)> ptr2((char*)poolAllocator.Allocate(30), deletor);
+		StrongPtr<char, PoolDeletor<TAllocForm<32, 4>>> ptr2((char*)poolAllocator.Allocate(30), deletor);
 	}
 }
 

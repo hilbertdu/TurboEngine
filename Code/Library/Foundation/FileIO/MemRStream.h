@@ -23,19 +23,18 @@ public:
 	void				Replace(const void * data, SIZET size);
 
 	// raw read/write functions
-	virtual uint64 ReadBuffer(void * buffer, uint64 bytesToRead) const;
-	virtual uint64 WriteBuffer(const void * buffer, uint64 bytesToWrite);
-	virtual void Flush();
+	virtual uint64	ReadBuffer(void * buffer, uint64 bytesToRead) const;
+	virtual uint64	WriteBuffer(const void * buffer, uint64 bytesToWrite);
+	virtual void	Flush();
 
 	// size/position
-	virtual uint64 Tell() const;
-	virtual bool Seek(uint64 pos) const;
-	virtual uint64 GetFileSize() const;
+	virtual uint64	Tell() const;
+	virtual bool	Seek(uint64 pos) const;
 
 private:
-	const void * m_Buffer;
-	SIZET m_Size;
-	mutable SIZET m_CurrentPos;
+	const void *	m_Buffer;	
+	mutable SIZET	m_CurrentPos;
+	SIZET			m_Size;
 };
 
 //------------------------------------------------------------------------------

@@ -89,7 +89,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\UnitTest;$(SolutionDir)..\..\Code\Library;$(DXSDK_DIR)Include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\UnitTest;$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(DXSDK_DIR)Lib\x86;$(SolutionDir)Build\Lib\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -101,7 +101,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\UnitTest;$(SolutionDir)..\..\Code\Library;$(DXSDK_DIR)Include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\UnitTest;$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -116,7 +116,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\UnitTest;$(SolutionDir)..\..\Code\Library;$(DXSDK_DIR)Include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\UnitTest;$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -132,7 +132,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\UnitTest;$(SolutionDir)..\..\Code\Library;$(DXSDK_DIR)Include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\UnitTest;$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -153,11 +153,15 @@
     <None Include="..\..\..\..\Code\UnitTest\TestImGui\imgui.ini" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Code\UnitTest\TestImGui\imgui_impl_dx9.cpp" />
-    <ClCompile Include="..\..\..\..\Code\UnitTest\TestImGui\main.cpp" />
+    <ClCompile Include="..\..\..\..\Code\UnitTest\TestImGui\impl_dx11\imgui_impl_dx11.cpp" />
+    <ClCompile Include="..\..\..\..\Code\UnitTest\TestImGui\impl_dx11\main_dx11.cpp" />
+    <ClCompile Include="..\..\..\..\Code\UnitTest\TestImGui\impl_dx9\imgui_impl_dx9.cpp" />
+    <ClCompile Include="..\..\..\..\Code\UnitTest\TestImGui\impl_dx9\main_dx9.cpp" />
+    <ClCompile Include="..\..\..\..\Code\UnitTest\TestImGui\Config.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Code\UnitTest\TestImGui\imgui_impl_dx9.h" />
+    <ClInclude Include="..\..\..\..\Code\UnitTest\TestImGui\impl_dx11\imgui_impl_dx11.h" />
+    <ClInclude Include="..\..\..\..\Code\UnitTest\TestImGui\impl_dx9\imgui_impl_dx9.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

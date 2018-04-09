@@ -24,7 +24,9 @@ public:
 
 		DelegateHandle() : m_ID(0) {}
 		DelegateHandle(uint64 id, const Delegate<T(Args...)>& d) : m_ID(id), m_Delegate(d) {}
+		DelegateHandle(uint64 id, Delegate<T(Args...)>&& d) : m_ID(id), m_Delegate(std::move(d)) {}
 		DelegateHandle(const DelegateHandle& d) = default;
+		DelegateHandle(DelegateHandle&& d) = default;
 
 		DelegateHandle& operator = (const DelegateHandle& rOther)
 		{
@@ -50,6 +52,13 @@ public:
 	{
 		uint64 id = GenerateID();
 		m_Delegates.Append(DelegateHandle(id, d));
+		return id;
+	}
+
+	uint64 Add(Delegate<T(Args...)> && d)
+	{
+		uint64 id = GenerateID();
+		m_Delegates.Append(DelegateHandle(id, std::move(d)));
 		return id;
 	}
 
@@ -90,7 +99,7 @@ public:
 		{
 			if (d.m_Delegate.IsValid())
 			{
-				d.m_Delegate.Invoke(args...);
+				d.m_Delegate.Invoke(std::forward<Args>(args)...);
 			}
 		}
 	}

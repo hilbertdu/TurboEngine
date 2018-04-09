@@ -40,10 +40,10 @@
 //----------------------------------------------------------------------------
 #define LDEBUG(tag, ...)		_LOG(tag, "DEBUG", LOGLEVEL_DEBUG, __VA_ARGS__)
 #define LVERBOSE(tag, ...)		_LOG(tag, "VERBOSE", LOGLEVEL_VERBOSE, __VA_ARGS__)
-#define LINFO(tag, ...)			_LOG(tag, "INFO", LOGLEVEL_VERBOSE, __VA_ARGS__)
-#define LWARN(tag, ...)			_LOG(tag, "WARN", LOGLEVEL_VERBOSE, __VA_ARGS__)
-#define LERROR(tag, ...)		_LOG(tag, "ERROR", LOGLEVEL_VERBOSE, __VA_ARGS__)
-#define LFATALERROR(tag, ...)	_LOG(tag, "FATALERROR", LOGLEVEL_VERBOSE, __VA_ARGS__)
+#define LINFO(tag, ...)			_LOG(tag, "INFO", LOGLEVEL_INFO, __VA_ARGS__)
+#define LWARN(tag, ...)			_LOG(tag, "WARN", LOGLEVEL_WARN, __VA_ARGS__)
+#define LERROR(tag, ...)		_LOG(tag, "ERROR", LOGLEVEL_ERROR, __VA_ARGS__)
+#define LFATALERROR(tag, ...)	_LOG(tag, "FATALERROR", LOGLEVEL_FATALERROR, __VA_ARGS__)
 
 // Directly output
 #define LOUTPUT(...)			Logger::Log(__VA_ARGS__)

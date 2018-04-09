@@ -38,20 +38,24 @@
 // Thread local
 //------------------------------------------------------------------------------
 #if defined(__WINDOWS__)
-#define THREAD_LOCAL __declspec(thread)
+	#define THREAD_LOCAL __declspec(thread)
 #else
-#define THREAD_LOCAL __thread
+	#define THREAD_LOCAL __thread
+#endif
+
+
+// Memory barrier
+//------------------------------------------------------------------------------
+#if defined(__LINUX__) || defined(__APPLE__)
+	#define MemoryBarrier() __asm__ __volatile__("")
 #endif
 
 
 //------------------------------------------------------------------------------
 #define KILOBYTE (1024)
 #define MEGABYTE (1024 * 1024)
-
 #define UNUSED(x)
-
-#define TXT(x)	x
-
+#define TXT(x) x
 
 //------------------------------------------------------------------------------
 #endif // FOUNDATION_PLATFORM_MISC_H

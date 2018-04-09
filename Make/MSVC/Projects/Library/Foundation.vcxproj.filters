@@ -70,6 +70,12 @@
     <Filter Include="Memory">
       <UniqueIdentifier>{d61051c9-fdf0-4eb3-8c25-c327559f300a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Task">
+      <UniqueIdentifier>{31305b74-276c-4ade-b924-9229ac1ff10b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Misc">
+      <UniqueIdentifier>{4c84e8e5-2fb2-4313-9018-7f33e5a119e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Platform\Types.h">
@@ -109,12 +115,6 @@
       <Filter>Time</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\String\String.h">
-      <Filter>String</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Code\Library\Foundation\String\StringAnsi.inl">
-      <Filter>String</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Code\Library\Foundation\String\StringWide.inl">
       <Filter>String</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Container\HashTable.h">
@@ -195,9 +195,6 @@
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Analyzer\MemTracker.h">
       <Filter>Analyzer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Process\Mutex.h">
-      <Filter>Process</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeContainer.h">
       <Filter>Reflection\MetaType</Filter>
     </ClInclude>
@@ -258,6 +255,66 @@
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Analyzer\ProfileManager.h">
       <Filter>Analyzer</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Math\Vector.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Math\Vector2.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\FileIO\FileIO.h">
+      <Filter>FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\FileIO\FileStream.h">
+      <Filter>FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\FileIO\PathUtils.h">
+      <Filter>FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\String\StringView.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\String\StringHelper.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Process\Process.h">
+      <Filter>Process</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Task\Task.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Task\TaskScheduler.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Math\Math.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Attributes\Attribute.h">
+      <Filter>Reflection\Attributes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Attributes\Attributes.h">
+      <Filter>Reflection\Attributes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Objects\ObjectPool.h">
+      <Filter>Reflection\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Task\Worker.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Process\Lock.h">
+      <Filter>Process</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerPropertyText.h">
+      <Filter>Reflection\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerPropertyBinary.h">
+      <Filter>Reflection\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\FileIO\StrStream.h">
+      <Filter>FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Misc\Generator.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Memory\MemPool.cpp">
@@ -281,9 +338,6 @@
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Analyzer\MemTracker.cpp">
       <Filter>Analyzer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Process\Mutex.cpp">
-      <Filter>Process</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Env\Assert.cpp">
       <Filter>Env</Filter>
     </ClCompile>
@@ -305,6 +359,42 @@
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Analyzer\ProfileManager.cpp">
       <Filter>Analyzer</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\FileIO\FileIO.cpp">
+      <Filter>FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\FileIO\FileStream.cpp">
+      <Filter>FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\FileIO\PathUtils.cpp">
+      <Filter>FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Process\Process.cpp">
+      <Filter>Process</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Task\Task.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Task\TaskScheduler.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Reflection\Objects\ObjectPool.cpp">
+      <Filter>Reflection\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Reflection\Objects\Object.cpp">
+      <Filter>Reflection\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerText.cpp">
+      <Filter>Reflection\Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Task\Worker.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Process\Lock.cpp">
+      <Filter>Process</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\FileIO\StrStream.cpp">
+      <Filter>FileIO</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\Code\Library\Foundation\Container\Array.inl">
@@ -324,6 +414,9 @@
     </None>
     <None Include="..\..\..\..\Code\Library\Foundation\Container\BitArray.inl">
       <Filter>Container</Filter>
+    </None>
+    <None Include="..\..\..\..\Code\Library\Foundation\String\StringHelper.inl">
+      <Filter>String</Filter>
     </None>
   </ItemGroup>
 </Project>

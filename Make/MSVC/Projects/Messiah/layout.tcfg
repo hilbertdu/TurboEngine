@@ -1,0 +1,164 @@
+<count : 8> {
+	[
+		Idx = 0
+		Label = "Commands"
+		NextTab = -1
+		PrevTab = -1
+		Children = (-1.00, -1.00)
+		Parent = 6
+		Pos = (0.00, 49.00)
+		Size = (563.00, 483.00)
+		Status = 0
+		Location = ""
+		Active = true
+	]
+	[
+		Idx = 1
+		Label = "MainView"
+		NextTab = 2
+		PrevTab = -1
+		Children = (-1.00, -1.00)
+		Parent = 6
+		Pos = (563.00, 49.00)
+		Size = (1357.00, 483.00)
+		Status = 0
+		Location = ""
+		Active = false
+	]
+	[
+		Idx = 2
+		Label = "Output"
+		NextTab = -1
+		PrevTab = 1
+		Children = (-1.00, -1.00)
+		Parent = 6
+		Pos = (563.00, 49.00)
+		Size = (1357.00, 483.00)
+		Status = 0
+		Location = ""
+		Active = true
+	]
+	[
+		Idx = 3
+		Label = "Assets"
+		NextTab = -1
+		PrevTab = -1
+		Children = (-1.00, -1.00)
+		Parent = 7
+		Pos = (0.00, 532.00)
+		Size = (1438.00, 486.00)
+		Status = 0
+		Location = ""
+		Active = true
+	]
+	[
+		Idx = 4
+		Label = "Property"
+		NextTab = -1
+		PrevTab = -1
+		Children = (-1.00, -1.00)
+		Parent = 7
+		Pos = (1438.00, 532.00)
+		Size = (482.00, 486.00)
+		Status = 0
+		Location = ""
+		Active = true
+	]
+	[
+		Idx = 5
+		Label = ""
+		NextTab = -1
+		PrevTab = -1
+		Children = (6.00, 7.00)
+		Parent = -1
+		Pos = (0.00, 49.00)
+		Size = (1920.00, 969.00)
+		Status = 0
+		Location = ""
+		Active = true
+	]
+	[
+		Idx = 6
+		Label = ""
+		NextTab = -1
+		PrevTab = -1
+		Children = (0.00, 1.00)
+		Parent = 5
+		Pos = (0.00, 49.00)
+		Size = (1920.00, 483.00)
+		Status = 0
+		Location = ""
+		Active = true
+	]
+	[
+		Idx = 7
+		Label = ""
+		NextTab = -1
+		PrevTab = -1
+		Children = (3.00, 4.00)
+		Parent = 5
+		Pos = (0.00, 532.00)
+		Size = (1920.00, 486.00)
+		Status = 0
+		Location = ""
+		Active = true
+	]
+}
+<count : 7> {
+	key = "UIMainToolBar"
+	value = ( <object id : 1, name : UIMainToolBar> 
+		[
+			Name = ""
+			Pos = (0.00, 0.00)
+			Size = (1920.00, 30.00)
+		]
+	)
+	key = "UICommands"
+	value = ( <object id : 2, name : UICommands> 
+		[
+			Name = "Commands"
+			Pos = (0.00, 0.00)
+			Size = (0.00, 0.00)
+		]
+	)
+	key = "UIMainView"
+	value = ( <object id : 3, name : UIMainView> 
+		[
+			Name = "MainView"
+			Pos = (0.00, 0.00)
+			Size = (0.00, 0.00)
+		]
+	)
+	key = "UIOutputPanel"
+	value = ( <object id : 4, name : UIOutputPanel> 
+		[
+			Name = ""
+			Pos = (0.00, 0.00)
+			Size = (0.00, 0.00)
+		]
+	)
+	key = "UIAssetBrowser"
+	value = ( <object id : 5, name : UIAssetBrowser> 
+		[
+			Name = "Assets"
+			Pos = (0.00, 0.00)
+			Size = (0.00, 0.00)
+		]
+	)
+	key = "UIFileProperty"
+	value = ( <object id : 6, name : UIFileProperty> 
+		[
+			Name = "Property"
+			Pos = (0.00, 0.00)
+			Size = (0.00, 0.00)
+		]
+	)
+	key = "UIMainMenu"
+	value = ( <object id : 7, name : UIMainMenu> 
+		[
+			Name = ""
+			Pos = (0.00, 0.00)
+			Size = (1920.00, 19.00)
+		]
+	)
+}

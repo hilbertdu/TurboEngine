@@ -64,6 +64,10 @@ void TestArray::ArrayConstructors() const
 		TEST_ASSERT(arr1.GetCapacity() >= 2);
 		TEST_ASSERT(arr1[0] == 1 && arr1[1] == 2);
 	}
+	{
+		Array<int*> arr1;
+		arr1.Append(nullptr, 2);
+	}
 }
 
 // ArrayAssignment

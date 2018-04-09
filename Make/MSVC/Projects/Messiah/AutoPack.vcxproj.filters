@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="App">
+      <UniqueIdentifier>{dc86107e-ab24-4515-9987-f5238a154c27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Service">
+      <UniqueIdentifier>{1b9f4879-df43-4881-b6bf-bd83f777a4c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{ce4ed84e-8060-494b-a3d7-81e888b8d11f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\impl_dx11">
+      <UniqueIdentifier>{c93c69be-b8f1-4b5e-8dd1-05be0316cf69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Panels">
+      <UniqueIdentifier>{35b8b11f-5a2f-40de-9827-91ddf25042e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{e32a4743-e6df-4cfb-a675-2509d112579c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{434e6637-d4f3-4289-aac7-16e63a7ca842}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Event">
+      <UniqueIdentifier>{57a4d71b-6194-47ff-9065-b5d6dfde734d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Service\Patch">
+      <UniqueIdentifier>{e77de7d9-1bbd-4c19-a3ba-c48ca550a4f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Service\ResCooker">
+      <UniqueIdentifier>{a8ffceab-6b96-4169-afdf-82d021b6b173}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Basic">
+      <UniqueIdentifier>{a3c3350f-55d2-434c-b8f9-5c6891872686}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Service\Test">
+      <UniqueIdentifier>{a5d447d6-2f7f-4fde-8b21-4d5e9e1e3c3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Reflection">
+      <UniqueIdentifier>{f83dd4e5-10f9-40d2-9528-2bc4d31f1098}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Setting">
+      <UniqueIdentifier>{abba70ef-3f22-4bee-b7dc-b0d0d908a368}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Compat">
+      <UniqueIdentifier>{539e155e-421b-4d42-96cb-b243141ad769}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\App\impl_dx11\imgui_impl_dx11.cpp">
+      <Filter>App\impl_dx11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\App\Application.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\App\ApplicationWin32.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\App\Main.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Engine\EngineCore.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Manager\AssetManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Manager\ResourceManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\UISystem.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Manager\ServiceManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Service\ResCooker\Chef.cpp">
+      <Filter>Service\ResCooker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Basic\UIWidget.cpp">
+      <Filter>UI\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Reflected\ReflectionDecl.cpp">
+      <Filter>Reflection</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Service\Command.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Service\Service.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Service\Test\Test.cpp">
+      <Filter>Service\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Setting\Setting.cpp">
+      <Filter>Setting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Engine\Serializer.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\App\impl_dx11\imgui_impl_dx11.h">
+      <Filter>App\impl_dx11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\App\Application.h">
+      <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Engine\EngineCore.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Manager\AssetManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Manager\ResourceManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\UISystem.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\AssetBrowser.h">
+      <Filter>UI\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\Commands.h">
+      <Filter>UI\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\FileProperty.h">
+      <Filter>UI\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainMenu.h">
+      <Filter>UI\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainToolbar.h">
+      <Filter>UI\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainView.h">
+      <Filter>UI\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\Output.h">
+      <Filter>UI\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\Status.h">
+      <Filter>UI\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Event\EventSystem.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Event\Events.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Event\EventDecl.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\Service.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\ResCooker\Chef.h">
+      <Filter>Service\ResCooker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\ResCooker\MixmapMerge.h">
+      <Filter>Service\ResCooker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\ResCooker\UIPacker.h">
+      <Filter>Service\ResCooker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\Patch\PatchGenerator.h">
+      <Filter>Service\Patch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Manager\ServiceManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Basic\UIWidget.h">
+      <Filter>UI\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\Command.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\Test\Test.h">
+      <Filter>Service\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Reflected\ReflectionDecl.h">
+      <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Setting\Setting.h">
+      <Filter>Setting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Engine\Serializer.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Compat\UIDocker.h">
+      <Filter>UI\Compat</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

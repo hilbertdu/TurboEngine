@@ -51,11 +51,12 @@ String<CharType, Allocator>::String(const String & string)
 }
 
 template<typename CharType, typename Allocator>
+template<class>
 String<CharType, Allocator>::String(String && rOther)
-	: m_Contents(rOther.m_Contents)
+	: Allocator(std::move(rOther))
+	, m_Contents(rOther.m_Contents)
 	, m_Length(rOther.m_Length)
 	, m_Capacity(rOther.m_Capacity)
-	, m_AllocatorInst(std::move(rOther.m_AllocatorInst))
 {
 	rOther.m_Length = 0;
 	rOther.m_Capacity = 0;
@@ -118,8 +119,10 @@ bool String<CharType, Allocator>::operator == (const String<CharType, OtherAlloc
 }
 
 template<typename CharType, typename Allocator>
+template<class>
 String<CharType, Allocator> & String<CharType, Allocator>::operator = (String && rOther)
 {
+	Allocator::operator=(std::move(rOther));
 	Swap(rOther);
 	return *this;
 }
@@ -239,6 +242,21 @@ void String<CharType, Allocator>::AppendFormat(const CharType * fmtString, ...)
 }
 
 template<typename CharType, typename Allocator>
+void String<CharType, Allocator>::AppendMultiply(const CharType * string, SIZET count)
+{
+	SIZET newSize = m_Length + StrLen(string) * count;
+	if (m_Capacity < newSize)
+	{
+		SetCapacity(newSize);
+	}
+	
+	for (SIZET idx = 0; idx < count; ++idx)
+	{
+		Append(string, StrLen(string));
+	}
+}
+
+template<typename CharType, typename Allocator>
 SIZET String<CharType, Allocator>::Replace(CharType from, CharType to, SIZET maxReplaces)
 {
 	SIZET replaceCount = 0;
@@ -258,40 +276,6 @@ SIZET String<CharType, Allocator>::Replace(CharType from, CharType to, SIZET max
 		pos++;
 	}
 	return replaceCount;
-}
-
-template<typename CharType, typename Allocator>
-void String<CharType, Allocator>::ToLower()
-{
-	CharType * pos = m_Contents;
-	CharType * end = m_Contents + m_Length;
-	while (pos < end)
-	{
-		CharType c = *pos;
-		if ((c >= 'A') && (c <= 'Z'))
-		{
-			c = 'a' + (c - 'A');
-			*pos = c;
-		}
-		pos++;
-	}
-}
-
-template<typename CharType, typename Allocator>
-void String<CharType, Allocator>::ToUpper()
-{
-	CharType * pos = m_Contents;
-	CharType * end = m_Contents + m_Length;
-	while (pos < end)
-	{
-		CharType c = *pos;
-		if ((c >= 'a') && (c <= 'z'))
-		{
-			c = 'A' + (c - 'a');
-			*pos = c;
-		}
-		pos++;
-	}
 }
 
 template<typename CharType, typename Allocator>
@@ -342,459 +326,11 @@ SIZET String<CharType, Allocator>::Replace(const CharType * from, const CharType
 }
 
 template<typename CharType, typename Allocator>
-const CharType * String<CharType, Allocator>::Find(CharType c, const CharType * startPos) const
-{
-	// If startPos is provided, validate it
-	// (deliberately allow startPos to point one past end of string)
-	ASSERT((startPos == nullptr) || (startPos >= m_Contents));
-	ASSERT((startPos == nullptr) || (startPos <= m_Contents + GetLength()));
-
-	const CharType * pos = startPos ? startPos : m_Contents;
-	const CharType * end = m_Contents + m_Length;
-	while (pos < end)
-	{
-		if (*pos == c)
-		{
-			return pos;
-		}
-		pos++;
-	}
-	return nullptr;
-}
-
-template<typename CharType, typename Allocator>
-const CharType * String<CharType, Allocator>::Find(const CharType * subString) const
-{
-	SIZET subStrLen = StrLen(subString);
-
-	const CharType * pos = m_Contents;
-	const CharType * end = pos + m_Length - subStrLen;
-	while (pos <= end)
-	{
-		if (StrNCmp(pos, subString, subStrLen) == 0)
-		{
-			return pos;
-		}
-		pos++;
-	}
-	return nullptr;
-}
-
-template<typename CharType, typename Allocator>
-const CharType * String<CharType, Allocator>::FindI(const CharType * subString) const
-{
-	SIZET subStrLen = StrLen(subString);
-
-	const CharType * pos = m_Contents;
-	const CharType * end = pos + m_Length - subStrLen;
-	while (pos <= end)
-	{
-		if (StrNCmpI(pos, subString, subStrLen) == 0)
-		{
-			return pos;
-		}
-		pos++;
-	}
-	return nullptr;
-}
-
-template<typename CharType, typename Allocator>
-const CharType * String<CharType, Allocator>::FindLast(CharType c) const
-{
-	const CharType * pos = m_Contents + m_Length - 1;
-	while (pos >= m_Contents)
-	{
-		if (*pos == c)
-		{
-			return pos;
-		}
-		pos--;
-	}
-	return nullptr;
-}
-
-template<typename CharType, typename Allocator>
-bool String<CharType, Allocator>::EndsWith(CharType c) const
-{
-	uint32 len = m_Length;
-	if (len == 0)
-	{
-		return false;
-	}
-	return (m_Contents[len - 1] == c);
-}
-
-template<typename CharType, typename Allocator>
-bool String<CharType, Allocator>::EndsWith(const CharType * string) const
-{
-	const SIZET stringLen = StrLen(string);
-	const CharType * possiblePos = m_Contents + m_Length - stringLen;
-	if (possiblePos < m_Contents)
-	{
-		return false; // String to search is longer than this string
-	}
-	return (StrNCmp(possiblePos, string, stringLen) == 0);
-}
-
-template<typename CharType, typename Allocator>
-template<typename OtherAllocator>
-bool String<CharType, Allocator>::EndsWith(const String<CharType, OtherAllocator> & other) const
-{
-	const SIZET otherLen = other.GetLength();
-	if (otherLen > GetLength())
-	{
-		return false;
-	}
-	return (StrNCmp(GetEnd() - otherLen, other.Get(), otherLen) == 0);
-}
-
-template<typename CharType, typename Allocator>
-bool String<CharType, Allocator>::EndsWithI(const CharType * other) const
-{
-	const SIZET otherLen = StrLen(other);
-	if (otherLen > GetLength())
-	{
-		return false;
-	}
-	return (StrNCmpI(GetEnd() - otherLen, other, otherLen) == 0);
-}
-
-template<typename CharType, typename Allocator>
-template<typename OtherAllocator>
-bool String<CharType, Allocator>::EndsWithI(const String<CharType, OtherAllocator> & other) const
-{
-	const SIZET otherLen = other.GetLength();
-	if (otherLen > GetLength())
-	{
-		return false;
-	}
-	return (StrNCmpI(GetEnd() - otherLen, other.Get(), otherLen) == 0);
-}
-
-template<typename CharType, typename Allocator>
-bool String<CharType, Allocator>::BeginsWith(CharType c) const
-{
-	if (IsEmpty())
-	{
-		return false;
-	}
-	return (m_Contents[0] == c);
-}
-
-template<typename CharType, typename Allocator>
-bool String<CharType, Allocator>::BeginsWith(const CharType * string) const
-{
-	SIZET otherLen = StrLen(string);
-	if (otherLen > GetLength())
-	{
-		return false;
-	}
-	return (StrNCmp(m_Contents, string, otherLen) == 0);
-}
-
-template<typename CharType, typename Allocator>
-template<typename OtherAllocator>
-bool String<CharType, Allocator>::BeginsWith(const String<CharType, OtherAllocator> & string) const
-{
-	uint32 otherLen = string.GetLength();
-	if (otherLen > GetLength())
-	{
-		return false;
-	}
-	return (StrNCmp(m_Contents, string.Get(), otherLen) == 0);
-}
-
-template<typename CharType, typename Allocator>
-bool String<CharType, Allocator>::BeginsWithI(const CharType * string) const
-{
-	SIZET otherLen = StrLen(string);
-	if (otherLen > GetLength())
-	{
-		return false;
-	}
-	return (StrNCmpI(m_Contents, string, otherLen) == 0);
-}
-
-template<typename CharType, typename Allocator>
-template<typename OtherAllocator>
-bool String<CharType, Allocator>::BeginsWithI(const String<CharType, OtherAllocator> & string) const
-{
-	uint32 otherLen = string.GetLength();
-	if (otherLen > GetLength())
-	{
-		return false;
-	}
-	return (StrNCmpI(m_Contents, string.Get(), otherLen) == 0);
-}
-
-// Match
-// NOTE: This code is based on that in the C/C++ Users Journal (Mike Cornelison)
-//------------------------------------------------------------------------------
-template<typename CharType, typename Allocator>
-/*static*/ bool String<CharType, Allocator>::Match(const CharType * pat, const CharType * str)
-{
-	bool star;
-
-new_segment:
-	star = false;
-	if (*pat == '*')
-	{
-		star = true;
-		do { pat++; } while (*pat == '*');
-	}
-
-test_match:
-	int i;
-	for (i = 0; pat[i] && (pat[i] != '*'); i++)
-	{
-		CharType a = str[i];
-		CharType b = pat[i];
-		if (a != b)
-		{
-			if (!str[i]) return false;
-			if ((pat[i] == '?') && (str[i] != '.')) continue;
-			if (!star) return false;
-			str++;
-			goto test_match;
-		}
-	}
-	if (pat[i] == '*')
-	{
-		str += i;
-		pat += i;
-		goto new_segment;
-	}
-	if (!str[i]) return true;
-	if (i && pat[i - 1] == '*') return true;
-	if (!star) return false;
-	str++;
-	goto test_match;
-}
-
-// MatchI
-// NOTE: This code is based on that in the C/C++ Users Journal (Mike Cornelison)
-//------------------------------------------------------------------------------
-template<typename CharType, typename Allocator>
-/*static*/ bool String<CharType, Allocator>::MatchI(const CharType * pat, const CharType * str)
-{
-	bool star;
-
-new_segment:
-	star = false;
-	if (*pat == '*')
-	{
-		star = true;
-		do { pat++; } while (*pat == '*');
-	}
-
-test_match:
-	int i;
-	for (i = 0; pat[i] && (pat[i] != '*'); i++)
-	{
-		CharType a = str[i]; a = ((a >= 'A') && (a <= 'Z')) ? 'a' + (a - 'A') : a;
-		CharType b = pat[i]; b = ((b >= 'A') && (b <= 'Z')) ? 'a' + (b - 'A') : b;
-		if (a != b)
-		{
-			if (!str[i]) return false;
-			if ((pat[i] == '?') && (str[i] != '.')) continue;
-			if (!star) return false;
-			str++;
-			goto test_match;
-		}
-	}
-	if (pat[i] == '*')
-	{
-		str += i;
-		pat += i;
-		goto new_segment;
-	}
-	if (!str[i]) return true;
-	if (i && pat[i - 1] == '*') return true;
-	if (!star) return false;
-	str++;
-	goto test_match;
-}
-
-template<typename CharType, typename Allocator>
-/*static*/ void String<CharType, Allocator>::Copy(const CharType * src, CharType * dst, SIZET len)
-{
-	if (len == 0)
-	{
-		return;
-	}
-	const CharType * end = src + len;
-	while (src < end)
-	{
-		*dst++ = *src++;
-	}
-	*dst = (CharType)'\000';
-}
-
-template<typename CharType, typename Allocator>
-/*static*/ SIZET String<CharType, Allocator>::StrLen(const CharType * string)
-{
-	const CharType * pos = string;
-	while (*pos != (CharType)'\000')
-	{
-		pos++;
-	}
-	return (pos - string);
-}
-
-template<typename CharType, typename Allocator>
-/*static*/ uint32 String<CharType, Allocator>::StrNCmp(const CharType * a, const CharType * b, SIZET num)
-{
-	while (num > 0)
-	{
-		if (*a == *b)
-		{
-			if (*a == (CharType)'\000')
-			{
-				return 0; // Both strings ended and equal
-			}
-
-			// Keep going
-			a++;
-			b++;
-			num--;
-			continue;
-		}
-
-		// Different, so return relationship
-		return (*a > *b) ? 1 : -1;
-	};
-	return 0; // Strings identical upto 'num' CharTypes
-}
-
-template<typename CharType, typename Allocator>
-/*static*/ uint32 String<CharType, Allocator>::StrNCmpI(const CharType * a, const CharType * b, SIZET num)
-{
-	while (num > 0)
-	{
-		CharType a1 = *a;
-		if ((a1 >= 'A') && (a1 <= 'Z'))
-		{
-			a1 = 'a' + (a1 - 'A');
-		}
-		CharType b1 = *b;
-		if ((b1 >= 'A') && (b1 <= 'Z'))
-		{
-			b1 = 'a' + (b1 - 'A');
-		}
-		if (a1 == b1)
-		{
-			if (a1 == (CharType)'\000')
-			{
-				return 0; // Both strings ended and equal
-			}
-
-			// Keep going
-			a++;
-			b++;
-			num--;
-			continue;
-		}
-
-		// Different, so return relationship
-		return (a1 - b1);
-	};
-	return 0; // Strings identical upto 'num' CharTypes
-}
-
-template<typename CharType, typename Allocator>
-template<typename OtherAllocator>
-void String<CharType, Allocator>::Tokenize(Array<String<CharType, OtherAllocator>> & tokens, CharType splitChar) const
-{
-	Array<const CharType *> tokenStarts;
-	Array<const CharType *> tokenEnds;
-
-	const CharType * pos = Get();
-	const CharType * end = GetEnd();
-	bool lookingForStart = true;
-	CharType quoteChar = 0;
-	while (pos < end)
-	{
-		if (lookingForStart)
-		{
-			if (*pos == splitChar)
-			{
-				++pos;
-				continue;
-			}
-
-			// found the start of a new token
-			tokenStarts.Append(pos);
-			lookingForStart = false;
-		}
-
-		// hit a quote?
-		CharType c = *pos;
-		if ((c == '"') || (c == '\''))
-		{
-			if (quoteChar == 0)
-			{
-				// opening quote
-				quoteChar = c;
-			}
-			else if (quoteChar == c)
-			{
-				// closing quote
-				quoteChar = 0;
-			}
-			else
-			{
-				// quote of the 'other' type - consider as part of token
-			}
-		}
-		else if (c == splitChar)
-		{
-			if (quoteChar == 0)
-			{
-				tokenEnds.Append(pos);
-				lookingForStart = true;
-			}
-			else
-			{
-				// space inside quoted token - consider as part of token
-			}
-		}
-		else
-		{
-			// normal CharTypeacter part of token
-		}
-		++pos;
-	}
-	ASSERT((tokenStarts.GetSize() == tokenEnds.GetSize()) ||
-		(tokenStarts.GetSize() == (tokenEnds.GetSize() + 1)));
-	if (tokenStarts.GetSize() > tokenEnds.GetSize())
-	{
-		tokenEnds.Append(pos);
-	}
-	ASSERT(tokenStarts.GetSize() == tokenEnds.GetSize());
-
-	// pre-size output to avoid reallocations
-	tokens.Clear();
-	const SIZET numTokens(tokenStarts.GetSize());
-	if (tokens.GetCapacity() < numTokens)
-	{
-		tokens.SetCapacity(numTokens);
-	}
-	tokens.SetSize(numTokens);
-
-	// copy tokens
-	for (SIZET i = 0; i < numTokens; ++i)
-	{
-		tokens[i].Assign(tokenStarts[i], tokenEnds[i]);
-	}
-}
-
-template<typename CharType, typename Allocator>
 void String<CharType, Allocator>::Swap(String& other)
 {
 	std::swap(m_Contents, other.m_Contents);
 	std::swap(m_Length, other.m_Length);
 	std::swap(m_Capacity, other.m_Capacity);
-	std::swap(m_AllocatorInst, other.m_AllocatorInst);
 }
 
 template<typename CharType, typename Allocator>
@@ -818,7 +354,7 @@ void String<CharType, Allocator>::SetCapacity(SIZET capacity, bool needCopy)
 		}
 		else
 		{
-			CharType * newMem = Allocate(capacity);
+			CharType * newMem = Allocate(capacity + 1);
 			if (needCopy)
 			{
 				Array<CharType>::UninitializedCopy(newMem, m_Contents, newLength);
@@ -826,6 +362,7 @@ void String<CharType, Allocator>::SetCapacity(SIZET capacity, bool needCopy)
 			}
 			Deallocate();
 			m_Contents = newMem;
+			m_Contents[capacity] = '\000';
 		}
 		m_Length = newLength;
 		m_Capacity = capacity;
@@ -836,14 +373,14 @@ template<typename CharType, typename Allocator>
 CharType * String<CharType, Allocator>::Allocate(SIZET size)
 {
 	ASSERT(size > 0);
-	return m_AllocatorInst.AllocateT<CharType>(size);
+	return AllocateT<CharType>(size);
 }
 
 template<typename CharType, typename Allocator>
 CharType * String<CharType, Allocator>::Reallocate(SIZET size)
 {
 	ASSERT(size > 0);
-	return m_AllocatorInst.ReallocateT<CharType>(m_Contents, size);
+	return ReallocateT<CharType>(m_Contents, size);
 }
 
 template<typename CharType, typename Allocator>
@@ -851,7 +388,7 @@ void String<CharType, Allocator>::Deallocate()
 {
 	if (m_Contents && m_Capacity > 0)
 	{
-		m_AllocatorInst.FreeT(m_Contents);
+		FreeT(m_Contents);
 	}
 }
 

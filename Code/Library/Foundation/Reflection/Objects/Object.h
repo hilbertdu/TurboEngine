@@ -7,47 +7,84 @@
 
 // Includes
 //------------------------------------------------------------------------------
-#include "Foundation/Reflection/MetaType/TypeClass.h"
-#include "Foundation/Reflection/MetaType/TypeDecl.h"
+#include "Foundation/Reflection/ReflectionMacros.h"
 
+using namespace TReflection;
 
-namespace TReflection
+enum ObjectFlag : uint16
 {
-	class IObject : public IClass
-	{
-	public:
-		IObject() {}
-		virtual ~IObject() {}
+	FLAG_OBJECT_NONE		= 0x00,
+	FLAG_OBJECT_SERIALIZED	= 0x01
+};
 
-		// new/delete operator
+class IObject : public RefBase<IObject>
+{
+public:
+	static constexpr MetaFlag s_MetaFlag = E_TYPE_OBJECT;
+	explicit IObject();
+	virtual ~IObject();
 
-// 		// meta
-// 		virtual IObject* Create() const;
-// 		virtual const MetaClass* GetMetaType();
-// 		
-// 		// get/set property
-// 		template<class T>
-// 		bool SetProperty(const char * name, T&& prop) const;
-// 
-// 		template<class T>
-// 		const T GetPropertyValue(const char * name) const;
-// 
-// 		template<class T>
-// 		const T* GetPropertyPointer(const char * name) const;
-// 
-// 		template<class T>
-// 		const T& GetPropertyReference(const char * name) const;
-// 
-// 		// Deduces type membership for this instance
-// 		bool IsA(const MetaClass* type) const;
-// 
-// 		// serialize/deserialize
-// 		virtual void PreSerialize();
-// 		virtual void PostSerialize();
-// 		virtual void PreDeserialize();
-// 		virtual void PostDeserialize();
-	};
-	REFLECTION_DECLARE_METAOBJECT(IObject, IObject::MetaType)
+	IObject(const IObject&) = delete;
+	IObject& operator=(const IObject&) = delete;
+
+	// todo: new/delete operator
+
+	// flags
+	void SetFlag(ObjectFlag flag) { m_Flag = (ObjectFlag)(m_Flag | flag); }
+	bool HasFlag(ObjectFlag flag) const { return (m_Flag & flag) != 0; }
+	ObjectFlag GetFlag() const { return m_Flag; }
+
+ 	// get/set property
+	template<class T> bool		SetProperty(const char * name, T&& prop);
+ 	template<class T> const T	GetProperty(const char * name) const;
+ 	template<class T> const T * GetPropertyPtr(const char * name) const;
+ 	template<class T> const T & GetPropertyRef(const char * name) const;		
+ 
+ 	// Deduces type membership for this instance
+	template<class T> bool IsA() const;
+ 
+ 	// serialize functions
+	virtual void PreSerialize() {}
+	virtual void PostSerialize() {}
+	virtual void PreDeserialize() {}
+	virtual void PostDeserialize() {}
+
+	//inline uint64 GetId() const { return m_Id; }
+	//inline void	  SetId(uint64 id) { m_Id = (UINTPTR)id; }
+
+	virtual void Save(IOStream* stream, ISerializer * writer, bool terminal = false) const;
+	virtual void Load(const IOStream* stream, ISerializer * reader, bool terminal = false);
+
+private:
+	//UINTPTR		m_Id;							// object identity
+	ObjectFlag	m_Flag{ FLAG_OBJECT_NONE };
+
+	TREFLECTION_DECLARE(IObject, IClass)
+};
+
+template<class T>
+bool IObject::SetProperty(const char * name, T&& prop)
+{
+}
+
+template<class T>
+const T IObject::GetProperty(const char * name) const
+{
+}
+
+template<class T>
+const T * IObject::GetPropertyPtr(const char * name) const
+{
+}
+
+template<class T>
+const T & IObject::GetPropertyRef(const char * name) const
+{
+}
+
+template<class T> 
+bool IObject::IsA() const
+{
 }
 
 

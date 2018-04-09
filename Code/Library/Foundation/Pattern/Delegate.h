@@ -23,77 +23,66 @@ template<int32 SIZE>
 class DelegateStorage
 {
 public:
-	DelegateStorage()
-		: m_Mem(nullptr)
-		, m_Size(0)
-	{}
+	union Storage
+	{
+		void *	m_Heap;
+		char	m_Stack[SIZE];
+	};
 
-	DelegateStorage(const DelegateStorage & other) : m_Mem(nullptr), m_Size(0) { Assign(other); }
-	DelegateStorage(DelegateStorage&& rOther) : m_Mem(nullptr), m_Size(0) { Assign(std::move(rOther)); }
+	DelegateStorage() : m_Size(0) {}
+	DelegateStorage(const DelegateStorage & other) : m_Size(0) { Assign(other); }
+	DelegateStorage(DelegateStorage&& other) : m_Size(0) { Assign(std::move(other)); }
 
 	DelegateStorage & operator = (const DelegateStorage & other) { Assign(other); return *this; }
 	DelegateStorage & operator = (DelegateStorage && other) { Assign(std::move(other)); return *this; }
 
-	~DelegateStorage() { if (m_Mem) m_Allocator.Free(m_Mem); }
-	
-	void * SetStorage(SIZET size) 
-	{
-		if (m_Mem)
-		{
-			m_Allocator.Free(m_Mem);
-		}
+	~DelegateStorage() { Free(); }
 
-		if (size > 0)
+	inline void * GetStorage() const { return m_Size == 0 ? nullptr : (m_Size > SIZE ? m_Storage.m_Heap : (void *)(&m_Storage.m_Stack[0])); }
+	inline bool   IsStackMem() const { return m_Size < SIZE; }
+
+	void * SetStorage(SIZET size)
+	{
+		Free();
+		if (size > SIZE)
 		{
-			m_Mem = m_Allocator.AllocateT<char>(size);
-		}
-		else
-		{
-			m_Mem = nullptr;
+			m_Size = size;
+			m_Storage.m_Heap = ALLOC(size);
+			return m_Storage.m_Heap;
 		}
 		m_Size = size;
-
-		return m_Mem;
+		return &(m_Storage.m_Stack[0]);
 	}
-	
-	inline void * GetStorage() const { return m_Mem; }
-	inline bool IsStackMem() const { return m_Allocator.IsInStack(m_Mem); }
 
 private:
-	void Assign(const DelegateStorage & other)
+	inline void Assign(const DelegateStorage & other)
 	{
-		SetStorage(0);
-		if (other.m_Size > 0)
-		{
-			// copy
-			m_Size = other.m_Size;
-			m_Mem = m_Allocator.Allocate(m_Size);
-			MemCopy(m_Mem, other.m_Mem, m_Size);
-		}
+		Free();
+		void * mem = SetStorage(other.m_Size);
+		MemCopy(mem, other.GetStorage(), m_Size);
 	}
 
-	void Assign(DelegateStorage && other)
+	inline void Assign(DelegateStorage && other)
 	{
-		SetStorage(0);
-		if (other.m_Size > 0 && other.IsStackMem())
+		Free();
+		if (!other.IsStackMem())
 		{
-			// stack move
+			m_Storage.m_Heap = other.m_Storage.m_Heap;
 			m_Size = other.m_Size;
-			m_Mem = m_Allocator.Allocate(m_Size);
-			MemCopy(m_Mem, other.m_Mem, m_Size);
+			other.m_Size = 0;
 		}
 		else
 		{
-			// heap move
+			MemCopy(m_Storage.m_Stack, other.GetStorage(), other.m_Size);
 			m_Size = other.m_Size;
-			m_Mem = other.m_Mem;
-			other.m_Mem = nullptr;
+			other.m_Size = 0;
 		}
 	}
 
-	StackAllocator<SIZE> m_Allocator;
-	void * m_Mem;
-	SIZET  m_Size;
+	inline void Free() { if (m_Size > SIZE) FREE(m_Storage.m_Heap); }
+
+	Storage	m_Storage;
+	uint32	m_Size;
 };
 
 
@@ -144,7 +133,8 @@ public:
 		typedef C* InstancePtr;
 		typedef T(C::*MemberFunctionPtr)(Args...);
 		MethodFunction(InstancePtr instance, MemberFunctionPtr method)
-			: m_Method(method)
+			: m_Instance(instance)
+			, m_Method(method)
 		{}
 		virtual ~MethodFunction() {};
 		virtual void Destroy() { this->~MethodFunction(); };
@@ -191,6 +181,7 @@ public:
 		INPLACE_NEW(&m_Storage) LambdaFunction<Functor>(std::forward<Functor>(function));
 	}
 	Delegate(const Delegate& d): m_Storage(d.m_Storage) {}
+	Delegate(Delegate&& d) : m_Storage(std::move(d.m_Storage)) {}
 	~Delegate() { Unbind(); }
 
 	Delegate & operator = (const Delegate & other) { m_Storage = other.m_Storage; return *this; }
@@ -229,6 +220,12 @@ public:
 	{
 		return m_Storage.GetStorage() != nullptr;
 	}
+	/*
+	T operator()(Args... args) const
+	{
+		ASSERT(IsValid());
+		return reinterpret_cast<IFunction*>(m_Storage.GetStorage())->Invoke(std::forward<Args>(args)...);
+	}*/
 
 	T Invoke(Args... args) const
 	{
@@ -241,7 +238,7 @@ public:
 	{
 		ASSERT(IsValid());
 		return reinterpret_cast<MethodFunction<C>*>(m_Storage.GetStorage())->Invoke(c, std::forward<Args>(args)...);
-	}
+	}	
 
 private:
 	DelegateStorage<DELEGATE_DEFAULT_SIZE> m_Storage;
@@ -254,33 +251,10 @@ class AnyDelegate : public AnyClass
 {
 public:
 	AnyDelegate() : AnyClass() {}
-
-	template<class TReturn, class... TArgs>
-	AnyDelegate(const Delegate<TReturn(TArgs...)> & d)
-		: AnyClass(d)
-	{}
-
-	template<class TReturn, class... TArgs>
-	AnyDelegate(Delegate<TReturn(TArgs...)>&& d)
-		: AnyClass(std::move(d))
-	{}
-
-	template<class TReturn, class... TArgs>
-	AnyDelegate(TReturn(*function)(TArgs...))
-		: AnyClass(Delegate<TReturn(TArgs...)>(function))
-	{}
-
-	template<class C, class TReturn, class... TArgs>
-	AnyDelegate(C * c, TReturn(C::* method)(TArgs...))
-		: AnyClass(Delegate<TReturn(TArgs...)>(c, method))
-	{}
-
-	template<class TReturn, class... TArgs>
-	AnyDelegate& operator=(Delegate<TReturn(TArgs...)>&& d)
-	{
-		AnyDelegate(std::forward<Delegate<TReturn(TArgs...)>>(d)).Swap(*this);
-		return *this;
-	}
+	template<class TReturn, class... TArgs> AnyDelegate(const Delegate<TReturn(TArgs...)> & d) : AnyClass(d) {}
+	template<class TReturn, class... TArgs> AnyDelegate(Delegate<TReturn(TArgs...)>&& d) : AnyClass(std::move(d)) {}
+	template<class TReturn, class... TArgs> AnyDelegate(TReturn(*function)(TArgs...)) : AnyClass(Delegate<TReturn(TArgs...)>(function)) {}
+	template<class C, class TReturn, class... TArgs> AnyDelegate(C * c, TReturn(C::* method)(TArgs...)) : AnyClass(Delegate<TReturn(TArgs...)>(c, method)) {}
 };
 
 //------------------------------------------------------------------------------

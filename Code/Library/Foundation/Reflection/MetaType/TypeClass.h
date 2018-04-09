@@ -9,7 +9,6 @@
 // Includes
 //------------------------------------------------------------------------------
 #include "Foundation/Reflection/MetaType/TypeStruct.h"
-#include "Foundation/Pattern/Event.h"
 
 
 namespace TReflection
@@ -20,12 +19,13 @@ namespace TReflection
 	{
 	public:
 		using MetaType = MetaClass;
+		static constexpr MetaFlag s_MetaFlag = E_TYPE_CLASS;
 	};
 
 	class MetaClass : public MetaStruct
 	{
 	public:
-		MetaClass() : MetaStruct() { SetFlag(E_TYPE_CLASS); }
+		MetaClass() : MetaStruct() { m_Flag = IClass::s_MetaFlag; }
 	};
 	REFLECTION_DECLARE_METAOBJECT(IClass, IClass::MetaType)
 }

@@ -83,8 +83,14 @@ namespace TReflection
 	struct Primitive
 	{
 	public:
+		Primitive() {}
+		Primitive(const Name & name) : m_Name(name) {}
+		Primitive(Name && name) : m_Name(std::move(name)) {}
+
 		Name m_Name;
 	};
+
+	class IAttribute;
 
 	class IMetaType : public Primitive
 	{
@@ -100,7 +106,8 @@ namespace TReflection
 		bool IsClass() const		{ return (m_Flag & E_TYPE_CLASS) != 0; }
 		bool IsObject() const		{ return (m_Flag & E_TYPE_OBJECT) != 0; }
 
-		void SetFlag(MetaFlag flag) { m_Flag = (MetaFlag)(m_Flag | flag); }		
+		void SetFlag(MetaFlag flag) { m_Flag = (MetaFlag)flag; }
+		void AddFlag(MetaFlag flag) { m_Flag = (MetaFlag)(m_Flag | flag); }
 		bool HasFlag(MetaFlag flag) const { return (m_Flag & flag) != 0; }
 		MetaFlag GetFlag() const { return m_Flag; }
 
@@ -112,10 +119,14 @@ namespace TReflection
 
 		virtual void* Create() const { return nullptr; }
 
+		// TODO: attribute interface
+		IAttribute * GetAttribute() const { return nullptr; }
+
 	protected:
-		MetaFlag			m_Flag{ E_NONE };
-		uint32				m_Size{ 0 };
-		Serializer			m_Serializer;
+		MetaFlag		m_Flag{ E_NONE };
+		uint32			m_Size{ 0 };
+		Serializer		m_Serializer;
+		IAttribute*		m_Attributes;
 	};
 
 	class IType	{};

@@ -7,6 +7,7 @@
 // Include
 //------------------------------------------------------------------------------
 #include "Foundation/Platform/Types.h"
+#include "Foundation/String/String.h"
 #include <type_traits>
 
 
@@ -104,6 +105,19 @@ public:
 		return Hash((const unsigned char *)&rKey, sizeof(T));
 	}
 };
+
+
+template<>
+class FNVHasher<AString> : public Hasher_FNV_1
+{
+public:
+	SIZET operator()(const AString& rKey) const
+	{
+		return Hash((const unsigned char *)rKey.Get(), rKey.GetLength());
+	}
+};
+
+
 
 
 #endif // FOUNDATION_FUNCTION_HASH_H

@@ -80,11 +80,4 @@ bool MemRStream::Seek(uint64 pos) const
 	return true;
 }
 
-// GetFileSize
-//------------------------------------------------------------------------------
-uint64 MemRStream::GetFileSize() const
-{
-	return m_Size;
-}
-
 //------------------------------------------------------------------------------

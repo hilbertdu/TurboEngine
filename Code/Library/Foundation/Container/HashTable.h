@@ -33,6 +33,7 @@ template<class Table, bool Const = true>
 class HashTableIterator
 {
 public:
+	using TablePtr = Selector<Const ? 1 : 0, Table*, const Table*>;
 	typedef typename Table::ValueType        ValueType;
 	typedef typename Table::KeyType          KeyType;
 	typedef typename Table::ValueType        ValueType;
@@ -70,11 +71,11 @@ public:
 	bool operator>=(const HashTableIterator& rOther) const;
 
 protected:
-	Table* m_Table;
+	TablePtr m_Table;
 	SIZET m_BucketIndex;
 	SIZET m_ElementIndex;
 
-	explicit HashTableIterator(Table* pTable, SIZET bucketIndex, SIZET elementIndex);
+	explicit HashTableIterator(TablePtr pTable, SIZET bucketIndex, SIZET elementIndex);
 
 	friend class HashTable<ValueType, KeyType, HasherType, ExtractKeyType, KeyEqualType, AllocatorType>;
 	friend class HashTableIterator<Table, !Const>;

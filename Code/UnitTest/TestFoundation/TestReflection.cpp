@@ -10,6 +10,7 @@
 #include "Foundation/FileIO/MemWStream.h"
 #include "Foundation/FileIO/MemRStream.h"
 #include "Foundation/Logging/Logger.h"
+#include "Foundation/Container/HashMap.h"
 
 
 // TestReflection
@@ -38,7 +39,7 @@ REGISTER_TESTS_END
 
 // TestStruct
 //------------------------------------------------------------------------------
-struct TestStruct
+struct TestStruct : public RefBase<TestStruct>
 {
 public:
 	TestStruct() : m_MyInt(851) {}
@@ -53,7 +54,7 @@ TREFLECT_END(TestStruct)
 
 // TestObject
 //------------------------------------------------------------------------------
-class TestObject : public TReflection::IObject
+class TestObject : public IObject
 {
 public:
 	TestObject()
@@ -89,7 +90,7 @@ public:
 
 		if (addChildRef)
 		{
-			m_TestObjectPtr = (TestObject *)TReflection::CreateObject("TestObject");
+			m_TestObjectPtr = (TestObject *)ObjectPool::Instance().CreateObject("TestObject");
 			m_TestObjectPtr->PopulateWithTestData(false);
 		}
 
@@ -97,6 +98,15 @@ public:
 		m_FloatArray.Append(222.0f);
 		m_FloatArray.Append(333.0f);
 		m_StructArray.SetSize(3);
+
+		m_IntFloatMap[100] = 1000.0;
+		m_IntFloatMap[200] = 2000.0;
+
+		if (addChildRef)
+		{
+			m_StrTestMap["Test"] = (TestObject *)ObjectPool::Instance().CreateObject("TestObject");
+			m_StrTestMap["Test"]->PopulateWithTestData(false);
+		}
 	}
 
 private: // ensure reflection can set private members
@@ -116,33 +126,37 @@ private: // ensure reflection can set private members
 	AString		m_AString;
 	TestStruct	m_TestStruct;
 
-	Array<float>					m_FloatArray;
-	Array<TestStruct>				m_StructArray;
-	Array<TestStruct*>				m_StructPtrArray;
-	StrongPtr<TestObject>			m_TestObjectPtr;
-	Array<StrongPtr<TestObject>>	m_TestObjectPtrArray;
+	Array<float>						m_FloatArray;
+	Array<TestStruct>					m_StructArray;
+	Array<Ref<TestStruct>>				m_StructPtrArray;
+	Ref<TestObject>						m_TestObjectPtr;
+	Array<Array<Ref<TestObject>>>		m_TestObjectPtrArray;
+	HashMap<int32, float>				m_IntFloatMap;
+	HashMap<AString, Ref<TestObject>>	m_StrTestMap;
 
 	TREFLECTION_DECLARE(TestObject, IObject)
 };
 
 TREFLECT_BEGIN(TestObject)
-	TREFLECT_FIELD(m_Float,		"Float")
-	TREFLECT_FIELD(m_UInt8,		"UInt8")
-	TREFLECT_FIELD(m_UInt16,	"UInt16")
-	TREFLECT_FIELD(m_UInt32,	"UInt32")
-	TREFLECT_FIELD(m_UInt64,	"UInt64")
-	TREFLECT_FIELD(m_Int8,		"Int8")
-	TREFLECT_FIELD(m_Int16,		"Int16")
-	TREFLECT_FIELD(m_Int32,		"Int32")
-	TREFLECT_FIELD(m_Int64,		"Int64")
-	TREFLECT_FIELD(m_Bool,		"Bool")
-	TREFLECT_FIELD(m_AString,	"AString")
-	TREFLECT_FIELD(m_TestStruct,			"TestStruct")
-	TREFLECT_FIELD(m_FloatArray,			"FloatArray")
-	TREFLECT_FIELD(m_StructArray,			"StructArray")
-	TREFLECT_FIELD(m_StructPtrArray,		"StructPtrArray")
-	TREFLECT_FIELD(m_TestObjectPtrArray,	"TestObjectPtrArray")
-	TREFLECT_FIELD(m_TestObjectPtr,			"TestObjectPtr")
+	TREFLECT_FIELD(m_Float,					"Float",				ATTRIBUTE(AttrSerializer(true)))
+	TREFLECT_FIELD(m_UInt8,					"UInt8",				ATTRIBUTE(AttrSerializer(true)))
+	TREFLECT_FIELD(m_UInt16,				"UInt16",				ATTRIBUTE(AttrSerializer(true)))
+	TREFLECT_FIELD(m_UInt32,				"UInt32",				ATTRIBUTE(AttrSerializer(true)))
+	TREFLECT_FIELD(m_UInt64,				"UInt64",				ATTRIBUTE(AttrSerializer(true)))
+	TREFLECT_FIELD(m_Int8,					"Int8",					ATTRIBUTE(AttrSerializer(true)))
+	TREFLECT_FIELD(m_Int16,					"Int16",				ATTRIBUTE(AttrSerializer(true)))
+	TREFLECT_FIELD(m_Int32,					"Int32",				ATTRIBUTE(AttrSerializer(true)))
+	TREFLECT_FIELD(m_Int64,					"Int64",				ATTRIBUTE(AttrSerializer(true)))
+	TREFLECT_FIELD(m_Bool,					"Bool",					ATTRIBUTE(AttrSerializer(true)))
+	TREFLECT_FIELD(m_AString,				"AString",				ATTRIBUTE(AttrSerializer(true)))
+	TREFLECT_FIELD(m_TestStruct,			"TestStruct",			ATTRIBUTE(AttrSerializer(true)))
+	TREFLECT_FIELD(m_FloatArray,			"FloatArray",			ATTRIBUTE(AttrSerializer(true)))
+	TREFLECT_FIELD(m_StructArray,			"StructArray",			ATTRIBUTE(AttrSerializer(true)))
+	TREFLECT_FIELD(m_StructPtrArray,		"StructPtrArray",		ATTRIBUTE(AttrSerializer(false)))
+	TREFLECT_FIELD(m_TestObjectPtrArray,	"TestObjectPtrArray",	ATTRIBUTE(AttrSerializer(true)))
+	TREFLECT_FIELD(m_TestObjectPtr,			"TestObjectPtr",		ATTRIBUTE(AttrSerializer(true)))
+	TREFLECT_FIELD(m_IntFloatMap,			"IntFloatMap",			ATTRIBUTE(AttrSerializer(true)))
+	TREFLECT_FIELD(m_StrTestMap,			"StrTestMap",			ATTRIBUTE(AttrSerializer(true)))
 TREFLECT_END(TestObject)
 
 
@@ -152,6 +166,7 @@ void TestReflection::TestGetMetaType() const
 {
 	using namespace TReflection;
 	Initialization();
+	ObjectPool::Initialize();
 
 	const IMetaType* metaType1 = MetaTypeDB::Instance().GetMetaType<bool>();
 	const IMetaType* metaType2 = MetaTypeDB::Instance().GetMetaType<Array<int, HeapAllocator>>();
@@ -206,10 +221,9 @@ void TestReflection::TestGetSet() const
 	}
 
 	{
-		TestObject * obj = (TestObject *)TReflection::CreateObject("TestObject");
-		StrongPtr<TestObject> ref(obj);
-		TEST_ASSERT(info->SetProperty(&o, "TestObjectPtr", ref));
-		TEST_ASSERT(o.m_TestObjectPtr.Get() == obj);
+		TestObject * obj = (TestObject *)ObjectPool::Instance().CreateObject("TestObject");
+		TEST_ASSERT(info->SetProperty(&o, "TestObjectPtr", Ref<TestObject>(obj)));
+		TEST_ASSERT(o.m_TestObjectPtr == obj);
 	}
 
 	#undef CHECK
@@ -224,29 +238,28 @@ void TestReflection::TestSerialization() const
 
 	MemWStream wStream;
 	TReflection::TextSerializer writer1;
-	writer1.Save(&wStream, &o, TestObject::GetMetaTypeS());
+	writer1.Save(&wStream, &o, TestObject::GetMetaTypeS(), true);
 	LOUTPUT("Stream: \n%s\n", wStream.GetData());
 
 	MemRStream rStream(wStream.GetData(), wStream.GetSize());
 	TestObject obj;
 	TReflection::TextSerializer reader;
-	reader.Load(&rStream, &obj, TestObject::GetMetaTypeS());
+	reader.Load(&rStream, &obj, TestObject::GetMetaTypeS(), true);
 
 	MemWStream wStream1;
 	TReflection::TextSerializer writer2;
-	writer2.Save(&wStream1, &obj, TestObject::GetMetaTypeS());
+	writer2.Save(&wStream1, &obj, TestObject::GetMetaTypeS(), true);
 
 	LOUTPUT("Stream1: \n%s\n", wStream1.GetData());
 
 	bool streamsMatch = (wStream.GetSize() == wStream1.GetSize());
 	streamsMatch = streamsMatch && (memcmp(wStream.GetData(), wStream1.GetData(), wStream.GetSize()) == 0);
 	TEST_ASSERT(streamsMatch); // Streams don't match
-
 }
 
 // TestInheritence
 //------------------------------------------------------------------------------
-class BaseClass : public TReflection::IObject
+class BaseClass : public IObject
 {
 public:
 	BaseClass() : m_A(-1) {}
@@ -308,9 +321,10 @@ void TestReflection::TestInheritence() const
 // TestClearDB
 //------------------------------------------------------------------------------
 void TestReflection::TestClearDB() const
-{
+{	
 	TReflection::MetaTypeDB::Instance().Clear();
 	TReflection::MetaTypeDB::Instance().Shrink();
+	ObjectPool::Finalize();
 }
 
 //------------------------------------------------------------------------------

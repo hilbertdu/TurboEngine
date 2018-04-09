@@ -19,18 +19,25 @@
 
 namespace TReflection
 {
-	class IContainer : public IType {};
+	class IContainer : public IType 
+	{
+	public:
+		static constexpr MetaFlag s_MetaFlag = E_TYPE_CONTAINER;
+	};
 
 	class IMetaContainer : public IMetaType
 	{
-	public:
-		IMetaContainer() { SetFlag(E_TYPE_CONTAINER); }
+	public:		
+		IMetaContainer() { m_Flag = IContainer::s_MetaFlag; }
 
 		virtual ~IMetaContainer() 
 		{ 
 			TDELETE_SAFE(m_ReadIterator);
 			TDELETE_SAFE(m_WriteIterator);
 		}
+
+		virtual bool IsKeyPointer() const { return false; }
+		virtual bool IsValuePointer() const { return false; }
 
 	public:
 		IMetaType*		m_MetaTypeKey{ 0 };

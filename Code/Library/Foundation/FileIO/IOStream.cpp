@@ -58,4 +58,17 @@ void IOStream::AlignWrite(SIZET alignment)
 	ASSERT((Tell() % alignment) == 0);
 }
 
+// ReadLine
+//------------------------------------------------------------------------------
+void IOStream::ReadLine(AString & string, char delim) const
+{
+	string.Clear();
+
+	char c;
+	while (Read(&c, 1) == 1 && c != delim)
+	{
+		string += c;
+	}
+}
+
 //------------------------------------------------------------------------------

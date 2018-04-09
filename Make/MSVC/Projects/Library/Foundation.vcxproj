@@ -154,11 +154,19 @@
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Container\HashTable.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Container\Pair.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Env\Assert.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\FileIO\FileIO.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\FileIO\FileStream.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\FileIO\IOStream.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\FileIO\MemRStream.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\FileIO\MemWStream.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\FileIO\PathUtils.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\FileIO\StrStream.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Math\CRC32.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Math\Math.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Math\Vector.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Math\Vector2.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Memory\Deletor.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Misc\Generator.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Pattern\Delegate.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Pattern\Event.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Pattern\Property.h" />
@@ -174,8 +182,11 @@
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Platform\Misc.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Platform\Platform.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Platform\Types.h" />
-    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Process\Mutex.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Process\Lock.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Process\Process.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Process\Thread.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Attributes\Attribute.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Attributes\Attributes.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Container\Iterator.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Container\Iterators.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Members\Field.h" />
@@ -189,14 +200,20 @@
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeEnum.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeStruct.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Objects\Object.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Objects\ObjectPool.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Reflection.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\ReflectionMacros.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Serialization\Serializer.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerProperty.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerPropertyBinary.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerPropertyText.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerText.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\String\String.h" />
-    <ClInclude Include="..\..\..\..\Code\Library\Foundation\String\StringAnsi.inl" />
-    <ClInclude Include="..\..\..\..\Code\Library\Foundation\String\StringWide.inl" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\String\StringHelper.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\String\StringView.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Task\Task.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Task\TaskScheduler.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Task\Worker.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Template\Macros.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Template\Template.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Time\Timer.h" />
@@ -213,9 +230,13 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Env\Assert.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\FileIO\FileIO.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\FileIO\FileStream.cpp" />
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\FileIO\IOStream.cpp" />
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\FileIO\MemRStream.cpp" />
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\FileIO\MemWStream.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\FileIO\PathUtils.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\FileIO\StrStream.cpp" />
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Logging\Logger.cpp" />
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Math\CRC32.cpp" />
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Memory\Mem.cpp" />
@@ -226,9 +247,16 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <FileType>Document</FileType>
     </ClInclude>
-    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Process\Mutex.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Process\Lock.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Process\Process.cpp" />
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Process\Thread.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Reflection\Objects\Object.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Reflection\Objects\ObjectPool.cpp" />
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Reflection\Reflection.inl" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerText.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Task\Task.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Task\TaskScheduler.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Task\Worker.cpp" />
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Time\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +266,7 @@
     <None Include="..\..\..\..\Code\Library\Foundation\Container\RBTree.inl" />
     <None Include="..\..\..\..\Code\Library\Foundation\Memory\Allocator.inl" />
     <None Include="..\..\..\..\Code\Library\Foundation\String\String.inl" />
+    <None Include="..\..\..\..\Code\Library\Foundation\String\StringHelper.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

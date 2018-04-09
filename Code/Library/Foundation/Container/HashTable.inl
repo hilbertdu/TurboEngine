@@ -4,7 +4,7 @@
 // Constructors
 //------------------------------------------------------------------------------
 template<class Table, bool Const>
-HashTableIterator<Table, Const>::HashTableIterator(Table* pTable, SIZET bucketIndex, SIZET elementIndex)
+HashTableIterator<Table, Const>::HashTableIterator(TablePtr pTable, SIZET bucketIndex, SIZET elementIndex)
 	: m_Table(pTable)
 	, m_BucketIndex(bucketIndex)
 	, m_ElementIndex(elementIndex)
@@ -25,6 +25,7 @@ HashTableIterator<Table, Const>& HashTableIterator<Table, Const>::operator=(cons
 	m_Table = rOther.m_Table;
 	m_BucketIndex = rOther.m_BucketIndex;
 	m_ElementIndex = rOther.m_ElementIndex;
+	return *this;
 }
 
 // Operators
@@ -516,7 +517,6 @@ Value & HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Fi
 template<class Value, class Key, class HashFunction, class ExtractKey, class EqualKey, class Allocator>
 SIZET HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Erase(const Key& rKey)
 {
-	ASSERT(m_Buckets);
 	SIZET bucketIndex = m_Hasher(rKey) % m_Buckets.GetSize();
 	Bucket& rEntries = m_Buckets[bucketIndex];
 	SIZET entryCount = rEntries.GetSize();
@@ -529,7 +529,7 @@ SIZET HashTable<Value, Key, HashFunction, ExtractKey, EqualKey, Allocator>::Eras
 		{
 			rEntries.EraseSwapIndex(entryIndex);
 			++erasedCount;
-			--entryIndex;
+			--entryCount;
 		}
 	}
 

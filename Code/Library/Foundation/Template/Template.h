@@ -4,7 +4,8 @@
 #ifndef FOUNDATION_TEMPLATE_STRING_H
 #define FOUNDATION_TEMPLATE_STRING_H
 
-// char sequence for generate compiler string
+// String
+//------------------------------------------------------------------------------
 template<char... CHAR>
 struct Sequence
 {
@@ -18,6 +19,12 @@ struct Sequence
 
 #define MACRO_GET_STR(STR)	MACRO_GET_STR_64(STR, 0), 0		//guard for longer strings
 #define CONSTSTR(STR)		Sequence<MACRO_GET_STR(STR)>
+
+
+// Selector
+//------------------------------------------------------------------------------
+template<uint32 N, typename... T>
+using Selector = typename std::tuple_element<N, std::tuple<T...>>::type;
 
 
 //------------------------------------------------------------------------------

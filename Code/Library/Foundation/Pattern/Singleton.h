@@ -7,6 +7,7 @@
 // Includes
 //------------------------------------------------------------------------------
 #include "Foundation/Env/Assert.h"
+#include "Foundation/Memory/Mem.h"
 
 // Singleton
 //------------------------------------------------------------------------------
@@ -15,12 +16,16 @@ class Singleton
 {
 public:
 	static inline void Initialize();
+	static inline void Finalize();
 	static inline T &  Instance();
 	static inline bool IsValid() { return (s_Instance != nullptr); }
 
 protected:
 	Singleton();
 	~Singleton();
+
+	template<class Derived>
+	static void Initialize();
 
 private:
 	static T * s_Instance;
@@ -56,6 +61,22 @@ void Singleton<T>::Initialize()
 {
 	ASSERT(s_Instance == nullptr);
 	s_Instance = TNEW(T);
+}
+
+template<class T>
+template<class Derived>
+/*static*/ void Singleton<T>::Initialize()
+{
+	ASSERT(s_Instance == nullptr);
+	s_Instance = TNEW(Derived);
+}
+
+template<class T>
+/*static*/ inline void Singleton<T>::Finalize()
+{
+	ASSERT(s_Instance);
+	TDELETE s_Instance;
+	s_Instance = nullptr;
 }
 
 // Instance

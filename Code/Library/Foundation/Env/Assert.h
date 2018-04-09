@@ -46,7 +46,7 @@ bool IsDebuggerAttached();
 		PRAGMA_DISABLE_PUSH_MSVC(4127)													\
 		if (!(expression))																\
 		{																				\
-			if (AssertHandler::Failure(#expression, __FILE__, __LINE__, __VA_ARGS__))	\
+			if (AssertHandler::FailureM(#expression, __FILE__, __LINE__, __VA_ARGS__))	\
 			{																			\
 				BREAK_IN_DEBUGGER;														\
 			}																			\
@@ -84,6 +84,9 @@ bool IsDebuggerAttached();
 			s_ThrowOnAssert = throwOnAssert;				\
 		}													\
 		static bool Failure(const char * message,			\
+			const char * file,								\
+			const int line);								\
+		static bool FailureM(const char * message,			\
 			const char * file,								\
 			const int line,									\
 			const char * msgFormat = "",					\

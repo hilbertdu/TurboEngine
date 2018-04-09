@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 #include "Foundation/Platform/Types.h"
 #include "Foundation/Platform/Misc.h"
-#include "Foundation/Process/Mutex.h"
+#include "Foundation/Process/Lock.h"
 #include <atomic>
 #include <typeinfo>
 
@@ -81,14 +81,14 @@ public:
 private:
 	static void Init();
 
-	static Mutex & GetMutex() { return reinterpret_cast<Mutex &>(s_Mutex); }
+	static MutexLock & GetMutex() { return reinterpret_cast<MutexLock &>(s_Mutex); }
 
 	static uint32				s_Id;
 	static std::atomic<bool>	s_Enabled;
 	static std::atomic<bool>	s_Initialized;
 	static uint32				s_AllocationCount;
 	static Allocation *			s_LastAllocation;
-	static uint64				s_Mutex[sizeof(Mutex) / sizeof(uint64)];
+	static uint64				s_Mutex[sizeof(MutexLock) / sizeof(uint64)];
 	static Allocation **		s_AllocationHashTable;
 	static MemPoolBlock *		s_Allocations;
 };

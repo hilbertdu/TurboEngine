@@ -19,6 +19,12 @@
 
 #define DefaultAllocator HeapAllocator
 
+// AllocType
+//------------------------------------------------------------------------------
+#define ALLOC_TYPE_HEAP		1
+#define ALLOC_TYPE_STACK	2
+#define ALLOC_TYPE_POOL		3
+
 
 // AlignAlloc
 //------------------------------------------------------------------------------
@@ -69,6 +75,8 @@ public:
 class HeapSizeAllocator
 {
 public:
+	static const uint8 ALLOC_TYPE = ALLOC_TYPE_HEAP;
+
 	void* Allocate(SIZET size, SIZET alignment = T_MEM_DEFAULT_ALIGN) { return ALLOC(size, alignment); }
 	void* Reallocate(void* pMem, SIZET size, SIZET alignment = T_MEM_DEFAULT_ALIGN) { return REALLOC(pMem, size); }
 	void  Free(void* pMem) { FREE(pMem); }
@@ -79,6 +87,8 @@ template<uint32 RESERVED = 256, bool SUPPORT_OVERFLOW = true>
 class StackSizeAllocator
 {
 public:
+	static const uint8 ALLOC_TYPE = ALLOC_TYPE_STACK;
+
 	explicit StackSizeAllocator();
 	StackSizeAllocator(const StackSizeAllocator&) = delete;
 	StackSizeAllocator(StackSizeAllocator&&) = delete;
@@ -88,7 +98,9 @@ public:
 	void  Free(void* pMem);
 	bool  IsInStack(void* pMem) const;
 
-private:
+protected:
+	uint32 GetAlignFreeIdx(SIZET alignment);
+
 	char	m_StackMem[RESERVED];
 	uint32	m_StackFreeIdx;
 	uint32	m_StackFreeLastIdx;
@@ -99,6 +111,8 @@ template<class AFORM, class CATEGORY = CONSTSTR("Default")>
 class PoolSizeAllocator
 {
 public:
+	static const uint8 ALLOC_TYPE = ALLOC_TYPE_POOL;
+
 	explicit PoolSizeAllocator();
 
 	void* Allocate(SIZET size, SIZET alignment = T_MEM_DEFAULT_ALIGN);

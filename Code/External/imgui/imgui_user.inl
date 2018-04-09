@@ -8,6 +8,16 @@ static const float NODE_SLOT_RADIUS = 4.0f;
 
 namespace ImGui
 {
+	IMDocker::IMDocker() : label(nullptr) {}
+	IMDocker::IMDocker(const char* label) : label(nullptr) { if (label) this->label = ImStrdup(label); }
+	IMDocker::~IMDocker() { if (label) MemFree(label); }
+
+	void IMDocker::SetLabel(const char * label)
+	{
+		if (this->label) { MemFree(this->label); }
+		this->label = ImStrdup(label);
+	}
+
 	bool ToolbarButton(ImTextureID texture, const ImVec4& bg_color, const char* tooltip)
 	{
 		auto frame_padding = ImGui::GetStyle().FramePadding;
@@ -50,7 +60,8 @@ namespace ImGui
 		if (size.x == 0) size.x = GetContentRegionAvailWidth();
 		SetNextWindowSize(size);
 
-		bool ret = is_global ? Begin(str_id, nullptr, size, -1, flags) : BeginChild(str_id, size, false, flags);
+		//bool ret = is_global ? Begin(str_id, nullptr, size, -1, flags) : BeginChild(str_id, size, false, flags);
+		bool ret = is_global ? Begin(str_id, nullptr, flags) : BeginChild(str_id, size, false, flags);
 		PopStyleVar(3);
 
 		return ret;
@@ -136,7 +147,7 @@ namespace ImGui
 
 		// Tooltip on hover
 		int v_hovered = -1;
-		if (IsHovered(inner_bb, 0))
+		if (ItemHoverable(inner_bb, 0))
 		{
 			const float t = ImClamp(
 				(g.IO.MousePos.x - inner_bb.Min.x) / (inner_bb.Max.x - inner_bb.Min.x), 0.0f, 0.9999f);
@@ -243,7 +254,7 @@ namespace ImGui
 	bool IsFocusedHierarchy()
 	{
 		ImGuiContext& g = *GImGui;
-		return isPredecessor(g.CurrentWindow, g.FocusedWindow) || isPredecessor(g.FocusedWindow, g.CurrentWindow);
+		return isPredecessor(g.CurrentWindow, g.NavWindow) || isPredecessor(g.NavWindow, g.CurrentWindow);
 	}
 
 
@@ -446,7 +457,7 @@ namespace ImGui
 			ImVec2(label_size.x > 0.0f ? style.ItemInnerSpacing.x + label_size.x : 0.0f, 0));
 
 		ItemSize(total_bb, style.FramePadding.y);
-		if (!ItemAdd(total_bb, nullptr)) return editor;
+		if (!ItemAdd(total_bb, 0)) return editor;
 
 		editor.valid = true;
 		PushID(label);
@@ -621,7 +632,7 @@ namespace ImGui
 	{
 		if (GImGui->OpenPopupStack.Size <= GImGui->CurrentPopupStack.Size)
 		{
-			ClearSetNextWindowData();
+			//ClearSetNextWindowData();
 			return false;
 		}
 		ImGuiContext& g = *GImGui;
@@ -629,20 +640,21 @@ namespace ImGui
 		const ImGuiID id = window->GetID(str_id);
 		if (!IsPopupOpen(id))
 		{
-			ClearSetNextWindowData();
+			//ClearSetNextWindowData();
 			return false;
 		}
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-		ImGuiWindowFlags flags = ImGuiWindowFlags_ShowBorders | ImGuiWindowFlags_Popup | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings;
+		ImGuiWindowFlags flags = /*ImGuiWindowFlags_ShowBorders |*/ ImGuiWindowFlags_Popup | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings;
 
 		char name[32];
 		ImFormatString(name, 20, "##popup_%08x", id);
 		float alpha = 1.0f;
 
-		bool opened = ImGui::Begin(name, NULL, size_on_first_use, alpha, flags);
-		if (!(window->Flags & ImGuiWindowFlags_ShowBorders))
-			g.CurrentWindow->Flags &= ~ImGuiWindowFlags_ShowBorders;
+		//bool opened = ImGui::Begin(name, NULL, size_on_first_use, alpha, flags);
+		bool opened = ImGui::Begin(name, NULL, flags);
+		//if (!(window->Flags & ImGuiWindowFlags_ShowBorders))
+		//	g.CurrentWindow->Flags &= ~ImGuiWindowFlags_ShowBorders;
 		if (!opened)
 			ImGui::EndPopup();
 
@@ -686,14 +698,15 @@ namespace ImGui
 		auto pos = GetCursorPos();
 		PushItemWidth(width < 0 ? GetContentRegionAvail().x : width);
 		char tmp[32];
-		strcpy(tmp, "##");
-		strcat(tmp, label);
+		strcpy_s(tmp, "##");
+		strcat_s(tmp, label);
 		bool ret = InputText(tmp, buf, buf_size);
 		if (buf[0] == 0 && !IsItemActive())
 		{
 			pos.x += GetStyle().FramePadding.x;
 			SetCursorPos(pos);
-			AlignFirstTextHeightToWidgets();
+			//AlignFirstTextHeightToWidgets();
+			AlignTextToFramePadding();
 			TextColored(GetStyle().Colors[ImGuiCol_TextDisabled], "Filter");
 		}
 		PopItemWidth();
@@ -822,6 +835,3 @@ namespace ImGui
 		EndChild();
 	}
 } // namespace ImGui
-
-
-#include "imgui_dock.inl"

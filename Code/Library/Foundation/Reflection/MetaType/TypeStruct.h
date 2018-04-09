@@ -21,12 +21,13 @@ namespace TReflection
 	{
 	public:
 		using MetaType = MetaStruct;
+		static constexpr MetaFlag s_MetaFlag = E_TYPE_STRUCT;
 	};
 
 	class MetaStruct : public IMetaType, public FieldCollection, public MethodCollection
 	{
 	public:
-		MetaStruct() { SetFlag(E_TYPE_STRUCT); }
+		MetaStruct() { m_Flag = IStruct::s_MetaFlag; }
 
 		template<class FieldT>
 		void AddField(const FieldT * member, const char * name);		// TODO: parameter attribute
@@ -43,9 +44,12 @@ namespace TReflection
 		template<class T>
 		bool GetMethod(const char * name, T & method) const;
 
+		inline uint32 GetFieldCount();
+
 	public:
 		MetaStruct*			m_Super{ 0 };
 		Delegate<IType*()>	m_Creator;
+		Delegate<IType*()>	m_Creator2;
 	};
 
 	template<class FieldT>
@@ -102,6 +106,12 @@ namespace TReflection
 			result = m_Super->GetMethod<T>(name, method);
 		}
 		return result;
+	}
+
+	uint32 MetaStruct::GetFieldCount()
+	{
+		uint32 superSize = m_Super ? m_Super->GetFieldCount() : 0;
+		return superSize + m_Fields.GetSize();
 	}
 	REFLECTION_DECLARE_METAOBJECT(IStruct, IStruct::MetaType)
 }

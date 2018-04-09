@@ -7,6 +7,7 @@
 // Includes
 //------------------------------------------------------------------------------
 #include "Foundation/Reflection/Reflection.h"
+#include "Foundation/Reflection/Attributes/Attributes.h"
 
 
 #define _TREFLECTION_DECLARE(OBJECT, BASE) \
@@ -19,10 +20,13 @@
 		using BaseType = BASE;							\
 		using ObjectType = OBJECT;						\
 		static IType* Create();							\
+		static IType* Create2();						\
 		static void RegisterMetaType();					\
 		static void RegisterProperty();					\
 		static void BindReflectionInfo();				\
-		inline static MetaType * GetMetaTypeS();
+		inline static MetaType * GetMetaTypeS();		\
+		virtual const IMetaType* GetMetaTypeV() const;	\
+		OBJECT(IMetaType * UNUSED(x)) {}
 
 #define _TREFLECTION_BEGIN(OBJECT) \
 	namespace TReflection										\
@@ -38,7 +42,8 @@
 		metaType->m_Name = TXT(#OBJECT);																\
 		metaType->m_Super = static_cast<MetaStruct*>(MetaTypeDB::Instance().GetMetaType<BaseType>());	\
 		metaType->m_Creator = &OBJECT::Create;															\
-		metaType->SetFlag(TReflection::E_TYPE_OBJECT);													\
+		metaType->m_Creator2 = &OBJECT::Create2;														\
+		metaType->SetFlag(BaseType::s_MetaFlag);														\
 	}																									\
 	_TREFLECT_STRUCT_COMMON(OBJECT)
 
@@ -47,15 +52,24 @@
 	{																			\
 		return (OBJECT::IType*)(TNEW(OBJECT));									\
 	}																			\
+	/*static*/ OBJECT::IType* OBJECT::Create2()									\
+	{																			\
+		return (OBJECT::IType*)(TNEW(OBJECT(OBJECT::GetMetaTypeS())));			\
+	}																			\
 	/*static*/ inline OBJECT::MetaType * OBJECT::GetMetaTypeS()					\
 	{																			\
 		return (OBJECT::MetaType*)MetaTypeDB::Instance().GetMetaType<OBJECT>();	\
 	}																			\
+	/*virtual*/ const IMetaType * OBJECT::GetMetaTypeV() const					\
+	{																			\
+		return MetaTypeDB::Instance().GetMetaType<OBJECT>();					\
+	}																			\
 	/*static*/ void OBJECT::RegisterProperty()									\
 	{
 
-#define TREFLECT_FIELD(FIELD, FNAME)	\
+#define TREFLECT_FIELD(FIELD, FNAME, ...)	\
 		GetMetaTypeS()->AddField(&((ObjectType*)0)->FIELD, TXT(FNAME));	\
+		GetMetaTypeS()->TopField().AddAttribute(__VA_ARGS__);
 
 #define TREFLECT_METHOD(METHOD, FNAME)	\
 		GetMetaTypeS()->AddMethod(&ObjectType::METHOD, TXT(FNAME));	\
@@ -67,6 +81,10 @@
 		RegisterMetaType();							\
 		RegisterProperty();							\
 	}
+
+#define BIND_REFLECTION(OBJECT) OBJECT::BindReflectionInfo()
+
+#define ATTRIBUTE(...) MACRO_VA_MAPPER(TReflection::, __VA_ARGS__)
 
 #define TREFLECTION_DECLARE(OBJECT, BASE)	_TREFLECTION_DECLARE(OBJECT, BASE)
 #define TREFLECT_BEGIN(OBJECT)				_TREFLECTION_BEGIN(OBJECT)

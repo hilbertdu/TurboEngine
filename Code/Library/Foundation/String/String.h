@@ -12,6 +12,7 @@
 #include "Foundation/Memory/Allocator.h"
 #include "Foundation/Memory/Mem.h"
 #include "Foundation/Math/Conversion.h"
+#include "Foundation/String/StringHelper.h"
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -20,22 +21,20 @@
 // String
 //------------------------------------------------------------------------------
 template<typename CharType, typename Allocator = DefaultAllocator>
-class String
+class String : public Allocator
 {
 public:
-	explicit String();
-	explicit String(const CharType * string);
-	explicit String(const CharType * start, const CharType * end);
-
-	String(const String & string);
-	String(String && string);
+	/*explicit*/ String();
+	/*explicit*/ String(const CharType * string);
+	/*explicit*/ String(const CharType * start, const CharType * end);
 
 	template<typename OtherAllocator>
 	String(const String<CharType, OtherAllocator> & string);
+	String(const String & string);	
 	~String();
 
 	FORCE_INLINE SIZET GetLength() const { return m_Length; }
-	FORCE_INLINE bool   IsEmpty() const { return (m_Length == 0); }
+	FORCE_INLINE bool  IsEmpty() const { return (m_Length == 0); }
 
 	// C-style compatibility
 	FORCE_INLINE CharType *	      Get() { return m_Contents; }
@@ -66,6 +65,9 @@ public:
 	FORCE_INLINE String & operator = (const String<CharType, OtherAllocator> & string) { Assign(string); return *this; }
 
 	// C++ 11 [new]
+	template<class = std::enable_if<std::is_move_constructible<Allocator>::value>::type>
+	String(String && string);
+	template<class = std::enable_if<std::is_move_assignable<Allocator>::value>::type>
 	String & operator = (String && string);
 
 	// Concatenation
@@ -75,6 +77,7 @@ public:
 	String<CharType, Allocator> & operator += (const String<CharType, OtherAllocator> & string);
 	void Append(const CharType * string, SIZET len);
 	void AppendFormat(const CharType * fmtString, ...);
+	void AppendMultiply(const CharType * string, SIZET count);
 	template<typename OtherAllocator>
 	FORCE_INLINE void Append(const String<CharType, OtherAllocator> & string) { this->operator += (string); }
 
@@ -91,63 +94,55 @@ public:
 	// Transformations
 	SIZET Replace(CharType from, CharType to, SIZET maxReplaces = 0);
 	SIZET Replace(const CharType * from, const CharType * to, SIZET maxReplaces = 0);
-	void ToLower();
-	void ToUpper();
-
+	FORCE_INLINE void ToLower() { return StringHelper::ToLower(m_Contents, m_Length); }
+	FORCE_INLINE void ToUpper() { return StringHelper::ToUpper(m_Contents, m_Length); }
+	
 	// Searching
-	const CharType * Find(CharType c, const CharType * startPos = nullptr) const;
-	CharType *		 Find(CharType c, CharType * startPos = nullptr) { return const_cast<CharType *>(((const String *)this)->Find(c, startPos)); }
-	const CharType * Find(const CharType * subString) const;
-	CharType *		 Find(const CharType * subString) { return const_cast<CharType *>(((const String *)this)->Find(subString)); }
-	const CharType * FindI(const CharType * subString) const;
-	const CharType * FindLast(CharType c) const;
-	CharType *		 FindLast(CharType c) { return const_cast<CharType *>(((const String *)this)->FindLast(c)); }
-	bool EndsWith(CharType c) const;
-	bool EndsWith(const CharType * string) const;
-	template<typename OtherAllocator>
-	bool EndsWith(const String<CharType, OtherAllocator> & other) const;
-	bool EndsWithI(const CharType * other) const;
-	template<typename OtherAllocator>
-	bool EndsWithI(const String<CharType, OtherAllocator> & other) const;
-	bool BeginsWith(CharType c) const;
-	bool BeginsWith(const CharType * string) const;
-	template<typename OtherAllocator>
-	bool BeginsWith(const String<CharType, OtherAllocator> & string) const;
-	bool BeginsWithI(const CharType * string) const;
-	template<typename OtherAllocator>
-	bool BeginsWithI(const String<CharType, OtherAllocator> & string) const;
+	CharType *		 Find(CharType c, CharType * startPos = nullptr) { return const_cast<CharType*>(StringHelper::Find(m_Contents, m_Length, c, startPos)); }
+	const CharType * Find(CharType c, const CharType * startPos = nullptr) const { return StringHelper::Find(m_Contents, m_Length, c, startPos); }
+	CharType *		 Find(const CharType * subString) { return const_cast<CharType*>(StringHelper::Find(m_Contents, m_Length, subString)); }
+	const CharType * Find(const CharType * subString) const { return StringHelper::Find(m_Contents, m_Length, subString); }
+	
+	const CharType * FindI(const CharType * subString) const { return StringHelper::FindI(m_Contents, m_Length, subString); }
+	const CharType * FindLast(CharType c) const { return StringHelper::FindLast(m_Contents, m_Length, c); }
+	CharType *		 FindLast(CharType c) { return const_cast<CharType*>(((const String*)this)->FindLast(c)); }
 
+	FORCE_INLINE bool EndsWith(CharType c) const { return StringHelper::EndsWith(m_Contents, m_Length, c); }
+	FORCE_INLINE bool EndsWith(const CharType * string) const { return StringHelper::EndsWith(m_Contents, m_Length, string); }
+	template<typename OtherAllocator>
+	FORCE_INLINE bool EndsWith(const String<CharType, OtherAllocator> & other) const { return StringHelper::EndsWith(m_Contents, m_Length, other.Get()); }
+	FORCE_INLINE bool EndsWithI(const CharType * other) const { return StringHelper::EndsWithI(m_Contents, m_Length, other); }
+	template<typename OtherAllocator>
+	FORCE_INLINE bool EndsWithI(const String<CharType, OtherAllocator> & other) const { return StringHelper::EndsWithI(m_Contents, m_Length, other.Get()); }
+	FORCE_INLINE bool BeginsWith(CharType c) const { return StringHelper::BeginsWith(m_Contents, c); }
+	FORCE_INLINE bool BeginsWith(const CharType * string) const { return StringHelper::BeginsWith(m_Contents, string); }
+	template<typename OtherAllocator>
+	FORCE_INLINE bool BeginsWith(const String<CharType, OtherAllocator> & string) const { return StringHelper::BeginsWith(m_Contents, string.Get()); }
+	FORCE_INLINE bool BeginsWithI(const CharType * string) const { return StringHelper::BeginsWithI(m_Contents, string); }
+	template<typename OtherAllocator>
+	FORCE_INLINE bool BeginsWithI(const String<CharType, OtherAllocator> & string) const { return StringHelper::BeginsWithI(m_Contents, string.Get()); }
+	
 	// Pattern matching
-	static bool Match(const CharType * pattern, const CharType * string);
-	static bool MatchI(const CharType * pattern, const CharType * string);
+	FORCE_INLINE static bool Match(const CharType * pattern, const CharType * string) { return StringHelper::Match(pattern, string); }
+	FORCE_INLINE static bool MatchI(const CharType * pattern, const CharType * string) { return StringHelper::MatchI(pattern, string); }
 	FORCE_INLINE bool Matches(const CharType * pattern) const { return Match(pattern, m_Contents); }
 	FORCE_INLINE bool MatchesI(const CharType * pattern) const { return MatchI(pattern, m_Contents); }
-
+	
 	// String manipulation
 	template<typename OtherAllocator>
-	void Tokenize(Array<String<CharType, OtherAllocator>> & tokens, CharType splitCharType = ' ') const;
+	FORCE_INLINE void Tokenize(Array<String<CharType, OtherAllocator>> & tokens, CharType splitChar = ' ') const { return StringHelper::Tokenize(m_Contents, m_Length, tokens, splitChar); }
 
-	// String manipulation helpers
-	static void Copy(const CharType * src, CharType * dst, SIZET len);
-	static SIZET StrLen(const CharType * string);
-	static uint32 StrNCmp(const CharType * a, const CharType * b, SIZET num);
-	static uint32 StrNCmpI(const CharType * a, const CharType * b, SIZET num);
+	template<typename OtherAllocator>
+	FORCE_INLINE int32 CompareI(const String<CharType, OtherAllocator> & other) const { return StringHelper::CompareI(m_Contents, other.Get()); }
 
-public:
-	template<typename OtherAllocator, class = typename std::enable_if<std::is_same<CharType, CHAR>::value>::type>
-	int32 CompareI(const String<CHAR, OtherAllocator> & other) const;
-	template<typename OtherAllocator, class = typename std::enable_if<std::is_same<CharType, WCHAR>::value>::type>
-	int32 CompareI(const String<WCHAR, OtherAllocator> & other) const;
+	template<class = std::enable_if<std::is_same<CharType, CHAR>::value>::type>
+	FORCE_INLINE void Format(const CharType * fmtString, ...) { va_list args; va_start(args, fmtString); VFormat(fmtString, args); va_end(args); }
+	FORCE_INLINE void VFormat(const CharType * fmtString, va_list arg) { return StringHelper::VFormat(*this, fmtString, arg); }
 
-	template<class = typename std::enable_if<std::is_same<CharType, CHAR>::value>::type>
-	void Format(const CHAR * fmtString, ...);
-	template<class = typename std::enable_if<std::is_same<CharType, WCHAR>::value>::type>
-	void Format(const WCHAR * fmtString, ...);
-
-	template<class = typename std::enable_if<std::is_same<CharType, CHAR>::value>::type>
-	void VFormat(const CHAR * fmtString, va_list arg);
-	template<class = typename std::enable_if<std::is_same<CharType, WCHAR>::value>::type>
-	void VFormat(const WCHAR * fmtString, va_list arg);
+	FORCE_INLINE static SIZET StrLen(const CharType * src) { return StringHelper::StrLen(src); }
+	FORCE_INLINE static void Copy(const CharType * src, CharType * dst, SIZET len) { return StringHelper::Copy(src, dst, len); }
+	FORCE_INLINE static uint32 StrNCmp(const CharType * a, const CharType * b, SIZET num) { return StringHelper::StrNCmp(a, b, num); }
+	FORCE_INLINE static uint32 StrNCmpI(const CharType * a, const CharType * b, SIZET num) { return StringHelper::StrNCmpI(a, b, num); }
 
 protected:
 	void Grow(SIZET addedSize = 0);
@@ -161,7 +156,6 @@ protected:
 	CharType *  m_Contents;			// Always points to valid null terminated string (even when empty)
 	SIZET		m_Length;			// Length in CharTypeacters
 	SIZET		m_Capacity;
-	Allocator	m_AllocatorInst;
 
 	template<class T>
 	inline static const T * GetEmptyCStr() { return ""; };
@@ -187,17 +181,15 @@ template<class CharType, class Allocator>
 typedef String<CHAR> AString;
 typedef String<WCHAR> WString;
 
-template<int SIZE = 1024, bool SUPPORT_OVERFLOW = true>
+template<int SIZE = 256, bool SUPPORT_OVERFLOW = true>
 using AStackString = String<CHAR, StackAllocator<SIZE, SUPPORT_OVERFLOW>>;
-template<int SIZE = 1024, bool SUPPORT_OVERFLOW = true>
+template<int SIZE = 256, bool SUPPORT_OVERFLOW = true>
 using WStackString = String<WCHAR, StackAllocator<SIZE, SUPPORT_OVERFLOW>>;
 
 
 // Inl includes
 //-----------------------------------------------------------------------------
 #include "String.inl"
-#include "StringAnsi.inl"
-#include "StringWide.inl"
 
 //------------------------------------------------------------------------------
 #endif // FOUNDATION_STRING_STRING_H

@@ -83,10 +83,34 @@ void TestString::AStringConstructors() const
 	}
 }
 
+class A
+{
+public:
+	A() { LOUTPUT("call A constructor\n"); }
+	void Test() { LOUTPUT("call A func test\n"); m_a = 100; }
+	int m_a;
+};
+
+class B : public A
+{
+public:
+	B() { LOUTPUT("call B constructor\n"); }
+	void Test() { LOUTPUT("call B func test\n"); m_a = 100; }
+};
+
+void TestCast(A& a)
+{
+	a.Test();
+}
+
 // AStringAssignment
 //------------------------------------------------------------------------------
 void TestString::AStringAssignment() const
 {
+	{
+		B b;
+		TestCast(b);
+	}
 	AString str;
 	str = "test";
 	TEST_ASSERT(str.GetLength() == 4);

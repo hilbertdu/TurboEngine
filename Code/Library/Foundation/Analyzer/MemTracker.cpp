@@ -86,7 +86,7 @@ thread_local uint32 g_MemTrackerDisabled(0);
 	const SIZET hashIndex = (((SIZET)ptr >> ALLOCATION_HASH_SHIFT) & ALLOCATION_HASH_MASK);
 
 	{
-		MutexHolder mh(GetMutex());
+		LockGuard<MutexLock> mh(GetMutex());
 
 		Allocation * a = (Allocation *)s_Allocations->Alloc(sizeof(Allocation));
 		++s_AllocationCount;
@@ -124,7 +124,7 @@ thread_local uint32 g_MemTrackerDisabled(0);
 
 	const SIZET hashIndex = (((SIZET)ptr >> ALLOCATION_HASH_SHIFT) & ALLOCATION_HASH_MASK);
 
-	MutexHolder mh(GetMutex());
+	LockGuard<MutexLock> mh(GetMutex());
 
 	Allocation * a = s_AllocationHashTable[hashIndex];
 	Allocation * prev = nullptr;
@@ -186,7 +186,7 @@ thread_local uint32 g_MemTrackerDisabled(0);
 		return;
 	}
 
-	MutexHolder mh(GetMutex());
+	LockGuard<MutexLock> mh(GetMutex());
 
 	if (s_AllocationCount == 0)
 	{
@@ -246,7 +246,7 @@ thread_local uint32 g_MemTrackerDisabled(0);
 //------------------------------------------------------------------------------
 /*static*/ void MemTracker::Reset()
 {
-	MutexHolder mh(GetMutex());
+	LockGuard<MutexLock> mh(GetMutex());
 
 	// free all allocation tracking
 	for (size_t i = 0; i < ALLOCATION_HASH_SIZE; ++i)
@@ -270,7 +270,7 @@ thread_local uint32 g_MemTrackerDisabled(0);
 //------------------------------------------------------------------------------
 /*static*/ void MemTracker::Init()
 {
-	CASSERT(sizeof(MemTracker::s_Mutex) == sizeof(Mutex));
+	CASSERT(sizeof(MemTracker::s_Mutex) == sizeof(MutexLock));
 
 	static std::atomic_flag threadSafeGuard = ATOMIC_FLAG_INIT;
 	while (threadSafeGuard.test_and_set())
@@ -280,7 +280,7 @@ thread_local uint32 g_MemTrackerDisabled(0);
 	}
 
 	// construct primary mutex in-place
-	INPLACE_NEW(&GetMutex()) Mutex;
+	INPLACE_NEW(&GetMutex()) MutexLock;
 
 	// init hash table
 	s_AllocationHashTable = new Allocation*[ALLOCATION_HASH_SIZE];

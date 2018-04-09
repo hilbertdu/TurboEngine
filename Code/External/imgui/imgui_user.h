@@ -2,6 +2,30 @@
 
 namespace ImGui
 {
+	struct IMDocker
+	{
+	public:
+		IMDocker();
+		IMDocker(const char* label);
+		~IMDocker();
+
+		IMDocker(const IMDocker& docker) = delete;
+		IMDocker(IMDocker && docker) = delete;
+
+		void SetLabel(const char * label);
+
+		char* label = nullptr;
+		int next_tab = 0;
+		int prev_tab = 0;
+		int children[2]{ 0 };
+		int parent = 0;
+		bool active = false;
+		bool opened = false;
+		ImVec2 pos{ 0, 0 };
+		ImVec2 size{ 0, 0 };
+		int status{ 0 };
+		char location[16]{ 0 };
+	};
 
 	IMGUI_API ImVec2 GetOsImePosRequest();
 	IMGUI_API void ResetActiveID();
@@ -69,5 +93,4 @@ namespace ImGui
 
 } // namespace ImGui
 
-
-#include "imgui_dock.h"
+//-----------------------------------------------------------------------------

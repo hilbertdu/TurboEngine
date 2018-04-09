@@ -19,11 +19,63 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\ApplicationWin.cpp" />
-    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Main.cpp" />
+    <ProjectReference Include="..\External\imgui.vcxproj">
+      <Project>{a7173ba5-1b7c-4178-8e5a-89879a776f1d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Library\Foundation.vcxproj">
+      <Project>{d8c047db-c0a8-4727-8389-90e962b78d1d}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Application.h" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\App\Application.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\App\ApplicationWin32.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\App\impl_dx11\imgui_impl_dx11.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\App\Main.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Engine\EngineCore.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Engine\Serializer.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Manager\AssetManager.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Manager\ResourceManager.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Manager\ServiceManager.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Reflected\ReflectionDecl.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Service\Command.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Service\ResCooker\Chef.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Service\Service.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Service\Test\Test.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Setting\Setting.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Basic\UIWidget.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\UISystem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\App\Application.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\App\impl_dx11\imgui_impl_dx11.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Engine\EngineCore.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Engine\Serializer.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Event\EventDecl.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Event\Events.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Event\EventSystem.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Manager\AssetManager.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Manager\ResourceManager.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Manager\ServiceManager.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Reflected\ReflectionDecl.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\Command.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\Patch\PatchGenerator.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\ResCooker\Chef.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\ResCooker\MixmapMerge.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\ResCooker\UIPacker.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\Service.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\Test\Test.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Setting\Setting.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Basic\UIWidget.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Compat\UIDocker.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\AssetBrowser.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\Commands.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\FileProperty.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainMenu.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainToolbar.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainView.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\Output.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\Status.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\UISystem.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{160DAC86-AF10-4D0E-B571-C6BD565EC9F9}</ProjectGuid>
@@ -98,16 +150,18 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)Build\Lib\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -117,7 +171,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -133,7 +187,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -151,7 +205,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -10,10 +10,12 @@
 
 namespace TReflection
 {
+	class IMetaType;
+
 	enum SerializeType : uint8
 	{
 		E_SERIALIZER_TEXT = 0,
-		E_SERIALIZER_BINARY,
+		//E_SERIALIZER_BINARY,
 		E_SERIALIZER_COUNT
 	};
 
@@ -25,6 +27,13 @@ namespace TReflection
 	public:
 		SerializerSave m_SaveFunc[E_SERIALIZER_COUNT]{ 0 };
 		SerializerLoad m_LoadFunc[E_SERIALIZER_COUNT]{ 0 };
+	};
+
+	class ISerializer
+	{
+	public:
+		virtual void Save(IOStream* stream, const void * object, const IMetaType * objectType, bool terminal = false) = 0;
+		virtual void Load(const IOStream* stream, void * object, const IMetaType * objectType, bool terminal = false) = 0;
 	};
 }
 

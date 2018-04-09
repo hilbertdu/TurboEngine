@@ -67,13 +67,21 @@ class TestA
 public:
 	void Test1(int a)
 	{
-		LOUTPUT("TestA1: %d\n", a);
+		LOUTPUT("TestA1: %d, %d\n", a, m_Member);
 	}
 
 	void Test2(int a, float b)
 	{
-		LOUTPUT("TestA2: %d, %.2f\n", a, b);
+		LOUTPUT("TestA2: %d, %.2f, %d\n", a, b, m_Member);
 	}
+
+	void Test3(const char * str)
+	{
+		LOUTPUT("TestA3: %s, %d\n", str, m_Member);
+	}
+
+private:
+	int m_Member{ 200 };
 };
 
 // Test Event
@@ -99,7 +107,7 @@ class TestListener
 public:
 	void OnTrigger1(int a, float b)
 	{
-		LOUTPUT("TestEvent on trigger1: %d, %.2f\n", a, b);
+		LOUTPUT("TestEvent on trigger1: %d, %.2f, %d\n", a, b, m_Member);
 		// remove event
 		if (g_Event)
 		{
@@ -111,7 +119,7 @@ public:
 
 	void OnTrigger2(int a, float b)
 	{
-		LOUTPUT("TestEvent on trigger2: %d, %.2f\n", a, b);
+		LOUTPUT("TestEvent on trigger2: %d, %.2f, %d\n", a, b, m_Member);
 		Remove();
 	}
 
@@ -127,6 +135,9 @@ public:
 	{
 		Remove();
 	}
+
+private:
+	int m_Member{ 100 };
 };
 
 // TestDelegate
@@ -140,13 +151,21 @@ void TestDelegateEvent::TestDelegate() const
 		delegate.Unbind();
 		TEST_ASSERT(!delegate.IsValid());
 		LOUTPUT("Fast delegate size: %d\n", sizeof(delegate));
-		LOUTPUT("std function size: %d\n", sizeof(std::function<void(int)>));
+		LOUTPUT("std function size: %d\n", sizeof(std::function<void(int)>));		
 	}
 	{
 		TestA a;
 		Signature<void(int)>::Delegate delegate;
 		delegate.BindMethod(&a, &TestA::Test1);
 		delegate.Invoke(20);
+		delegate.Unbind();
+		TEST_ASSERT(!delegate.IsValid());
+	}
+	{
+		TestA a;
+		Signature<void(const char*)>::Delegate delegate;
+		delegate.BindMethod(&a, &TestA::Test3);
+		delegate.Invoke("abcdef");
 		delegate.Unbind();
 		TEST_ASSERT(!delegate.IsValid());
 	}
@@ -243,6 +262,14 @@ void TestDelegateEvent::TestEvent() const
 		event.Signal(300);
 		event.Remove(id3);
 		event.Signal(400);
+	}
+	{
+		Signature<void(const char*)>::Event event;
+		TestA a;
+		event.Add(Signature<void(const char*)>::Delegate(&a, &TestA::Test3));
+
+		const char * str = "abcedf-----gh";
+		event.Signal(str);
 	}
 }
 

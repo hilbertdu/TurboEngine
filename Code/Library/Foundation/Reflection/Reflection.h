@@ -12,15 +12,17 @@ namespace TReflection
 {
 	class IStruct;
 	class IClass;
-	class IObject;
+	class IMetaType;
 
-	void Initialization();
-	void InitSerializerLoad(Name name, SerializeType sType, SerializerLoad loadFunc);
-	void InitSerializerSave(Name name, SerializeType sType, SerializerSave saveFunc);
+	static void Initialization();
+	static void InitSerializerLoad(Name name, SerializeType sType, SerializerLoad loadFunc);
+	static void InitSerializerSave(Name name, SerializeType sType, SerializerSave saveFunc);
 
-	IStruct* CreateStruct(const char * name);
-	IClass*  CreateClass(const char * name);
-	IObject* CreateObject(const char * name);
+	template<class T>
+	static IMetaType* GetMetaType();
+
+	static IStruct* CreateStruct(const char * name);
+	static IClass*  CreateClass(const char * name);
 };
 
 

@@ -46,10 +46,8 @@ StackSizeAllocator<RESERVED, SUPPORT_OVERFLOW>::StackSizeAllocator()
 template<uint32 RESERVED, bool SUPPORT_OVERFLOW>
 void* StackSizeAllocator<RESERVED, SUPPORT_OVERFLOW>::Allocate(SIZET size, SIZET alignment)
 {
-	UINTPTR alignedAddr = T_MEM_ALIGN_ARB(&m_StackMem[m_StackFreeIdx], alignment);
-	m_StackFreeIdx = (uint32)(alignedAddr - (UINTPTR)m_StackMem);
-
 	ASSERT(size > 0);
+	m_StackFreeIdx = GetAlignFreeIdx(alignment);
 	if (m_StackFreeIdx + size <= RESERVED)
 	{
 		m_StackFreeLastIdx = m_StackFreeIdx;
@@ -78,10 +76,10 @@ void* StackSizeAllocator<RESERVED, SUPPORT_OVERFLOW>::Reallocate(void* pMem, SIZ
 	else
 	{
 		// Copy to upper
+		m_StackFreeIdx = GetAlignFreeIdx(alignment);
 		if (m_StackFreeIdx + size <= RESERVED)
 		{
 			MemMove((void *)m_StackMem[m_StackFreeIdx], pMem, size);
-
 			m_StackFreeLastIdx = m_StackFreeIdx;
 			m_StackFreeIdx += (uint32)size;
 			return (void *)&m_StackMem[m_StackFreeIdx - size];
@@ -89,6 +87,7 @@ void* StackSizeAllocator<RESERVED, SUPPORT_OVERFLOW>::Reallocate(void* pMem, SIZ
 	}
 
 	// Reallocate from heap
+	m_StackFreeIdx = RESERVED;
 	ASSERT(SUPPORT_OVERFLOW);
 	return REALLOC(pMem, size);
 }
@@ -107,6 +106,17 @@ template<uint32 RESERVED, bool SUPPORT_OVERFLOW>
 bool StackSizeAllocator<RESERVED, SUPPORT_OVERFLOW>::IsInStack(void* pMem) const
 {
 	return (UINTPTR)pMem >= (UINTPTR)&m_StackMem && (UINTPTR)pMem <= (UINTPTR)&m_StackMem[RESERVED - 1];
+}
+
+template<uint32 RESERVED, bool SUPPORT_OVERFLOW>
+uint32 StackSizeAllocator<RESERVED, SUPPORT_OVERFLOW>::GetAlignFreeIdx(SIZET alignment)
+{
+	if (m_StackFreeIdx < RESERVED)
+	{
+		UINTPTR alignedAddr = T_MEM_ALIGN_ARB(&m_StackMem[m_StackFreeIdx], alignment);
+		m_StackFreeIdx = (uint32)(alignedAddr - (UINTPTR)m_StackMem);
+	}
+	return m_StackFreeIdx;
 }
 
 

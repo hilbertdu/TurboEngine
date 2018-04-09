@@ -715,7 +715,7 @@ template<class T, class Allocator>
 template<class T, class Allocator>
 /*static*/ void Array<T, Allocator>::UninitializedMove(T * des, T * src, SIZET count)
 {
-	_UninitializedMove(des, src, count, std::is_trivially_copy_assignable<T>());
+	_UninitializedMove(des, src, count, std::is_trivially_move_assignable<T>());
 }
 
 template<class T, class Allocator>
@@ -749,7 +749,7 @@ template<class T, class Allocator>
 template<class T, class Allocator>
 /*static*/ void Array<T, Allocator>::Move(T * des, T * src, SIZET count)
 {
-	_Move(des, src, count, std::is_trivially_copy_assignable<T>());
+	_Move(des, src, count, std::is_trivially_move_assignable<T>());
 }
 
 template<class T, class Allocator>

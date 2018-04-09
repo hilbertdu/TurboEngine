@@ -204,6 +204,28 @@ namespace ImGui
 		~DockContext() {}
 
 
+		Dock* findDock(const char* label)
+		{
+			IM_ASSERT(label);
+			ImU32 id = ImHash(label, 0);
+			for (int i = 0; i < m_docks.size(); ++i)
+			{
+				if (m_docks[i]->id == id) return m_docks[i];
+			}
+			return nullptr;
+		}
+
+
+		int findDockIndex(Dock* dock)
+		{
+			for (int i = 0; i < m_docks.size(); ++i)
+			{
+				if (m_docks[i] == dock) return i;
+			}
+			return -1;
+		}
+
+
 		Dock& getDock(const char* label, bool opened, const ImVec2& default_size)
 		{
 			ImU32 id = ImHash(label, 0);
@@ -312,7 +334,7 @@ namespace ImGui
 			ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
 				ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse |
 				ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar |
-				ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_ShowBorders |
+				ImGuiWindowFlags_NoScrollWithMouse | /*ImGuiWindowFlags_ShowBorders |*/
 				ImGuiWindowFlags_NoBringToFrontOnFocus;
 			Dock* root = getRootDock();
 			if (root)
@@ -455,8 +477,8 @@ namespace ImGui
 
 			Begin("##Overlay",
 				NULL,
-				ImVec2(0, 0),
-				0.f,
+				//ImVec2(0, 0),
+				//0.f,
 				ImGuiWindowFlags_Tooltip | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove |
 				ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings |
 				ImGuiWindowFlags_AlwaysAutoResize);
@@ -895,6 +917,55 @@ namespace ImGui
 		}
 
 
+		void forceDock(const char* label, const char* docker, int slot_idx)
+		{
+			IM_ASSERT(label);
+			IM_ASSERT(m_is_begin_open);
+			ImU32 id = ImHash(label, 0);
+			for (int i = 0; i < m_docks.size(); ++i)
+			{
+				if (m_docks[i]->id == id && m_docks[i]->status == Status_Float)
+				{
+					doDock(*m_docks[i], docker ? findDock(docker) : getRootDock(), (Slot_)slot_idx);
+				}
+			}
+		}
+
+
+		Dock* getDockByIndex(int idx) { return idx < 0 ? nullptr : m_docks[(int)idx]; }
+
+
+		void create(int count)
+		{
+			for (int idx = 0; idx < count; ++idx)
+			{
+				Dock* new_dock = (Dock*)MemAlloc(sizeof(Dock));
+				m_docks.push_back(IM_PLACEMENT_NEW(new_dock) Dock());
+			}
+		}
+
+
+		void load(int index, const IMDocker & docker)
+		{
+			Dock* dock = m_docks[index];
+
+			dock->label = ImStrdup(docker.label);
+			dock->id = ImHash(docker.label, 0);
+
+			dock->pos = docker.pos;
+			dock->size = docker.size;
+			dock->active = docker.active;
+			dock->opened = docker.opened;
+			strcpy_s(dock->location, docker.location);
+			dock->status = (Status_)docker.status;
+			dock->prev_tab = getDockByIndex(docker.prev_tab);
+			dock->next_tab = getDockByIndex(docker.next_tab);
+			dock->children[0] = getDockByIndex(docker.children[0]);
+			dock->children[1] = getDockByIndex(docker.children[1]);
+			dock->parent = getDockByIndex(docker.parent);
+		}
+
+
 		bool begin(const char* label, bool* opened, ImGuiWindowFlags extra_flags, const ImVec2& default_size)
 		{
 			IM_ASSERT(!m_is_begin_open);
@@ -943,9 +1014,9 @@ namespace ImGui
 				SetNextWindowSize(dock.size);
 				bool ret = Begin(label,
 					opened,
-					dock.size,
-					-1.0f,
-					ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_ShowBorders | extra_flags);
+					//dock.size,
+					//-1.0f,
+					ImGuiWindowFlags_NoCollapse | /*ImGuiWindowFlags_ShowBorders |*/ extra_flags);
 				m_end_action = EndAction_End;
 				dock.pos = GetWindowPos();
 				dock.size = GetWindowSize();
@@ -984,8 +1055,8 @@ namespace ImGui
 				ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoBringToFrontOnFocus |
 				extra_flags;
 			char tmp[256];
-			strcpy(tmp, label);
-			strcat(tmp, "_docked"); // to avoid https://github.com/ocornut/imgui/issues/713
+			strcpy_s(tmp, label);
+			strcat_s(tmp, "_docked"); // to avoid https://github.com/ocornut/imgui/issues/713
 			bool ret = BeginChild(tmp, size, true, flags);
 			PopStyleColor();
 			PopStyleColor();
@@ -1060,8 +1131,57 @@ namespace ImGui
 	}
 
 
+	void ForceDock(const char* label, const char* docker, int slot_idx)
+	{
+		g_dock.forceDock(label, docker, slot_idx);
+	}
+
+
 	void EndDock()
 	{
 		g_dock.end();
+	}
+
+
+	int GetDockSize()
+	{
+		return g_dock.m_docks.size();
+	}
+
+
+	void FindDock(int idx, IMDocker& im_docker)
+	{
+		DockContext::Dock* dock = g_dock.m_docks[idx];	
+		if (dock)
+		{
+			im_docker.label = ImStrdup(dock->label);
+			im_docker.pos = dock->pos;
+			im_docker.size = dock->size;
+			im_docker.active = dock->active;
+			im_docker.opened = dock->opened;
+			strcpy_s(dock->location, dock->location);
+			im_docker.status = (int)(dock->status);
+			im_docker.prev_tab = dock->prev_tab ? g_dock.findDockIndex(dock->prev_tab) : -1;
+			im_docker.next_tab = dock->next_tab ? g_dock.findDockIndex(dock->next_tab) : -1;
+			im_docker.children[0] = dock->children[0] ? g_dock.findDockIndex(dock->children[0]) : -1;
+			im_docker.children[1] = dock->children[1] ? g_dock.findDockIndex(dock->children[1]) : -1;
+			im_docker.parent = dock->parent ? g_dock.findDockIndex(dock->parent) : -1;
+		}
+		else
+		{
+			im_docker.label = nullptr;
+		}
+	}
+
+
+	void LoadDock(int count)
+	{
+		g_dock.create(count);
+	}
+
+
+	void LoadDock(int index, const IMDocker& docker)
+	{
+		g_dock.load(index, docker);
 	}
 } // namespace ImGui
