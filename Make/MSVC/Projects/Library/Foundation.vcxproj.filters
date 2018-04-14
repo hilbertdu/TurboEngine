@@ -315,6 +315,9 @@
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Misc\Generator.h">
       <Filter>Misc</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\String\StringConvert.h">
+      <Filter>String</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Memory\MemPool.cpp">
@@ -416,6 +419,9 @@
       <Filter>Container</Filter>
     </None>
     <None Include="..\..\..\..\Code\Library\Foundation\String\StringHelper.inl">
+      <Filter>String</Filter>
+    </None>
+    <None Include="..\..\..\..\Code\Library\Foundation\String\StringConvert.inl">
       <Filter>String</Filter>
     </None>
   </ItemGroup>

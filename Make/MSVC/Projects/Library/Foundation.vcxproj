@@ -209,6 +209,7 @@
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerPropertyText.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerText.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\String\String.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\String\StringConvert.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\String\StringHelper.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\String\StringView.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Task\Task.h" />
@@ -266,6 +267,7 @@
     <None Include="..\..\..\..\Code\Library\Foundation\Container\RBTree.inl" />
     <None Include="..\..\..\..\Code\Library\Foundation\Memory\Allocator.inl" />
     <None Include="..\..\..\..\Code\Library\Foundation\String\String.inl" />
+    <None Include="..\..\..\..\Code\Library\Foundation\String\StringConvert.inl" />
     <None Include="..\..\..\..\Code\Library\Foundation\String\StringHelper.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

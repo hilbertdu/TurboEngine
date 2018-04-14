@@ -44,6 +44,8 @@ void UISystem::InitGUI()
 {
 	// Setup style
 	//ImGui::StyleColorsDark();
+	ImGuiIO& io = ImGui::GetIO();
+	io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 16.0f, nullptr, io.Fonts->GetGlyphRangesChinese());
 
 	if (!IsLoaded())
 	{

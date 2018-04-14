@@ -10,13 +10,10 @@
 
 /*explicit*/ IObject::IObject()
 {
-	//m_Id = (UINTPTR)this;
-	//ObjectPool::Instance().AddObject(this);
 }
 
 /*virtual*/ IObject::~IObject()
 {
-	//ObjectPool::Instance().DelObject(this);
 }
 
 /*virtual*/ void IObject::Save(IOStream* stream, ISerializer * writer, bool terminal) const

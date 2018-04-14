@@ -49,14 +49,10 @@ public:
 	virtual void PreDeserialize() {}
 	virtual void PostDeserialize() {}
 
-	//inline uint64 GetId() const { return m_Id; }
-	//inline void	  SetId(uint64 id) { m_Id = (UINTPTR)id; }
-
 	virtual void Save(IOStream* stream, ISerializer * writer, bool terminal = false) const;
 	virtual void Load(const IOStream* stream, ISerializer * reader, bool terminal = false);
 
 private:
-	//UINTPTR		m_Id;							// object identity
 	ObjectFlag	m_Flag{ FLAG_OBJECT_NONE };
 
 	TREFLECTION_DECLARE(IObject, IClass)

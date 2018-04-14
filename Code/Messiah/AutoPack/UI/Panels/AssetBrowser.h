@@ -8,6 +8,7 @@
 //------------------------------------------------------------------------------
 #include "Foundation/Platform/Types.h"
 #include "Foundation/String/StringView.h"
+#include "Foundation/String/StringConvert.h"
 #include "../Engine/EngineCore.h"
 #include "../Manager/AssetManager.h"
 #include "../Basic/UIWidget.h"
@@ -91,8 +92,8 @@ void UIAssetBrowser::OnFrameUpdate()
 	ImGui::SameLine(130 + checkboxW);
 	ImGui::NewLine();
 	ImGui::Separator();
-	ImGui::Selectable(m_FocusedFolder->m_FileInfo.m_Name.Get());
-	ImGui::Separator();
+	ImGui::Selectable(StringCvt::ConvertToUTF8(m_FocusedFolder->m_FileInfo.m_Name.Get(), ".936").Get());
+	ImGui::Separator();	
 
 	float contentW = ImGui::GetContentRegionAvailWidth();
 	ImVec2 mainSize(contentW - m_LeftColumeWidth, 0);
@@ -140,7 +141,7 @@ void UIAssetBrowser::UpdateDirsView(AssetItem * item)
 	// show item
 	const AStringView & baseName = item->GetBaseName();	
 	AStackString<> selectId("##");
-	selectId += item->m_FileInfo.m_Name;	
+	selectId += item->m_FileInfo.m_Name;
 
 	// be careful not to make to selectable item same label text!
 	bool selected = (item == m_FocusedFolder && item->m_UnFold);
@@ -168,7 +169,7 @@ void UIAssetBrowser::UpdateDirsView(AssetItem * item)
 	subUIName += item->m_UnFold ? "- " : "+ ";
 	subUIName += baseName.Get();
 	ImGui::SameLine();
-	ImGui::Text(subUIName.Get());
+	ImGui::Text(StringCvt::ConvertToUTF8(subUIName, ".936").Get());
 
 	// show sub items
 	if (item->m_UnFold)
@@ -205,7 +206,7 @@ void UIAssetBrowser::UpdateFilesView(AssetItem * item)
 
 			// is selected
 			subAsset->m_UnFold = (m_FocusedFile == subAsset && subAsset->m_UnFold);
-			if (ImGui::Selectable(baseName.Get(), &subAsset->m_UnFold))
+			if (ImGui::Selectable(StringCvt::ConvertToUTF8(baseName.Get(), ".936").Get(), &subAsset->m_UnFold))
 			{
 				m_FocusedFile = subAsset;
 				EVENT_DISPATCH(UI, OnAssetFileSelected, subAsset->m_FileInfo.m_Name.Get());
