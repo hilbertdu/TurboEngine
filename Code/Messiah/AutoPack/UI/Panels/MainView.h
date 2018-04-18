@@ -7,8 +7,7 @@
 // Includes
 //------------------------------------------------------------------------------
 #include "Foundation/Platform/Types.h"
-#include "../Engine/EngineCore.h"
-#include "../Basic/UIWidget.h"
+#include "AutoPack/UI/Basic/UIWidget.h"
 
 // Class GuiMainView
 //------------------------------------------------------------------------------
@@ -22,25 +21,6 @@ public:
 
 	TREFLECTION_DECLARE(UIMainView, UIWidget)
 };
-
-
-UIMainView::UIMainView()
-{
-	m_Name = "MainView";
-	m_Parent = "Commands";
-}
-
-UIMainView::~UIMainView()
-{}
-
-/*virtual*/ void UIMainView::OnFrameUpdate()
-{
-	if (ImGui::BeginDock(m_Name.Get()))
-	{
-		//ImGui::ForceDock(m_Name.Get(), m_Parent.Get(), 1);
-	}	
-	ImGui::EndDock();
-}
 
 
 //------------------------------------------------------------------------------

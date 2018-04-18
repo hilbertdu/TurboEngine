@@ -14,9 +14,9 @@
 #include "Foundation/Container/HashMap.h"
 
 
-// struct FileInfo
+// class FileInfo
 //------------------------------------------------------------------------------
-struct AssetItem
+class AssetItem
 {
 public:
 	AssetItem(): m_UnFold(false), m_Valid(true), m_Level(0), m_Parent(nullptr) {}
@@ -54,9 +54,9 @@ public:
 
 	void RefreshRoot();
 	void RefreshItem(AssetItem * item, bool sub = false, bool recursive = false);
-
-private:
 	void RefreshSubItems(AssetItem * item, bool recursive);
+
+private:	
 	AssetItem * GetItem(const AStringView & path);
 
 	AString		m_Root;

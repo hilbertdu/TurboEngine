@@ -13,7 +13,7 @@
 namespace StringCvt
 {
 	// to utf-8 string
-	static AString ConvertToUTF8(const AStringView & str, const char * localeName);
+	static AString ConvertToUTF8(const AStringView & str);
 }
 
 #include "Foundation/String/StringConvert.inl"

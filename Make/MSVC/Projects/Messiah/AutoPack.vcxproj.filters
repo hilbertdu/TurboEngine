@@ -99,6 +99,27 @@
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Engine\Serializer.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\Commands.cpp">
+      <Filter>UI\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\AssetBrowser.cpp">
+      <Filter>UI\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainToolbar.cpp">
+      <Filter>UI\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainMenu.cpp">
+      <Filter>UI\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\Output.cpp">
+      <Filter>UI\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainView.cpp">
+      <Filter>UI\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\FileProperty.cpp">
+      <Filter>UI\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\App\impl_dx11\imgui_impl_dx11.h">

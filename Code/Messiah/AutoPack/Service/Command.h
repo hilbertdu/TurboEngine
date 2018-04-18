@@ -9,6 +9,7 @@
 #include "Foundation/String/String.h"
 #include "Foundation/String/StringView.h"
 #include "Foundation/Task/Task.h"
+#include "Foundation/Process/Process.h"
 
 // class IParameter
 //------------------------------------------------------------------------------
@@ -58,9 +59,13 @@ class ExeCommand : public ICommand
 {
 public:
 	ExeCommand(AStringView name) : ICommand(name) {}
-	virtual ~ExeCommand() {}
+	virtual ~ExeCommand() { Cancel(); }
 
 	virtual uint32 Run();
+	virtual uint32 Cancel() { return 0; };
+
+private:
+	Process m_Process;
 };
 
 // class PythonCommand

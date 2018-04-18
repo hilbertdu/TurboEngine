@@ -48,6 +48,11 @@ template<class CharType>
 class StringView
 {
 public:
+	StringView()
+		: m_Contents(nullptr)
+		, m_Length(0)
+	{}
+
 	StringView(const CharType * str)
 		: m_Contents(str)
 		, m_Length(strlen(str))
@@ -76,6 +81,7 @@ public:
 
 	~StringView() = default;
 
+	FORCE_INLINE void  SetContent(const CharType * str) { m_Contents = str; m_Length = strlen(str); }
 	FORCE_INLINE SIZET GetLength() const { return m_Length; }
 	FORCE_INLINE bool  IsEmpty() const { return (m_Length == 0); }
 

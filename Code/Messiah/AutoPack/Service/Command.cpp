@@ -27,8 +27,7 @@ AStringView ICommand::FetchOutput(uint32 index, uint32 len) const
 //------------------------------------------------------------------------------
 /*virtual*/ uint32 ExeCommand::Run()
 {
-	Process p;
-	bool spawnOK = p.Spawn(m_Parameters[0]->GetName().Get(), nullptr, nullptr, nullptr);
+	bool spawnOK = m_Process.Spawn(m_Parameters[0]->GetName().Get(), nullptr, nullptr, nullptr);
 
 	if (!spawnOK)
 	{
@@ -39,9 +38,9 @@ AStringView ICommand::FetchOutput(uint32 index, uint32 len) const
 	size_t bufferSize = MEGABYTE;
 	size_t readSize = -1;
 	char *output = TNEW(char[bufferSize]());
-	for (; p.IsRunning() || readSize != 0;)
+	for (; m_Process.IsRunning() || readSize != 0;)
 	{
-		readSize = p.ReadStdOut(output, bufferSize - 1);
+		readSize = m_Process.ReadStdOut(output, bufferSize - 1);
 		output[readSize] = '\000';
 		LOUTPUT(output);
 		GetLock().Lock();
@@ -51,8 +50,8 @@ AStringView ICommand::FetchOutput(uint32 index, uint32 len) const
 	}
 	TDELETE_SAFE(output);
 
-	ASSERT(!p.IsRunning());
-	return p.WaitForExit();
+	ASSERT(!m_Process.IsRunning());
+	return m_Process.WaitForExit();
 }
 
 //------------------------------------------------------------------------------

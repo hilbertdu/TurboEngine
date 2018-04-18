@@ -23,6 +23,9 @@ public:
 	IService *		 GetService(const AStringView & service);
 	const IService * GetService(const AStringView & service) const;
 
+	void AddService(const IService * service);
+	void RemoveService(const AStringView & service);
+
 private:
 	Array<IService*> m_Services;
 };

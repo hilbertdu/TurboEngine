@@ -26,6 +26,7 @@ public:
 	virtual ~Task();
 
 	virtual uint32 Run() = 0;
+	virtual uint32 Cancel() = 0;
 
 	inline void		SetStatus(Status statu) { m_Status = statu; }
 	inline Status	GetStatus() const { return m_Status; }

@@ -16,8 +16,6 @@
 //------------------------------------------------------------------------------
 ServiceManager::ServiceManager()
 {
-	m_Services.Append(TNEW(Test));
-
 	for (auto & service : m_Services)
 	{		
 		service->Initialize();		
@@ -43,6 +41,16 @@ const IService * ServiceManager::GetService(const AStringView & service) const
 {
 	IService ** result = m_Services.FindIf([service](const IService * s) { return s->GetName() == service.Get(); });
 	return result ? *result : nullptr;
+}
+
+void ServiceManager::AddService(const IService * service)
+{
+
+}
+
+void ServiceManager::RemoveService(const AStringView & service)
+{
+
 }
 
 //------------------------------------------------------------------------------

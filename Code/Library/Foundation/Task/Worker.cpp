@@ -33,6 +33,7 @@ WorkerThread::WorkerThread(uint32 threadIndex)
 //------------------------------------------------------------------------------
 WorkerThread::~WorkerThread()
 {
+	m_ShouldExit = true;
 	WaitForStop();
 }
 

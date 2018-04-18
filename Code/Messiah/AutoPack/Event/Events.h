@@ -14,14 +14,9 @@
 EVENT_DECLARE_FUNCTION_BEGIN
 
 EVENT_DECLARE_BEGIN("UI")
-	EVENT_REG("OnAssetFileSelected", void(const char*))
+	EVENT_REG("OnAssetFileSelected",	void(const char*))
+	EVENT_REG("OnMenuServiceAdded",		void())
 EVENT_DECLARE_END("UI")
-
-/*
-EVENT_DECLARE_BEGIN("Command")
-	EVENT_REG("OnExeCommandOutput", void(const char*))
-EVENT_DECLARE_END("Command")
-*/
 
 EVENT_DECLARE_FUNCTION_END
 

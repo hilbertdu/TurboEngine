@@ -7,7 +7,7 @@
 // Includes
 //------------------------------------------------------------------------------
 #include "Foundation/Platform/Types.h"
-#include "../Basic/UIWidget.h"
+#include "AutoPack/UI/Basic/UIWidget.h"
 
 // Class GuiMainView
 //------------------------------------------------------------------------------
@@ -21,24 +21,6 @@ public:
 
 	TREFLECTION_DECLARE(UIFileProperty, UIWidget)
 };
-
-
-UIFileProperty::UIFileProperty()
-{
-	m_Name = "Property";
-	m_Parent = "Assets";
-}
-
-UIFileProperty::~UIFileProperty()
-{}
-
-/*virtual*/ void UIFileProperty::OnFrameUpdate()
-{
-	if (ImGui::BeginDock(m_Name.Get()))
-	{
-	}
-	ImGui::EndDock();
-}
 
 
 //------------------------------------------------------------------------------

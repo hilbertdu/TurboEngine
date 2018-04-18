@@ -43,6 +43,13 @@
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Service\Test\Test.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Setting\Setting.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Basic\UIWidget.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\AssetBrowser.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\Commands.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\FileProperty.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainMenu.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainToolbar.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainView.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\Output.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\UISystem.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -154,7 +161,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External;$(SolutionDir)..\..\Code\Messiah</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -171,7 +178,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External;$(SolutionDir)..\..\Code\Messiah</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -187,7 +194,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External;$(SolutionDir)..\..\Code\Messiah</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -205,7 +212,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External;$(SolutionDir)..\..\Code\Messiah</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
