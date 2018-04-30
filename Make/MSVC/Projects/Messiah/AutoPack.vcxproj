@@ -33,6 +33,7 @@
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\App\Main.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Engine\EngineCore.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Engine\Serializer.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Game\MessiahGame.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Manager\AssetManager.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Manager\ResourceManager.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Manager\ServiceManager.cpp" />
@@ -48,7 +49,7 @@
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\FileProperty.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainMenu.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainToolbar.cpp" />
-    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainView.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\GameView.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\Output.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\UISystem.cpp" />
   </ItemGroup>
@@ -60,6 +61,7 @@
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Event\EventDecl.h" />
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Event\Events.h" />
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Event\EventSystem.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Game\MessiahGame.h" />
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Manager\AssetManager.h" />
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Manager\ResourceManager.h" />
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Manager\ServiceManager.h" />
@@ -79,7 +81,7 @@
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\FileProperty.h" />
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainMenu.h" />
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainToolbar.h" />
-    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainView.h" />
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\GameView.h" />
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\Output.h" />
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\Status.h" />
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\UISystem.h" />
@@ -173,7 +175,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -181,14 +183,15 @@
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External;$(SolutionDir)..\..\Code\Messiah</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -197,7 +200,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External;$(SolutionDir)..\..\Code\Messiah</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -206,7 +210,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -215,7 +219,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External;$(SolutionDir)..\..\Code\Messiah</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>

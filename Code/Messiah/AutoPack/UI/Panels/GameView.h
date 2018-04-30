@@ -7,19 +7,29 @@
 // Includes
 //------------------------------------------------------------------------------
 #include "Foundation/Platform/Types.h"
+#include "Foundation/Pattern/Delegate.h"
 #include "AutoPack/UI/Basic/UIWidget.h"
+#include <windows.h>
 
-// Class GuiMainView
+
+// Forward declaration
 //------------------------------------------------------------------------------
-class UIMainView : public UIWidget
+class MessiahGame;
+
+// Class UIMainView
+//------------------------------------------------------------------------------
+class UIGameView : public UIWidget
 {
 public:
-	UIMainView();
-	~UIMainView();
+	UIGameView();
+	~UIGameView();
 
 	virtual void OnFrameUpdate();
 
-	TREFLECTION_DECLARE(UIMainView, UIWidget)
+private:
+	MessiahGame * m_MGame;
+
+	TREFLECTION_DECLARE(UIGameView, UIWidget)
 };
 
 

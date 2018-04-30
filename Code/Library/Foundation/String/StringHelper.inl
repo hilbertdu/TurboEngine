@@ -111,7 +111,7 @@ namespace StringHelper
 	template<typename CharType>
 	bool EndsWith(const CharType * src, SIZET size, CharType c)
 	{
-		uint32 len = size;
+		SIZET len = size;
 		if (len == 0)
 		{
 			return false;

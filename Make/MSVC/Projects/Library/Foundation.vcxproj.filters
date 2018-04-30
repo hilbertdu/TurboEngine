@@ -76,6 +76,9 @@
     <Filter Include="Misc">
       <UniqueIdentifier>{4c84e8e5-2fb2-4313-9018-7f33e5a119e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Config">
+      <UniqueIdentifier>{294eb66f-ff5c-4c89-b8c1-0d005d94aa8c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Platform\Types.h">
@@ -318,6 +321,9 @@
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\String\StringConvert.h">
       <Filter>String</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Platform\Config.h">
+      <Filter>Config</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Memory\MemPool.cpp">
@@ -397,6 +403,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\FileIO\StrStream.cpp">
       <Filter>FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Platform\Platform.cpp">
+      <Filter>Platform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

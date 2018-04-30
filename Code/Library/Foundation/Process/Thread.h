@@ -6,6 +6,7 @@
 
 // Includes
 //------------------------------------------------------------------------------
+#include "Foundation/Config/Config.h"
 #include "Foundation/Platform/Types.h"
 #include "Foundation/Platform/Misc.h"
 

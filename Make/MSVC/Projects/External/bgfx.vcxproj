@@ -124,6 +124,9 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\amalgamated.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\bgfx.cpp" />
     <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\debug_renderdoc.cpp" />
@@ -152,6 +155,9 @@
     <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\allocator.cpp" />
     <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\amalgamated.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\bx.cpp" />
     <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\commandline.cpp" />
@@ -281,7 +287,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\External\bgfx\bx\include;$(SolutionDir)..\..\Code\External\bgfx\bx\include\compat\msvc;$(SolutionDir)..\..\Code\External\bgfx\bx\3rdparty;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty\dxsdk\include;$(SolutionDir)..\..\Code\External\bgfx\bgfx\include;$(SolutionDir)..\..\Code\External\bgfx\bimg\include;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty\khronos</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>__STDC_LIMIT_MACROS;__STDC_FORMAT_MACROS;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__STDC_LIMIT_MACROS;__STDC_FORMAT_MACROS;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>
       </AdditionalOptions>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -293,9 +299,9 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\External\bgfx\bx\include;$(SolutionDir)..\..\Code\External\bgfx\bx\include\compat\msvc;$(SolutionDir)..\..\Code\External\bgfx\bx\3rdparty;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty\dxsdk\include;$(SolutionDir)..\..\Code\External\bgfx\bgfx\include;$(SolutionDir)..\..\Code\External\bgfx\bimg\include;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty\khronos</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>__STDC_LIMIT_MACROS;__STDC_FORMAT_MACROS;__STDC_CONSTANT_MACROS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__STDC_LIMIT_MACROS;__STDC_FORMAT_MACROS;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>/wd4201 /wd4324 /Ob2  %(AdditionalOptions)</AdditionalOptions>
-      <SuppressStartupBanner>false</SuppressStartupBanner>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -306,9 +312,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\External\bgfx\bx\include;$(SolutionDir)..\..\Code\External\bgfx\bx\include\compat\msvc;$(SolutionDir)..\..\Code\External\bgfx\bx\3rdparty;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty\dxsdk\include;$(SolutionDir)..\..\Code\External\bgfx\bgfx\include;$(SolutionDir)..\..\Code\External\bgfx\bimg\include;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty\khronos</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>__STDC_LIMIT_MACROS;__STDC_FORMAT_MACROS;__STDC_CONSTANT_MACROS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__STDC_LIMIT_MACROS;__STDC_FORMAT_MACROS;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>/wd4201 /wd4324 /Ob2  %(AdditionalOptions)</AdditionalOptions>
-      <SuppressStartupBanner>false</SuppressStartupBanner>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -323,9 +329,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\External\bgfx\bx\include;$(SolutionDir)..\..\Code\External\bgfx\bx\include\compat\msvc;$(SolutionDir)..\..\Code\External\bgfx\bx\3rdparty;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty\dxsdk\include;$(SolutionDir)..\..\Code\External\bgfx\bgfx\include;$(SolutionDir)..\..\Code\External\bgfx\bimg\include;$(SolutionDir)..\..\Code\External\bgfx\bgfx\3rdparty\khronos</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>__STDC_LIMIT_MACROS;__STDC_FORMAT_MACROS;__STDC_CONSTANT_MACROS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__STDC_LIMIT_MACROS;__STDC_FORMAT_MACROS;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>/wd4201 /wd4324 /Ob2  %(AdditionalOptions)</AdditionalOptions>
-      <SuppressStartupBanner>false</SuppressStartupBanner>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

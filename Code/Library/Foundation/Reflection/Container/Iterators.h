@@ -45,7 +45,7 @@ namespace TReflection
 
 		virtual uint32 GetCount() const
 		{
-			return m_Container->GetSize();
+			return (uint32)m_Container->GetSize();
 		}
 
 		virtual void MoveNext()
@@ -221,7 +221,7 @@ namespace TReflection
 
 		virtual uint32 GetCount() const
 		{
-			return m_Container->GetSize();
+			return (uint32)m_Container->GetSize();
 		}
 
 		virtual void MoveNext()

@@ -767,7 +767,7 @@ bool FileIO::DirectoryDelete(const AString & dirName, bool deleteSubdirs)
 //------------------------------------------------------------------------------
 /*static*/ void FileIO::GetFilesRecurse(AStringRef & pathCopy, const AStringView & wildCard, Array<AString> * results, bool includeDir)
 {
-	const uint32_t baseLength = pathCopy.GetLength();
+	const SIZET baseLength = pathCopy.GetLength();
 
 #if defined(__WINDOWS__)
 	pathCopy += '*'; // don't want to use wildcard to filter folders
@@ -882,7 +882,7 @@ bool FileIO::DirectoryDelete(const AString & dirName, bool deleteSubdirs)
 {
 	AStackString<> pathCopy(path);
 	PathUtils::EnsureTrailingSlash((AStringRef)pathCopy);
-	const uint32_t baseLength = pathCopy.GetLength();
+	const SIZET baseLength = pathCopy.GetLength();
 
 #if defined(__WINDOWS__)
 	pathCopy += '*';
@@ -952,7 +952,7 @@ bool FileIO::DirectoryDelete(const AString & dirName, bool deleteSubdirs)
 //------------------------------------------------------------------------------
 /*static*/ void FileIO::GetFilesRecurseEx(AStringRef & pathCopy, const AStringView & wildCard, Array<FileInfo> * results, bool includeDir)
 {
-	const uint32_t baseLength = pathCopy.GetLength();
+	const SIZET baseLength = pathCopy.GetLength();
 
 #if defined(__WINDOWS__)
 	pathCopy += '*'; // don't want to use wildcard to filter folders
@@ -1094,7 +1094,7 @@ bool FileIO::DirectoryDelete(const AString & dirName, bool deleteSubdirs)
 {
 	AStackString<> pathCopy(path);
 	PathUtils::EnsureTrailingSlash((AStringRef)pathCopy);
-	const uint32_t baseLength = pathCopy.GetLength();
+	const SIZET baseLength = pathCopy.GetLength();
 
 #if defined(__WINDOWS__)
 	pathCopy += '*';

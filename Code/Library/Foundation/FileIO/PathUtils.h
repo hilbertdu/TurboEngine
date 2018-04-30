@@ -6,7 +6,7 @@
 
 // Includes
 //------------------------------------------------------------------------------
-#include "Foundation/Platform/Platform.h"
+#include "Foundation/Config/Config.h"
 #include "Foundation/String/String.h"
 #include "Foundation/String/StringView.h"
 

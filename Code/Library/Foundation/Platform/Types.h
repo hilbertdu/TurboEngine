@@ -8,7 +8,7 @@
 
 // Includes
 //------------------------------------------------------------------------------
-#include "Foundation/Platform/Platform.h"
+#include "Foundation/Config/Config.h"
 #include <stdint.h>
 
 // Common types

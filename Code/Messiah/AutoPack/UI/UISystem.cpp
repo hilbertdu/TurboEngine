@@ -12,14 +12,15 @@
 #include "Foundation/FileIO/MemRStream.h"
 
 
-/*static*/ UIWidget * UISystem::CreateWidget(AStringView name)
+UIWidget * UISystem::CreateWidget(AStringView name)
 {
-	IObject * w = ObjectPool::Instance().CreateObject(name.Get());
-	m_Widgets[name.Get()] = static_cast<UIWidget*>(w);
-	return static_cast<UIWidget*>(w);
+	if (HasWidget(name)) return GetWidget(name);
+	IObject * wNew = ObjectPool::Instance().CreateObject(name.Get());
+	m_Widgets[name.Get()] = static_cast<UIWidget*>(wNew);
+	return static_cast<UIWidget*>(wNew);
 }
 
-/*static*/ void UISystem::DeleteWidget(AStringView name)
+void UISystem::DeleteWidget(AStringView name)
 {
 	ASSERT(m_Widgets.Find(name.Get()) != m_Widgets.End());
 	TDELETE_SAFE(m_Widgets[name.Get()]);
@@ -47,16 +48,12 @@ void UISystem::InitGUI()
 	ImGuiIO& io = ImGui::GetIO();
 	io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 16.0f, nullptr, io.Fonts->GetGlyphRangesChinese());
 
-	if (!IsLoaded())
-	{
-		CreateWidget("UIMainMenu");
-		CreateWidget("UIMainToolBar");
-		CreateWidget("UIAssetBrowser");
-		CreateWidget("UIMainView");
-		CreateWidget("UIFileProperty");
-		CreateWidget("UICommands");
-		CreateWidget("UIOutputPanel");
-	}
+	CreateWidget("UIMainMenu");
+	CreateWidget("UIMainToolBar");
+	CreateWidget("UIAssetBrowser");
+	CreateWidget("UIFileProperty");
+	CreateWidget("UICommands");
+	CreateWidget("UIOutputPanel");
 }
 
 void UISystem::OnFrameStart()
@@ -72,10 +69,15 @@ void UISystem::OnFrameEnd()
 	ImGui::Render();
 }
 
-const UIWidget * UISystem::GetWidget(AStringView name)
+UIWidget * UISystem::GetWidget(AStringView name)
 {
 	ASSERT(m_Widgets.Find(name.Get()) != m_Widgets.End());
 	return m_Widgets[name.Get()];
+}
+
+bool UISystem::HasWidget(AStringView name)
+{
+	return m_Widgets.Find(name.Get()) != m_Widgets.End();
 }
 
 bool UISystem::Undo()
@@ -130,7 +132,7 @@ bool UISystem::LoadDockers(const IOStream* stream, ISerializer * reader)
 	StackArray<ImGUIDocker, 64> dockers;
 	reader->Load(stream, &dockers, MetaTypeDB::Instance().GetMetaType<StackArray<ImGUIDocker, 64>>());
 
-	ImGui::LoadDock(dockers.GetSize());
+	ImGui::LoadDock((int)dockers.GetSize());
 	ImGui::IMDocker docker;
 	for (uint32 idx = 0; idx < dockers.GetSize(); ++idx)
 	{

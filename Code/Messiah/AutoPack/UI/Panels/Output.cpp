@@ -15,6 +15,7 @@
 //------------------------------------------------------------------------------
 UIOutputPanel::UIOutputPanel()
 {
+	m_Name = "Output";
 	m_Logger.SetSize(MAX_LOGGER_SIZE);
 }
 
@@ -36,7 +37,7 @@ void UIOutputPanel::PollOutput()
 
 				if (str.GetLength() > 0)
 				{
-					logger.m_StrIndex += str.GetLength();
+					logger.m_StrIndex += (uint32)str.GetLength();
 					logger.AddLog(str.Get());
 					logger.AddLog("\0");
 				}
@@ -133,7 +134,7 @@ bool UIOutputPanel::IsValid()
 
 /*virtual*/ void UIOutputPanel::OnFrameUpdate()
 {
-	if (ImGui::BeginDock("Output"))
+	if (ImGui::BeginDock("Output", &m_Opened))
 	{
 		{
 			// service combo

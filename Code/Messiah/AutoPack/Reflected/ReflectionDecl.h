@@ -12,7 +12,7 @@
 #include "../UI/Panels/MainMenu.h"
 #include "../UI/Panels/AssetBrowser.h"
 #include "../UI/Panels/MainToolbar.h"
-#include "../UI/Panels/MainView.h"
+#include "../UI/Panels/GameView.h"
 #include "../UI/Panels/FileProperty.h"
 #include "../UI/Panels/Commands.h"
 #include "../UI/Panels/Output.h"
@@ -63,8 +63,8 @@ TREFLECT_END(UIAssetBrowser)
 
 // UIMainView
 //------------------------------------------------------------------------------
-TREFLECT_BEGIN(UIMainView)
-TREFLECT_END(UIMainView)
+TREFLECT_BEGIN(UIGameView)
+TREFLECT_END(UIGameView)
 
 // UICommands
 //------------------------------------------------------------------------------

@@ -104,7 +104,7 @@ bool EngineCore::Load()
 	FileStream stream;
 	if (stream.Open("layout.tcfg", FileStream::READ_ONLY))
 	{
-		uint32 size = stream.GetSize();
+		SIZET size = stream.GetSize();
 		char * buffer = new char[size];
 		stream.ReadBuffer(buffer, size);
 		stream.Close();

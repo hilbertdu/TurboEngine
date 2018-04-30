@@ -39,18 +39,18 @@ public:
 	~DelegateStorage() { Free(); }
 
 	inline void * GetStorage() const { return m_Size == 0 ? nullptr : (m_Size > SIZE ? m_Storage.m_Heap : (void *)(&m_Storage.m_Stack[0])); }
-	inline bool   IsStackMem() const { return m_Size < SIZE; }
+	inline bool   IsStackMem() const { return m_Size <= SIZE; }
 
 	void * SetStorage(SIZET size)
 	{
 		Free();
 		if (size > SIZE)
 		{
-			m_Size = size;
+			m_Size = (int32)size;
 			m_Storage.m_Heap = ALLOC(size);
 			return m_Storage.m_Heap;
 		}
-		m_Size = size;
+		m_Size = (int32)size;
 		return &(m_Storage.m_Stack[0]);
 	}
 

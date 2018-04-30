@@ -179,6 +179,7 @@
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Memory\MemPool.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Memory\MemPoolBlock.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Pattern\Singleton.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Platform\Config.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Platform\Misc.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Platform\Platform.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Platform\Types.h" />
@@ -248,6 +249,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <FileType>Document</FileType>
     </ClInclude>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Platform\Platform.cpp" />
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Process\Lock.cpp" />
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Process\Process.cpp" />
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Process\Thread.cpp" />

@@ -38,7 +38,7 @@ UIAssetBrowser::~UIAssetBrowser()
 
 void UIAssetBrowser::OnFrameUpdate()
 {
-	if (!ImGui::BeginDock(m_Name.Get()))
+	if (!ImGui::BeginDock(m_Name.Get(), &m_Opened))
 	{
 		if (m_Activate) { ImGui::SetDockActive(); }
 		ImGui::EndDock();

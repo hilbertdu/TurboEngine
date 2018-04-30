@@ -509,11 +509,11 @@
     <ClCompile Include="..\..\..\..\Code\External\bgfx\bimg\src\image_gnf.cpp">
       <Filter>bimg\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\amalgamated.cpp">
-      <Filter>bx\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\Code\External\bgfx\bgfx\src\amalgamated.cpp">
       <Filter>bgfx\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\External\bgfx\bx\src\amalgamated.cpp">
+      <Filter>bx\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

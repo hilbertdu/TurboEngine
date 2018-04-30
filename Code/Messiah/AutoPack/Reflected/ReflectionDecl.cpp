@@ -16,7 +16,7 @@ void BindReflectionAll()
 	BIND_REFLECTION(UIAssetBrowser);
 	BIND_REFLECTION(UIFileProperty);
 	BIND_REFLECTION(UICommands);
-	BIND_REFLECTION(UIMainView);
+	BIND_REFLECTION(UIGameView);
 	BIND_REFLECTION(UIOutputPanel);
 	BIND_REFLECTION(IService);
 	BIND_REFLECTION(IBatchService);

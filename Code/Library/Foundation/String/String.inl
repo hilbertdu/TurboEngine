@@ -219,7 +219,7 @@ String<CharType, Allocator> & String<CharType, Allocator>::operator += (const St
 template<typename CharType, typename Allocator>
 void String<CharType, Allocator>::Append(const CharType * string, SIZET len)
 {
-	uint32 newLen = m_Length + (uint32)len;
+	SIZET newLen = m_Length + len;
 	if (newLen > GetCapacity())
 	{
 		Grow(len);

@@ -18,7 +18,7 @@ void ICommand::AddOutput(const char * output)
 AStringView ICommand::FetchOutput(uint32 index, uint32 len) const
 {
 	ASSERT(index <= m_Output.GetLength());
-	uint32 realLen = m_Output.GetLength() >= index + len ? len : m_Output.GetLength() - index;
+	SIZET realLen = m_Output.GetLength() >= index + len ? len : m_Output.GetLength() - index;
 	return AStringView(m_Output.Get() + index, realLen);
 }
 
@@ -35,8 +35,8 @@ AStringView ICommand::FetchOutput(uint32 index, uint32 len) const
 		return false;
 	}
 
-	size_t bufferSize = MEGABYTE;
-	size_t readSize = -1;
+	uint32 bufferSize = MEGABYTE;
+	uint32 readSize = -1;
 	char *output = TNEW(char[bufferSize]());
 	for (; m_Process.IsRunning() || readSize != 0;)
 	{

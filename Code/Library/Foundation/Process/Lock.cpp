@@ -61,7 +61,7 @@ void MutexLock::Lock()
 bool MutexLock::TryLock()
 {
 #if defined(__WINDOWS__)
-	return (bool)TryEnterCriticalSection((CRITICAL_SECTION *)&m_CriticalSection);
+	return TryEnterCriticalSection((CRITICAL_SECTION *)&m_CriticalSection) == TRUE;
 #elif defined(__LINUX__) || defined(__APPLE__)
 	VERIFY(pthread_mutex_lock(&m_Mutex) == 0);
 #else

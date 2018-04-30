@@ -5,24 +5,12 @@
 #ifndef FOUNDATION_PLATFORM_PLATFORM_H
 #define FOUNDATION_PLATFORM_PLATFORM_H
 
-#ifdef _WIN32
-	#define __WIN32__
-	#define __WINDOWS__
-#endif
-
-#ifdef _WIN64
-	#define __WIN32__
-	#define __WIN64__
-	#define __WINDOWS__
-#endif
-
-#ifdef __WINDOWS__
-	#if defined(_DEBUG)
-		#define __DEBUG__
-	#else
-		#define __RELEASE__
-	#endif
-#endif
+class Platform
+{
+public:
+	static void*	LoadDynamicLibrary(const char * name, const char * directory = nullptr);
+	static int		GetLastErrorNo();
+};
 
 //------------------------------------------------------------------------------
 #endif // FOUNDATION_PLATFORM_PLATFORM_H

@@ -24,7 +24,7 @@ bool IOStream::Read(AString & string) const
 //------------------------------------------------------------------------------
 bool IOStream::Write(const AString & string)
 {
-	uint32 len = string.GetLength();
+	SIZET len = string.GetLength();
 	bool ok = Write(len);
 	ok &= (Write(string.Get(), len) == len);
 	return ok;

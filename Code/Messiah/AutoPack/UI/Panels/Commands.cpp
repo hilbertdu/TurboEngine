@@ -28,26 +28,24 @@ UICommands::~UICommands()
 
 /*virtual*/ void UICommands::OnFrameUpdate()
 {
-	if (ImGui::BeginDock(m_Name.Get()))
+	if (ImGui::BeginDock(m_Name.Get(), &m_Opened))
 	{
+		float contentW = ImGui::GetContentRegionAvailWidth();
+		ImVec2 mainSize(contentW - m_LeftColumeWidth, 0);
+		ImVec2 leftSize(m_LeftColumeWidth, 0);
+		if (leftSize.x < 10) leftSize.x = 10;
+		if (leftSize.x > contentW - 10) leftSize.x = contentW - 10;
+		if (mainSize.x < 10) mainSize.x = 10;
+
+		UpdateCommandList();
+
+		ImGui::SameLine();
+		ImGui::VSplitter(m_Spliter.Get(), &leftSize);
+		m_LeftColumeWidth = leftSize.x;
+		ImGui::SameLine();
+
+		UpdateArguments();
 	}
-
-	float contentW = ImGui::GetContentRegionAvailWidth();
-	ImVec2 mainSize(contentW - m_LeftColumeWidth, 0);
-	ImVec2 leftSize(m_LeftColumeWidth, 0);
-	if (leftSize.x < 10) leftSize.x = 10;
-	if (leftSize.x > contentW - 10) leftSize.x = contentW - 10;
-	if (mainSize.x < 10) mainSize.x = 10;
-
-	UpdateCommandList();
-
-	ImGui::SameLine();
-	ImGui::VSplitter(m_Spliter.Get(), &leftSize);
-	m_LeftColumeWidth = leftSize.x;
-	ImGui::SameLine();
-
-	UpdateArguments();
-
 	ImGui::EndDock();
 }
 

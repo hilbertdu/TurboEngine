@@ -246,22 +246,22 @@ void TestDelegateEvent::TestEvent() const
 	{
 		Signature<void(int)>::Event event;
 		int64 id1 = event.Add(&Test1_0);
-		int64 id2 = event.Add(&Test1_1);
+		//int64 id2 = event.Add(&Test1_1);
 
-		int64 id3 = event.Add([](int a) {
-			LOUTPUT("Test event lambda: %d\n", a);
-		});
-
-		TestA a;
-		int64 id4 = event.Add(Signature<void(int)>::Delegate(&a, &TestA::Test1));
+		//int64 id3 = event.Add([](int a) {
+		//	LOUTPUT("Test event lambda: %d\n", a);
+		//});
+		//
+		//TestA a;
+		//int64 id4 = event.Add(Signature<void(int)>::Delegate(&a, &TestA::Test1));
 
 		event.Signal(100);
 		event.Remove(id1);
-		event.Signal(200);
-		event.Remove(id2);
-		event.Signal(300);
-		event.Remove(id3);
-		event.Signal(400);
+		//event.Signal(200);
+		//event.Remove(id2);
+		//event.Signal(300);
+		//event.Remove(id3);
+		//event.Signal(400);
 	}
 	{
 		Signature<void(const char*)>::Event event;

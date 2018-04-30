@@ -58,9 +58,9 @@ namespace TReflection
 		using FieldType = std::remove_pointer<FieldT>::type;
 		Array<Field>::Iter field = m_Fields.EmplaceAppend();
 		field->m_Name = name;
-		field->m_Index = m_Fields.GetSize() - 1;
+		field->m_Index = (uint32)(m_Fields.GetSize() - 1);
 		field->m_Size = sizeof(FieldT);
-		field->m_Offset = (UINTPTR)member;
+		field->m_Offset = (uint32)(UINTPTR)member;
 		field->m_IsPointer = std::is_pointer<FieldT>::value;
 		field->m_MetaType = MetaTypeDB::Instance().ObtainMetaType<FieldType>();
 		ASSERT(field->m_MetaType);
@@ -71,7 +71,7 @@ namespace TReflection
 	{
 		Array<Method>::Iter method = m_Methods.EmplaceAppend();
 		method->m_Name = name;
-		method->m_Index = m_Methods.GetSize() - 1;
+		method->m_Index = (uint32)(m_Methods.GetSize() - 1);
 		method->m_Delegate = AnyDelegate((C*)0, member);
 	}
 
@@ -111,7 +111,7 @@ namespace TReflection
 	uint32 MetaStruct::GetFieldCount()
 	{
 		uint32 superSize = m_Super ? m_Super->GetFieldCount() : 0;
-		return superSize + m_Fields.GetSize();
+		return superSize + (uint32)m_Fields.GetSize();
 	}
 	REFLECTION_DECLARE_METAOBJECT(IStruct, IStruct::MetaType)
 }

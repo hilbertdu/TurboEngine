@@ -28,6 +28,7 @@ public:
 	virtual void OnFrameUpdate() {}
 
 	inline void SetName(AStringView name) { m_Name = name.Get(); }
+	inline void SetOpened(bool opened) { m_Opened = opened; }
 
 	inline float GetWidth() const { return m_Size.x; }
 	inline float GetHeight() const { return m_Size.y; }
@@ -38,6 +39,7 @@ protected:
 	Vector2 m_Pos;
 	Vector2	m_Size;
 	AString m_Parent;
+	bool	m_Opened;
 
 	TREFLECTION_DECLARE(UIWidget, IObject)
 };

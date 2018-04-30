@@ -12,7 +12,6 @@
 UIFileProperty::UIFileProperty()
 {
 	m_Name = "Property";
-	m_Parent = "Assets";
 }
 
 // Destructor
@@ -22,7 +21,7 @@ UIFileProperty::~UIFileProperty()
 
 /*virtual*/ void UIFileProperty::OnFrameUpdate()
 {
-	if (ImGui::BeginDock(m_Name.Get()))
+	if (ImGui::BeginDock(m_Name.Get(), &m_Opened))
 	{
 	}
 	ImGui::EndDock();

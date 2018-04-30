@@ -41,7 +41,10 @@ public:
  	template<class T> const T & GetPropertyRef(const char * name) const;		
  
  	// Deduces type membership for this instance
-	template<class T> bool IsA() const;
+	template<class T> inline bool IsA() const;
+
+	// cast
+	template<class T> T * CastTo() const;
  
  	// serialize functions
 	virtual void PreSerialize() {}
@@ -79,10 +82,26 @@ const T & IObject::GetPropertyRef(const char * name) const
 }
 
 template<class T> 
-bool IObject::IsA() const
+inline bool IObject::IsA() const
 {
+	return CastTo<T>() == this;
 }
 
+template<class T> 
+T * IObject::CastTo() const
+{
+	MetaStruct* src = GetMetaTypeV();
+	MetaStruct* des = T::GetMetaTypeS();
+	while (src)
+	{
+		if (src == des)
+		{
+			return (T*)this;
+		}
+		src = src->m_Super;
+	}
+	return nullptr;
+}
 
 //------------------------------------------------------------------------------
 #endif // FOUNDATION_REFLECTION_OBJECT_H

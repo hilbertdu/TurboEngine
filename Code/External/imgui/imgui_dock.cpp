@@ -932,6 +932,14 @@ namespace ImGui
 		}
 
 
+		bool hasDocked(const char* label)
+		{
+			Dock* dock = findDock(label);
+			if (dock) return dock->status == Status_Docked;
+			return false;
+		}
+
+
 		Dock* getDockByIndex(int idx) { return idx < 0 ? nullptr : m_docks[(int)idx]; }
 
 
@@ -1134,6 +1142,12 @@ namespace ImGui
 	void ForceDock(const char* label, const char* docker, int slot_idx)
 	{
 		g_dock.forceDock(label, docker, slot_idx);
+	}
+
+
+	bool HasDocked(const char* label)
+	{
+		return g_dock.hasDocked(label);
 	}
 
 

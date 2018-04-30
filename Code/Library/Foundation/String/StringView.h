@@ -130,7 +130,7 @@ public:
 
 protected:
 	const char* m_Contents;
-	uint32		m_Length;
+	SIZET		m_Length;
 };
 
 

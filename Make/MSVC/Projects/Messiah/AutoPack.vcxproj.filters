@@ -46,6 +46,9 @@
     <Filter Include="UI\Compat">
       <UniqueIdentifier>{539e155e-421b-4d42-96cb-b243141ad769}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{b1c576a4-0131-48da-89b8-0f287b2a0541}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\App\impl_dx11\imgui_impl_dx11.cpp">
@@ -114,10 +117,13 @@
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\Output.cpp">
       <Filter>UI\Panels</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainView.cpp">
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\FileProperty.cpp">
       <Filter>UI\Panels</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\FileProperty.cpp">
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Game\MessiahGame.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\GameView.cpp">
       <Filter>UI\Panels</Filter>
     </ClCompile>
   </ItemGroup>
@@ -153,9 +159,6 @@
       <Filter>UI\Panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainToolbar.h">
-      <Filter>UI\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\MainView.h">
       <Filter>UI\Panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\Output.h">
@@ -211,6 +214,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Compat\UIDocker.h">
       <Filter>UI\Compat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Game\MessiahGame.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\GameView.h">
+      <Filter>UI\Panels</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,7 +4,6 @@
 // Includes
 //------------------------------------------------------------------------------
 #include "Foundation/Env/Assert.h"
-#include "Foundation/Platform/Platform.h"
 #include "Foundation/String/String.h"
 
 #ifdef ASSERT_ENABLED

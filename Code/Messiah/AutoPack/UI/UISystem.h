@@ -32,12 +32,13 @@ public:
 	UISystem();
 	~UISystem();
 
-	const UIWidget * GetWidget(AStringView name);
+	UIWidget* GetWidget(AStringView name);
+	bool	  HasWidget(AStringView name);
 
 	void InitGUI();
 
 	void OnFrameStart();
-	void OnFrameEnd();	
+	void OnFrameEnd();
 
 	bool Undo();
 	bool Redo();

@@ -385,7 +385,7 @@ typename Array<T, Allocator>::Iter Array<T, Allocator>::EmplaceInsert(Iter iter,
 
 	const SIZET oldSize = GetSize();
 	const SIZET newSize = oldSize + 1;
-	uint32 index = iter - m_Begin;
+	SIZET index = iter - m_Begin;
 
 	if (newSize > GetCapacity())
 	{

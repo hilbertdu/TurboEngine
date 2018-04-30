@@ -216,7 +216,7 @@ void TextSerializer::SavePointer(IOStream* stream, const void * object, const IM
 		saveId = 0;
 	}
 
-	objectId.Format(" <object id : %lld, name : %s> ", saveId, objPtr->GetMetaTypeV()->m_Name.m_Name.Get());
+	objectId.Format(" <object id : %lld, name : %s> ", saveId, objPtr ? objPtr->GetMetaTypeV()->m_Name.m_Name.Get() : "");
 	stream->Write(objectId.Get(), objectId.GetLength());
 
 	if (objPtr)
@@ -407,9 +407,7 @@ void TextSerializer::LoadPointer(const IOStream* stream, void * object, const IM
 	sscanf_s(content.Get(), "%lu", &id);
 #else
 	sscanf_s(content.Get(), "%llu", &id);
-#endif
-
-	IMetaType * metaType = MetaTypeDB::Instance().GetMetaType(name);
+#endif	
 
 	if (id)
 	{
@@ -418,6 +416,7 @@ void TextSerializer::LoadPointer(const IOStream* stream, void * object, const IM
 		auto iter = m_Objects.Find(id);
 		if (iter == m_Objects.End())
 		{
+			IMetaType * metaType = MetaTypeDB::Instance().GetMetaType(name);
 			IObject * obj = (IObject*)metaType->Create();
 			LoadIndent(stream);
 			obj->Load(stream, this);

@@ -193,7 +193,7 @@ void ApplicationWin32::CreateMainWindow()
 		NULL 
 	};
 	RegisterClassEx(&wc);
-	m_HWnd = CreateWindow(m_AppName.Get(), m_AppName.Get(), WS_OVERLAPPEDWINDOW, 100, 100, 1280, 800, NULL, NULL, wc.hInstance, NULL);
+	m_HWnd = CreateWindow(m_AppName.Get(), m_AppName.Get(), WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 100, 100, 1280, 800, NULL, NULL, wc.hInstance, NULL);
 
 	// Initialize Direct3D
 	if (CreateDeviceD3D(m_HWnd) < 0)

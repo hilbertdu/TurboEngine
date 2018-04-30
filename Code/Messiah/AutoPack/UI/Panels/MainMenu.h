@@ -7,6 +7,7 @@
 // Includes
 //------------------------------------------------------------------------------
 #include "Foundation/Platform/Types.h"
+#include "Foundation/Container/HashMap.h"
 #include "AutoPack/UI/Basic/UIWidget.h"
 
 // class MAINMENU
@@ -14,13 +15,18 @@
 class UIMainMenu : public UIWidget
 {
 public:
-	UIMainMenu() {}
+	UIMainMenu();
 
 	virtual void OnFrameUpdate();
 
 private:
-	bool m_Saved;
-	bool m_ServiceAdded;
+	void ActionAddCommand();
+	void ActionSave();
+	void ActionSaveAs();
+	void ActionLoad();
+	void ActionRecent();
+
+	HashMap<AString, bool> m_ItemState;
 
 	TREFLECTION_DECLARE(UIMainMenu, UIWidget)
 };

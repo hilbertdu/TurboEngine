@@ -23,6 +23,7 @@ public:
 	static void Finalize();
 
 	virtual void Run() = 0;
+	virtual void *GetWindow() = 0;
 
 protected:
 	WStackString<64> m_AppName;
@@ -38,6 +39,7 @@ public:
 	virtual ~ApplicationWin32();
 
 	virtual void Run();
+	virtual void *GetWindow() { return m_HWnd; }
 
 private:
 	void CreateMainWindow();
