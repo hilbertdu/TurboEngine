@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- natvis file for Visual Studio debugger (you can include this in a project file, or install in visual studio folder) -->
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+<Type Name="Array&lt;*,*&gt;">
+  <DisplayString>{{Size={m_End - m_Begin} Capacity={m_MaxEnd - m_Begin}}}</DisplayString>
+  <Expand>
+    <ArrayItems>
+      <Size>m_End - m_Begin</Size>
+      <ValuePointer>m_Begin</ValuePointer>
+    </ArrayItems>
+  </Expand>
+</Type>
+
+<Type Name="HashTable&lt;*,*,*,*,*,*&gt;">
+  <DisplayString>{{Size = {m_Size}}}</DisplayString>
+  <Expand>
+    <CustomListItems MaxItemsPerView="5000">
+      <Variable Name="iBucket" InitialValue="0" />
+      <Variable Name="iBucketArray" InitialValue="0" />
+      <Size>m_Size</Size>
+      <Loop>
+        <Break Condition="iBucket == m_Buckets.m_End - m_Buckets.m_Begin" />
+        <Loop>
+          <Break Condition="iBucketArray == m_Buckets[iBucket].m_End - m_Buckets[iBucket].m_Begin" />
+          <Item>m_Buckets[iBucket][iBucketArray],na</Item>
+          <Exec>iBucketArray += 1</Exec>
+        </Loop>
+        <Exec>iBucket += 1</Exec>
+        <Exec>iBucketArray = 0</Exec>
+      </Loop>
+    </CustomListItems>
+  </Expand>
+</Type>
+
+</AutoVisualizer>

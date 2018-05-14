@@ -30,7 +30,7 @@ void UIOutputPanel::PollOutput()
 	{
 		for (auto cmd : item->GetCommands())
 		{
-			if (cmd->GetLock().TryLock())
+			if (cmd->TryLockOutput())
 			{
 				ImGuiLogger & logger = ObtainLogger(m_CurService, m_CurCommand);
 				const AStringView & str = cmd->FetchOutput(logger.m_StrIndex, 1024);
@@ -41,7 +41,7 @@ void UIOutputPanel::PollOutput()
 					logger.AddLog(str.Get());
 					logger.AddLog("\0");
 				}
-				cmd->GetLock().UnLock();
+				cmd->UnLockOutput();
 			}
 		}
 	}

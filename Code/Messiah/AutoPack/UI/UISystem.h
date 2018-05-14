@@ -11,7 +11,7 @@
 #include "Foundation/Logging/Logger.h"
 #include "Foundation/Container/HashMap.h"
 #include "Foundation/String/StringView.h"
-#include "../Engine/Serializer.h"
+#include "AutoPack/Engine/Serializer.h"
 
 
 class UIWidget;
@@ -50,7 +50,8 @@ private:
 	bool SaveDockers(IOStream* stream, TReflection::ISerializer * writer) const;
 	bool LoadDockers(const IOStream* stream, TReflection::ISerializer * reader);
 
-	WidgetMap m_Widgets;
+	WidgetMap		m_Widgets;
+	Array<AString>	m_WidgetNames;
 };
 
 //------------------------------------------------------------------------------

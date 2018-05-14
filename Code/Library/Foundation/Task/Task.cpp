@@ -6,7 +6,7 @@
 #include "Task.h"
 
 Task::Task()
-	: m_Status(STATUS_INVALID)
+	: m_Status(Status::STATUS_INVALID)
 {}
 
 Task::~Task()

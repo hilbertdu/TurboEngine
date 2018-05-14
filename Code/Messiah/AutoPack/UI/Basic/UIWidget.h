@@ -29,10 +29,12 @@ public:
 
 	inline void SetName(AStringView name) { m_Name = name.Get(); }
 	inline void SetOpened(bool opened) { m_Opened = opened; }
-
+	inline bool IsOpened() const { return m_Opened; }
+	
 	inline float GetWidth() const { return m_Size.x; }
 	inline float GetHeight() const { return m_Size.y; }
-	inline const Vector2& GetSize() const { return m_Size; }
+	inline const Vector2 & GetSize() const { return m_Size; }
+	inline const AString & GetName() const { return m_Name; }
 
 protected:
 	AString	m_Name;
@@ -40,6 +42,7 @@ protected:
 	Vector2	m_Size;
 	AString m_Parent;
 	bool	m_Opened;
+	bool	m_Saved;
 
 	TREFLECTION_DECLARE(UIWidget, IObject)
 };

@@ -44,16 +44,19 @@ UISystem::~UISystem()
 void UISystem::InitGUI()
 {
 	// Setup style
-	//ImGui::StyleColorsDark();
+	ImGuiStyle& style = ImGui::GetStyle();
+	style.FramePadding.y = 2;
+	style.FrameRounding = 4;
+
 	ImGuiIO& io = ImGui::GetIO();
 	io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 16.0f, nullptr, io.Fonts->GetGlyphRangesChinese());
 
-	CreateWidget("UIMainMenu");
-	CreateWidget("UIMainToolBar");
-	CreateWidget("UIAssetBrowser");
-	CreateWidget("UIFileProperty");
-	CreateWidget("UICommands");
-	CreateWidget("UIOutputPanel");
+	CreateWidget("UIMainMenu");		m_WidgetNames.Append("UIMainMenu");
+	CreateWidget("UIMainToolBar");	m_WidgetNames.Append("UIMainToolBar");
+	CreateWidget("UIAssetBrowser");	m_WidgetNames.Append("UIAssetBrowser");
+	CreateWidget("UIFileProperty");	m_WidgetNames.Append("UIFileProperty");
+	CreateWidget("UICommands");		m_WidgetNames.Append("UICommands");
+	CreateWidget("UIOutputPanel");	m_WidgetNames.Append("UIOutputPanel");
 }
 
 void UISystem::OnFrameStart()
@@ -62,9 +65,9 @@ void UISystem::OnFrameStart()
 
 void UISystem::OnFrameEnd()
 {
-	for (WidgetMap::Iter iter = m_Widgets.Begin(); iter != m_Widgets.End(); ++iter)
+	for (auto iter = m_WidgetNames.Begin(); iter != m_WidgetNames.End(); ++iter)
 	{
-		iter->Second()->OnFrameUpdate();
+		m_Widgets[*iter]->OnFrameUpdate();
 	}
 	ImGui::Render();
 }

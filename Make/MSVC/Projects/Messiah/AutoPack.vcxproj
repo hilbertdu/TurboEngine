@@ -39,9 +39,7 @@
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Manager\ServiceManager.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Reflected\ReflectionDecl.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Service\Command.cpp" />
-    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Service\ResCooker\Chef.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Service\Service.cpp" />
-    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Service\Test\Test.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Setting\Setting.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Basic\UIWidget.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\AssetBrowser.cpp" />
@@ -67,12 +65,7 @@
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Manager\ServiceManager.h" />
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Reflected\ReflectionDecl.h" />
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\Command.h" />
-    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\Patch\PatchGenerator.h" />
-    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\ResCooker\Chef.h" />
-    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\ResCooker\MixmapMerge.h" />
-    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\ResCooker\UIPacker.h" />
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\Service.h" />
-    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\Test\Test.h" />
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Setting\Setting.h" />
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Basic\UIWidget.h" />
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\UI\Compat\UIDocker.h" />

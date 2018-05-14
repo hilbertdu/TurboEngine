@@ -25,17 +25,8 @@
     <Filter Include="Event">
       <UniqueIdentifier>{57a4d71b-6194-47ff-9065-b5d6dfde734d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Service\Patch">
-      <UniqueIdentifier>{e77de7d9-1bbd-4c19-a3ba-c48ca550a4f3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Service\ResCooker">
-      <UniqueIdentifier>{a8ffceab-6b96-4169-afdf-82d021b6b173}</UniqueIdentifier>
-    </Filter>
     <Filter Include="UI\Basic">
       <UniqueIdentifier>{a3c3350f-55d2-434c-b8f9-5c6891872686}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Service\Test">
-      <UniqueIdentifier>{a5d447d6-2f7f-4fde-8b21-4d5e9e1e3c3e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Reflection">
       <UniqueIdentifier>{f83dd4e5-10f9-40d2-9528-2bc4d31f1098}</UniqueIdentifier>
@@ -48,6 +39,9 @@
     </Filter>
     <Filter Include="Game">
       <UniqueIdentifier>{b1c576a4-0131-48da-89b8-0f287b2a0541}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Popups">
+      <UniqueIdentifier>{b3ed57fe-d7a5-419c-85f8-fd5ed40c4ea2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,9 +72,6 @@
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Manager\ServiceManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Service\ResCooker\Chef.cpp">
-      <Filter>Service\ResCooker</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Basic\UIWidget.cpp">
       <Filter>UI\Basic</Filter>
     </ClCompile>
@@ -92,9 +83,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Service\Service.cpp">
       <Filter>Service</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Service\Test\Test.cpp">
-      <Filter>Service\Test</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Setting\Setting.cpp">
       <Filter>Setting</Filter>
@@ -179,18 +167,6 @@
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\Service.h">
       <Filter>Service</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\ResCooker\Chef.h">
-      <Filter>Service\ResCooker</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\ResCooker\MixmapMerge.h">
-      <Filter>Service\ResCooker</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\ResCooker\UIPacker.h">
-      <Filter>Service\ResCooker</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\Patch\PatchGenerator.h">
-      <Filter>Service\Patch</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Manager\ServiceManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
@@ -199,9 +175,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\Command.h">
       <Filter>Service</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Service\Test\Test.h">
-      <Filter>Service\Test</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Reflected\ReflectionDecl.h">
       <Filter>Reflection</Filter>

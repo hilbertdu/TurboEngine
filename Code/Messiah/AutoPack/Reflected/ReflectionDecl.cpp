@@ -20,6 +20,7 @@ void BindReflectionAll()
 	BIND_REFLECTION(UIOutputPanel);
 	BIND_REFLECTION(IService);
 	BIND_REFLECTION(IBatchService);
+	BIND_REFLECTION(ICommand);
 }
 
 //------------------------------------------------------------------------------

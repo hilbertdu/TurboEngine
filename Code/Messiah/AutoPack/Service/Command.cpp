@@ -10,28 +10,33 @@
 #include "Foundation/Process/Process.h"
 
 
-void ICommand::AddOutput(const char * output)
+// Run
+//------------------------------------------------------------------------------
+/*virtual*/ uint32 ICommand::Run()
 {
-	m_Output += output;
+	EngineCore::Instance().GetTaskScheduler()->PushTask(m_Task);
+	return 0;
 }
 
-AStringView ICommand::FetchOutput(uint32 index, uint32 len) const
+// Cancel
+//------------------------------------------------------------------------------
+/*virtual*/ uint32 ICommand::Cancel()
 {
-	ASSERT(index <= m_Output.GetLength());
-	SIZET realLen = m_Output.GetLength() >= index + len ? len : m_Output.GetLength() - index;
-	return AStringView(m_Output.Get() + index, realLen);
+	return 0;
 }
-
 
 // Execute
 //------------------------------------------------------------------------------
-/*virtual*/ uint32 ExeCommand::Run()
+/*virtual*/ uint32 ExeCommandTask::Run()
 {
-	bool spawnOK = m_Process.Spawn(m_Parameters[0]->GetName().Get(), nullptr, nullptr, nullptr);
+	bool spawnOK = m_Process.Spawn(m_Executable.Get(),
+		m_Arguments.IsEmpty() ? nullptr : m_Arguments.Get(), 
+		m_WorkingDir.IsEmpty() ? nullptr : m_WorkingDir.Get(),
+		m_Environment.IsEmpty() ? nullptr : m_Environment.Get());
 
 	if (!spawnOK)
 	{
-		LERROR("Command", "Failed to spwan process '%s'\n", m_Parameters[0]->GetName().Get());
+		LERROR("Command", "Failed to spwan process '%s'\n", m_Executable.Get());
 		return false;
 	}
 
@@ -43,9 +48,9 @@ AStringView ICommand::FetchOutput(uint32 index, uint32 len) const
 		readSize = m_Process.ReadStdOut(output, bufferSize - 1);
 		output[readSize] = '\000';
 		LOUTPUT(output);
-		GetLock().Lock();
-		AddOutput(output);
-		GetLock().UnLock();
+		m_OutputLock.Lock();
+		m_Output += output;
+		m_OutputLock.UnLock();
 		Thread::Sleep(15);
 	}
 	TDELETE_SAFE(output);
@@ -53,5 +58,22 @@ AStringView ICommand::FetchOutput(uint32 index, uint32 len) const
 	ASSERT(!m_Process.IsRunning());
 	return m_Process.WaitForExit();
 }
+
+// Cancel
+//------------------------------------------------------------------------------
+/*virtual*/ uint32 ExeCommandTask::Cancel()
+{
+	return -1;
+}
+
+// FetchOutput
+//------------------------------------------------------------------------------
+const AStringView ExeCommandTask::FetchOutput(uint32 index, uint32 len) const
+{
+	ASSERT(index <= m_Output.GetLength());
+	SIZET realLen = m_Output.GetLength() >= index + len ? len : m_Output.GetLength() - index;
+	return AStringView(m_Output.Get() + index, realLen);
+}
+
 
 //------------------------------------------------------------------------------

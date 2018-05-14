@@ -87,6 +87,8 @@ namespace TReflection
 		Primitive(const Name & name) : m_Name(name) {}
 		Primitive(Name && name) : m_Name(std::move(name)) {}
 
+		inline const Name & GetName() const { return m_Name; }
+
 		Name m_Name;
 	};
 

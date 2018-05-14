@@ -32,12 +32,23 @@ public:
 	virtual void Finalize() {}
 	virtual void RunCommand(const AStringView & command);
 
+	inline const void SetDescription(const AStringView & desc) { m_Description = desc.Get(); }
+	inline const void SetAuthor(const AStringView & author) { m_Author = author.Get(); }
+
 	inline const AString & GetName() const { return m_Name; }
-	inline const ICommand* GetCommand(const AStringView & name) const;	
+	inline const AString & GetDescription() const { return m_Description; }
+	inline const AString & GetAuthor() const { return m_Author; }
+
+	inline ICommand*				GetCommand(const AStringView & name);
+	inline const ICommand*			GetCommand(const AStringView & name) const;
 	inline const Array<ICommand*> & GetCommands() const { return m_Commands; }
+
+	virtual ICommand * CreateCommand(const AStringView & cls, const AStringView & name);
 
 protected:
 	AString m_Name;
+	AString m_Description;
+	AString m_Author;
 	Array<ICommand*> m_Commands;
 
 	TREFLECTION_DECLARE(IService, IObject)

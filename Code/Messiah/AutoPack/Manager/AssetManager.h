@@ -21,9 +21,9 @@ class AssetItem
 public:
 	AssetItem(): m_UnFold(false), m_Valid(true), m_Level(0), m_Parent(nullptr) {}
 
-	inline void Reset() { m_UnFold = false; m_Valid = true; }
-	inline const AStringView GetBaseName() const { return PathUtils::GetFileBaseName(m_FileInfo.m_Name); }
+	inline void Reset() { m_UnFold = false; m_Valid = true; }	
 	inline bool IsDirectory() const { return m_FileInfo.IsDirectory(); }
+	inline const AStringView GetBaseName() const { return PathUtils::GetFileBaseName(m_FileInfo.m_Name); }
 
 	FileIO::FileInfo	m_FileInfo;
 	Array<AssetItem*>	m_SubItems;

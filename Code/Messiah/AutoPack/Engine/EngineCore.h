@@ -32,6 +32,7 @@ public:
 	void		Init();
 	void		SetRootDir(const AStringView & root);
 	AStringView	GetRootDir() const;
+
 	bool		Save();
 	bool		Load();
 		

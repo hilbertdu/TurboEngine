@@ -8,8 +8,10 @@
 //------------------------------------------------------------------------------
 #include "Foundation/String/String.h"
 #include "Foundation/String/StringView.h"
-#include "Foundation/Task/Task.h"
 #include "Foundation/Process/Process.h"
+#include "Foundation/Reflection/Objects/Object.h"
+#include "Foundation/Task/Task.h"
+
 
 // class IParameter
 //------------------------------------------------------------------------------
@@ -28,54 +30,76 @@ private:
 
 // class ICommand
 //------------------------------------------------------------------------------
-class ICommand : public Task
+class ICommand : public IObject
 {
 public:
-	ICommand(AStringView name) : m_Name(name.Get()) {}
+	ICommand() : m_Task(nullptr) {}
+	ICommand(AStringView name) : m_Name(name.Get()), m_Task(nullptr) {}
 	virtual ~ICommand() {}
 
-	const AString & GetName() const { return m_Name; }
+	ICommand(const ICommand &) = delete;
+
+	inline const void SetDescription(const AStringView & desc) { m_Description = desc.Get(); }
+	inline const void SetAuthor(const AStringView & author) { m_Author = author.Get(); }
+
+	const AString &			GetName() const { return m_Name; }
+	inline const AString &	GetDescription() const { return m_Description; }
+	inline const AString &	GetAuthor() const { return m_Author; }
+	inline const Task *		GetTask() const { return m_Task; }
+
 	void SetParameterLen(uint32 length) { m_Parameters.SetSize(length); }
 	void SetParameter(uint32 index, IParameter * parameter) { ASSERT(index < m_Parameters.GetSize()); m_Parameters[index] = parameter; }
 	void SetParameter(AStringView name, IParameter * parameter) {}
 
-	void		AddOutput(const char * output);	
-	AStringView FetchOutput(uint32 index, uint32 len) const;
+	virtual uint32 Run();
+	virtual uint32 Cancel();
 
-	inline SpinLock & GetLock() { return m_OutputLock; }
+	virtual bool TryLockOutput() { return false; }
+	virtual void UnLockOutput() {}
+	virtual const AStringView FetchOutput(uint32 index, uint32 len) const { return AStringView(); }	
 
 protected:
 	AString m_Name;
-	Array<IParameter*> m_Parameters;
+	AString m_Description;
+	AString m_Author;
+	Task *	m_Task;
 
-	AString  m_Output;
-	SpinLock m_OutputLock;
+	Array<IParameter*> m_Parameters;	
+
+	TREFLECTION_DECLARE(ICommand, IObject);
 };
 
 
 // class ExeCommand
 //------------------------------------------------------------------------------
-class ExeCommand : public ICommand
+class ExeCommandTask : public Task
 {
 public:
-	ExeCommand(AStringView name) : ICommand(name) {}
-	virtual ~ExeCommand() { Cancel(); }
+	explicit ExeCommandTask() {};
+	virtual ~ExeCommandTask() { Cancel(); }
 
 	virtual uint32 Run();
-	virtual uint32 Cancel() { return 0; };
+	virtual uint32 Cancel();
+
+	inline void SetExecutable(const AStringView & exe) { m_Executable = exe.Get(); }
+	inline void SetArguments(const AStringView & args) { m_Arguments = args.Get(); }
+	inline void SetWorkingDir(const AStringView & dir) { m_WorkingDir = dir.Get(); }
+	inline void SetEnvironment(const AStringView & env) { m_Environment = env.Get(); }
+
+	virtual bool TryLockOutput() { m_OutputLock.TryLock(); }
+	virtual void UnLockOutput() { m_OutputLock.UnLock(); }
+	virtual const AStringView FetchOutput(uint32 index, uint32 len) const;
 
 private:
-	Process m_Process;
+	Process		m_Process;
+	AString		m_Executable;
+	AString		m_Arguments;
+	AString		m_WorkingDir;
+	AString		m_Environment;
+	AString		m_Output;
+	SpinLock	m_OutputLock;
 };
 
-// class PythonCommand
-//------------------------------------------------------------------------------
-class PythonCommand : public ExeCommand
-{
-public:
-	PythonCommand(AStringView name) : ExeCommand(name) {}
-	virtual ~PythonCommand() {}
-};
 
 //------------------------------------------------------------------------------
 #endif // MESSIAH_AUTOPACK_SERVICE_COMMAND_H

@@ -20,11 +20,11 @@ public:
 
 	inline const Array<IService*> & GetServices() const { return m_Services; }
 
-	IService *		 GetService(const AStringView & service);
-	const IService * GetService(const AStringView & service) const;
+	IService *		 GetService(const AStringView & name);
+	const IService * GetService(const AStringView & name) const;
 
-	void AddService(const IService * service);
-	void RemoveService(const AStringView & service);
+	IService *	CreateService(const AStringView & name);
+	void		RemoveService(const AStringView & name);
 
 private:
 	Array<IService*> m_Services;

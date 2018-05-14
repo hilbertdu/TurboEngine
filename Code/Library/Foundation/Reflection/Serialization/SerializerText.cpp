@@ -60,7 +60,7 @@ void TextSerializer::SaveBrace(IOStream* stream, const char* brace)
 
 void TextSerializer::LoadBrace(const IOStream* stream, const char* brace)
 {
-	AString str;
+	AStackString<8> str;
 	str.SetLength(StringHelper::StrLen(brace));
 	stream->Read(str.Get(), StringHelper::StrLen(brace));
 	ASSERT(str == brace);
@@ -256,7 +256,7 @@ void TextSerializer::LoadField(const IOStream* stream, void * object, const IMet
 	if (name)
 	{
 		SIZET len = StringHelper::StrLen(name);
-		AString loadedName;
+		AStackString<32> loadedName;
 		loadedName.SetLength(len);
 		stream->Read(loadedName.Get(), len);
 		ASSERT(loadedName == name);

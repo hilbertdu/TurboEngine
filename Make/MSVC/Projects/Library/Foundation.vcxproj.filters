@@ -434,4 +434,7 @@
       <Filter>String</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="..\..\..\..\Code\Library\Foundation\foundation.natvis" />
+  </ItemGroup>
 </Project>

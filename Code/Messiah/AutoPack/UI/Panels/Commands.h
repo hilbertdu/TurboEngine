@@ -13,6 +13,7 @@
 // Forward decl
 //------------------------------------------------------------------------------
 class IService;
+class ICommand;
 
 
 // class UICommands
@@ -23,17 +24,24 @@ public:
 	UICommands();
 	~UICommands();
 
-	virtual void OnFrameUpdate();	
+	virtual void OnFrameUpdate();
 
 private:
-	void UpdateCommandList();
-	void UpdateArguments();	
+	void UpdateService();
+	void UpdateCommand();
+	void UpdateAddNewService();
+	void UpdateRemoveService();
+	void UpdateAddNewCommand();
+	void UpdateRemoveCommand();
 
-	void OnServiceAdd();
+	void OnServiceAddNew();
+	void OnServiceRemove();
+	void OnCommandAddNew();
+	void OnCommandRemove();
 
-	IService *	m_FocusedService;	
-	AString		m_Spliter;
-	float		m_LeftColumeWidth;
+	IService * m_FocusedService;
+	ICommand * m_FocusedCommand;
+	ICommand * m_FocusedCommandAddType;
 
 	TREFLECTION_DECLARE(UICommands, UIWidget)
 };

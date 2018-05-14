@@ -25,6 +25,7 @@ public:
 		, m_Status(docker.status)
 		, m_Location(docker.location)
 		, m_Active(docker.active)
+		, m_Opened(docker.opened)
 	{
 		m_Children.x = (float)docker.children[0];
 		m_Children.y = (float)docker.children[1];
@@ -43,6 +44,7 @@ public:
 		m_Status = docker.status;
 		m_Location = docker.location;
 		m_Active = docker.active;
+		m_Opened = docker.opened;
 
 		m_Children.x = (float)docker.children[0];
 		m_Children.y = (float)docker.children[1];
@@ -56,6 +58,7 @@ public:
 	void GetIMDocker(ImGui::IMDocker & docker)
 	{
 		docker.SetLabel(m_Label.Get());
+		docker.opened = m_Opened;
 		docker.active = m_Active;
 		docker.next_tab = m_NextTab;
 		docker.prev_tab = m_PrevTab;
@@ -82,6 +85,7 @@ public:
 	uint32	m_Status;
 	AString m_Location;
 	bool	m_Active;
+	bool	m_Opened;
 
 	TREFLECTION_DECLARE(ImGUIDocker, IStruct)
 };

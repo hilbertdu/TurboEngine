@@ -26,7 +26,7 @@ EngineCore::EngineCore()
 //------------------------------------------------------------------------------
 EngineCore::~EngineCore()
 {
-	Save();
+	//Save();
 }
 
 // Init
@@ -86,9 +86,9 @@ bool EngineCore::Save()
 	// save all ui widgets
 	MemWStream uiStream;
 	m_UISystem->Save(&uiStream);
-	LINFO(__FUNCTION__, "UISystem: \n%s\n", uiStream.GetData());
+	//LINFO(__FUNCTION__, "UISystem: \n%s\n", uiStream.GetData());
 	FileStream stream;
-	stream.Open("layout.tcfg", FileStream::WRITE_ONLY);
+	stream.Open("Layout.tcfg", FileStream::WRITE_ONLY);
 	stream.WriteBuffer(uiStream.GetData(), uiStream.GetSize());
 	stream.Close();
 
@@ -102,7 +102,7 @@ bool EngineCore::Load()
 {
 	// load all ui widgets
 	FileStream stream;
-	if (stream.Open("layout.tcfg", FileStream::READ_ONLY))
+	if (stream.Open("Layout.tcfg", FileStream::READ_ONLY))
 	{
 		SIZET size = stream.GetSize();
 		char * buffer = new char[size];

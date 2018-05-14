@@ -1,40 +1,31 @@
-// MainMenu.h
+// CommandAdd.h
 //------------------------------------------------------------------------------
 #pragma once
-#ifndef MESSIAH_AUTOPACK_MAINMENU_H
-#define MESSIAH_AUTOPACK_MAINMENU_H
+#ifndef MESSIAH_AUTOPACK_PROJECT_ADD_H
+#define MESSIAH_AUTOPACK_PROJECT_ADD_H
 
 // Includes
 //------------------------------------------------------------------------------
 #include "Foundation/Platform/Types.h"
-#include "Foundation/Container/HashMap.h"
 #include "AutoPack/UI/Basic/UIWidget.h"
 
-// class MAINMENU
+// Class GuiMainView
 //------------------------------------------------------------------------------
-class UIMainMenu : public UIWidget
+class UICommandAdd : public UIWidget
 {
 public:
-	UIMainMenu();
+	UICommandAdd();
+	~UICommandAdd();
 
 	virtual void OnFrameUpdate();
 
 private:
-	void DoPreActions();
-	void DoPostActions();
+	AStackString<32> m_ServiceName;
+	AStackString<32> m_CommandName;
 
-	void ActionSave();
-	void ActionSaveAs();
-	void ActionLoad();
-	void ActionRecent();
-	void ActionSettings();
-	void ActionExit();
-
-	HashMap<AString, bool> m_ViewState;
-
-	TREFLECTION_DECLARE(UIMainMenu, UIWidget)
+	TREFLECTION_DECLARE(UICommandAdd, UIWidget)
 };
 
 
 //------------------------------------------------------------------------------
-#endif // MESSIAH_AUTOPACK_MAINMENU_H
+#endif // MESSIAH_AUTOPACK_PROJECT_ADD_H

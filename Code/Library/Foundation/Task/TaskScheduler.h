@@ -25,11 +25,16 @@ public:
 	TaskScheduler();
 	~TaskScheduler();
 
-	void InitWorker(uint16 count = 1);
+	void   InitWorker(uint16 count = 1);
 
-	void  PushTask(Task * task);
-	void  PushTasks(Array<Task*> task);
-	Task* PopTask();
+	void   Start() {}		// TODO: to be implement
+	void   Pause() {}		// TODO: to be implement
+	void   Resume() {}		// TODO: to be implement
+	void   Clear() {}		// TODO: to be implement
+
+	void   PushTask(Task * task);
+	void   PushTasks(Array<Task*> task);
+	Task * PopTask();
 
 private:
 	Array<Task*> m_TaskQueue;

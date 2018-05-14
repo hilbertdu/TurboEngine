@@ -4,12 +4,13 @@
 // Includes
 //------------------------------------------------------------------------------
 #include "ServiceManager.h"
-#include "../Service/Service.h"
-#include "../Service/ResCooker/Chef.h"
-#include "../Service/Test/Test.h"
-#include "../Service/ResCooker/MixmapMerge.h"
-#include "../Service/ResCooker/UIPacker.h"
-#include "../Service/Patch/PatchGenerator.h"
+#include "AutoPack/Service/Service.h"
+#include "AutoPack/Service/ResCooker/Chef.h"
+#include "AutoPack/Service/Test/Test.h"
+#include "AutoPack/Service/ResCooker/MixmapMerge.h"
+#include "AutoPack/Service/ResCooker/UIPacker.h"
+#include "AutoPack/Service/Patch/PatchGenerator.h"
+#include "Foundation/Reflection/Objects/ObjectPool.h"
 
 
 // Constructor
@@ -22,6 +23,8 @@ ServiceManager::ServiceManager()
 	}
 }
 
+// Destructor
+//------------------------------------------------------------------------------
 ServiceManager::~ServiceManager()
 {
 	for (auto & service : m_Services)
@@ -30,27 +33,32 @@ ServiceManager::~ServiceManager()
 	}
 }
 
-
-IService * ServiceManager::GetService(const AStringView & service)
+IService * ServiceManager::GetService(const AStringView & name)
 {
-	IService ** result = m_Services.FindIf([service](const IService * s) { return s->GetName() == service.Get(); });
+	IService ** result = m_Services.FindIf([name](const IService * s) { return s->GetName() == name.Get(); });
 	return result ? *result : nullptr;
 }
 
-const IService * ServiceManager::GetService(const AStringView & service) const
+const IService * ServiceManager::GetService(const AStringView & name) const
 {
-	IService ** result = m_Services.FindIf([service](const IService * s) { return s->GetName() == service.Get(); });
+	IService ** result = m_Services.FindIf([name](const IService * s) { return s->GetName() == name.Get(); });
 	return result ? *result : nullptr;
 }
 
-void ServiceManager::AddService(const IService * service)
+IService * ServiceManager::CreateService(const AStringView & name)
 {
-
+	IService * service = GetService(name);
+	if (!service)
+	{
+		service = static_cast<IService*>(ObjectPool::Instance().CreateObject("IService"));
+		service->SetProperty("Name", AString(name.Get()));
+		m_Services.Append(service);
+	}
+	return service;
 }
 
-void ServiceManager::RemoveService(const AStringView & service)
+void ServiceManager::RemoveService(const AStringView & name)
 {
-
 }
 
 //------------------------------------------------------------------------------

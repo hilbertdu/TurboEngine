@@ -272,6 +272,9 @@
     <None Include="..\..\..\..\Code\Library\Foundation\String\StringConvert.inl" />
     <None Include="..\..\..\..\Code\Library\Foundation\String\StringHelper.inl" />
   </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="..\..\..\..\Code\Library\Foundation\foundation.natvis" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

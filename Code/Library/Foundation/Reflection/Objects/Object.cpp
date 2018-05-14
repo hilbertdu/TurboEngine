@@ -26,7 +26,10 @@
 	reader->Load(stream, this, GetMetaTypeV(), terminal);
 }
 
+// Reflection declare
+//------------------------------------------------------------------------------
 TREFLECT_BEGIN(IObject)
+	TREFLECT_FIELD(m_Flag, "Flag")
 TREFLECT_END(IObject)
 
 //------------------------------------------------------------------------------

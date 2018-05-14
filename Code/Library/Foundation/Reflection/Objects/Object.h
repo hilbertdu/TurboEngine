@@ -14,7 +14,7 @@ using namespace TReflection;
 enum ObjectFlag : uint16
 {
 	FLAG_OBJECT_NONE		= 0x00,
-	FLAG_OBJECT_SERIALIZED	= 0x01
+	//FLAG_OBJECT_SERIALIZED	= 0x01
 };
 
 class IObject : public RefBase<IObject>
@@ -29,10 +29,11 @@ public:
 
 	// todo: new/delete operator
 
-	// flags
+	// name & flags
+	inline const Name & GetName() const { return GetMetaTypeV()->GetName(); }
 	void SetFlag(ObjectFlag flag) { m_Flag = (ObjectFlag)(m_Flag | flag); }
 	bool HasFlag(ObjectFlag flag) const { return (m_Flag & flag) != 0; }
-	ObjectFlag GetFlag() const { return m_Flag; }
+	ObjectFlag GetFlag() const { return m_Flag; }	
 
  	// get/set property
 	template<class T> bool		SetProperty(const char * name, T&& prop);
@@ -46,7 +47,7 @@ public:
 	// cast
 	template<class T> T * CastTo() const;
  
- 	// serialize functions
+ 	// serialize functions	
 	virtual void PreSerialize() {}
 	virtual void PostSerialize() {}
 	virtual void PreDeserialize() {}
@@ -64,6 +65,7 @@ private:
 template<class T>
 bool IObject::SetProperty(const char * name, T&& prop)
 {
+	return ((TReflection::MetaStruct*)GetMetaTypeV())->SetProperty(this, name, prop);
 }
 
 template<class T>
