@@ -19,7 +19,7 @@ class TaskScheduler;
 class WorkerThread
 {
 public:
-	WorkerThread(uint32 threadIndex = -1);
+	explicit WorkerThread(uint32 threadIndex = -1);
 	virtual ~WorkerThread();
 
 	void Init(TaskScheduler * scheduler);
@@ -32,14 +32,15 @@ public:
 
 protected:
 	// worker thread main loop
-	static uint32 ThreadWrapperFunc(void * param);
-	static bool Update();
-	virtual void Main();	
+	static uint32	ThreadWrapperFunc(void * param);
+	static bool		Update();
+	virtual void	Main();	
 
 	// signal to exit thread
 	std::atomic<bool> m_ShouldExit;
 	std::atomic<bool> m_Exited;
-	uint32 m_ThreadIndex;
+
+	uint32			m_ThreadIndex;
 	TaskScheduler * m_TaskScheduler;
 };
 

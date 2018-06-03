@@ -35,6 +35,8 @@ public:
 
 	bool		Save();
 	bool		Load();
+
+	void		Tick();
 		
 	inline StrongPtr<EventSystem>	 GetEventSystem()		const { return m_EventSystem; }
 	inline StrongPtr<UISystem>		 GetUISystem()			const { return m_UISystem; }

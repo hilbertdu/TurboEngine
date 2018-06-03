@@ -28,6 +28,40 @@ private:
 	AString m_Name;
 };
 
+
+// class ExeCommand
+//------------------------------------------------------------------------------
+class ExeCommandTask : public Task
+{
+public:
+	explicit ExeCommandTask() {};
+	ExeCommandTask(const AStringView & exe, const AStringView & args, const AStringView & dir, const AStringView & env);
+	virtual ~ExeCommandTask() { Cancel(); }
+
+	inline void SetExecutable(const AStringView & exe) { m_Executable = exe.Get(); }
+	inline void SetArguments(const AStringView & args) { m_Arguments = args.Get(); }
+	inline void SetWorkingDir(const AStringView & dir) { m_WorkingDir = dir.Get(); }
+	inline void SetEnvironment(const AStringView & env) { m_Environment = env.Get(); }
+
+	virtual bool TryLockOutput() { return m_OutputLock.TryLock(); }
+	virtual void UnLockOutput() { m_OutputLock.UnLock(); }
+	virtual const AStringView FetchOutput(uint32 index, uint32 len) const;
+
+protected:
+	virtual uint32 Excute();
+	virtual uint32 Cancel();
+
+private:
+	Process		m_Process;
+	AString		m_Executable;
+	AString		m_Arguments;
+	AString		m_WorkingDir;
+	AString		m_Environment;
+	AString		m_Output;
+	SpinLock	m_OutputLock;
+};
+
+
 // class ICommand
 //------------------------------------------------------------------------------
 class ICommand : public IObject
@@ -39,65 +73,45 @@ public:
 
 	ICommand(const ICommand &) = delete;
 
-	inline const void SetDescription(const AStringView & desc) { m_Description = desc.Get(); }
-	inline const void SetAuthor(const AStringView & author) { m_Author = author.Get(); }
+	inline void SetDescription(const AStringView & desc) { m_Description = desc.Get(); }
+	inline void SetAuthor(const AStringView & author) { m_Author = author.Get(); }
+	inline void SetExecutable(const AStringView & executable) { m_Executable = executable.Get(); }
+	inline void SetParameters(const AStringView & parameters) { m_Parameters = parameters.Get(); }
+	inline void SetWorkingDir(const AStringView & workdingDir) { m_WorkingDir = workdingDir.Get(); }
+	inline void SetEnvironment(const AStringView & environment) { m_Environment = environment.Get(); }
 
 	const AString &			GetName() const { return m_Name; }
 	inline const AString &	GetDescription() const { return m_Description; }
 	inline const AString &	GetAuthor() const { return m_Author; }
-	inline const Task *		GetTask() const { return m_Task; }
+	inline Task::Status		GetStatus() const { return m_Task->GetStatus(); }
 
-	void SetParameterLen(uint32 length) { m_Parameters.SetSize(length); }
-	void SetParameter(uint32 index, IParameter * parameter) { ASSERT(index < m_Parameters.GetSize()); m_Parameters[index] = parameter; }
-	void SetParameter(AStringView name, IParameter * parameter) {}
+	//void SetParameterLen(uint32 length) { m_Parameters.SetSize(length); }
+	//void SetParameter(uint32 index, IParameter * parameter) { ASSERT(index < m_Parameters.GetSize()); m_Parameters[index] = parameter; }
+	//void SetParameter(AStringView name, IParameter * parameter) {}
 
 	virtual uint32 Run();
 	virtual uint32 Cancel();
 
-	virtual bool TryLockOutput() { return false; }
-	virtual void UnLockOutput() {}
-	virtual const AStringView FetchOutput(uint32 index, uint32 len) const { return AStringView(); }	
+	inline bool IsRunning() const { return m_Task.Get() != nullptr; }
+
+	inline bool TryLockOutput() { return static_cast<ExeCommandTask*>(m_Task.Get())->TryLockOutput(); }
+	inline void UnLockOutput() { static_cast<ExeCommandTask*>(m_Task.Get())->UnLockOutput(); }
+	inline const AStringView FetchOutput(uint32 index, uint32 len) const { return static_cast<const ExeCommandTask*>(m_Task.Get())->FetchOutput(index, len); }
 
 protected:
 	AString m_Name;
 	AString m_Description;
-	AString m_Author;
-	Task *	m_Task;
+	AString m_Author;	
 
-	Array<IParameter*> m_Parameters;	
+	//Array<IParameter*> m_Parameters;
+	AString m_Executable;
+	AString m_Parameters;
+	AString m_WorkingDir;
+	AString m_Environment;
+
+	StrongPtr<Task> m_Task;
 
 	TREFLECTION_DECLARE(ICommand, IObject);
-};
-
-
-// class ExeCommand
-//------------------------------------------------------------------------------
-class ExeCommandTask : public Task
-{
-public:
-	explicit ExeCommandTask() {};
-	virtual ~ExeCommandTask() { Cancel(); }
-
-	virtual uint32 Run();
-	virtual uint32 Cancel();
-
-	inline void SetExecutable(const AStringView & exe) { m_Executable = exe.Get(); }
-	inline void SetArguments(const AStringView & args) { m_Arguments = args.Get(); }
-	inline void SetWorkingDir(const AStringView & dir) { m_WorkingDir = dir.Get(); }
-	inline void SetEnvironment(const AStringView & env) { m_Environment = env.Get(); }
-
-	virtual bool TryLockOutput() { m_OutputLock.TryLock(); }
-	virtual void UnLockOutput() { m_OutputLock.UnLock(); }
-	virtual const AStringView FetchOutput(uint32 index, uint32 len) const;
-
-private:
-	Process		m_Process;
-	AString		m_Executable;
-	AString		m_Arguments;
-	AString		m_WorkingDir;
-	AString		m_Environment;
-	AString		m_Output;
-	SpinLock	m_OutputLock;
 };
 
 

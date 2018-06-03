@@ -51,7 +51,7 @@ namespace TReflection
 		}
 
 		template<class T>
-		inline void GetProperty(void * object, const char * name, T & prop) const
+		inline void GetProperty(const void * object, const char * name, T & prop) const
 		{
 			prop = *(T *)((UINTPTR)object + m_Offset);
 		}
@@ -113,7 +113,7 @@ namespace TReflection
 	{
 	public:
 		template<class T>
-		bool GetProperty(void * object, const char * name, T & prop) const;
+		bool GetProperty(const void * object, const char * name, T & prop) const;
 
 		template<class T>
 		bool SetProperty(void * object, const char * name, const T & prop) const;
@@ -126,7 +126,7 @@ namespace TReflection
 	};
 
 	template<class T>
-	bool FieldCollection::GetProperty(void * object, const char * name, T & prop) const
+	bool FieldCollection::GetProperty(const void * object, const char * name, T & prop) const
 	{
 		Field * pField = m_Fields.FindIf([name](const Field& field) { return field.m_Name == name; });
 		if (pField == nullptr)

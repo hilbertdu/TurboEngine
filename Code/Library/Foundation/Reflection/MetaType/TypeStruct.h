@@ -36,7 +36,7 @@ namespace TReflection
 		void AddMethod(TReturn(C::* member)(TArgs...), const char * name);
 
 		template<class T>
-		bool GetProperty(void * object, const char * name, T & prop) const;
+		bool GetProperty(const void * object, const char * name, T & prop) const;
 
 		template<class T>
 		bool SetProperty(void * object, const char * name, const T & prop) const;
@@ -76,7 +76,7 @@ namespace TReflection
 	}
 
 	template<class T>
-	bool MetaStruct::GetProperty(void * object, const char * name, T & prop) const
+	bool MetaStruct::GetProperty(const void * object, const char * name, T & prop) const
 	{
 		bool result = FieldCollection::GetProperty<T>(object, name, prop);
 		if (!result && m_Super)

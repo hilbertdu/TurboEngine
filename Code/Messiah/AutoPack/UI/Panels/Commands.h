@@ -8,6 +8,8 @@
 //------------------------------------------------------------------------------
 #include "imgui/imgui.h"
 #include "Foundation/Platform/Types.h"
+#include "Foundation/Container/Array.h"
+#include "Foundation/String/String.h"
 #include "AutoPack/UI/Basic/UIWidget.h"
 
 // Forward decl
@@ -38,6 +40,8 @@ private:
 	void OnServiceRemove();
 	void OnCommandAddNew();
 	void OnCommandRemove();
+
+	bool CheckExecValid(const AStringView & exec, const AStringView & dir);
 
 	IService * m_FocusedService;
 	ICommand * m_FocusedCommand;

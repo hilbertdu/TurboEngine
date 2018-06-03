@@ -12,6 +12,7 @@
 // Constructor
 //------------------------------------------------------------------------------
 IService::IService()
+	: m_LastRunCommand(nullptr)
 {}
 
 // Constructor
@@ -50,20 +51,21 @@ const ICommand * IService::GetCommand(const AStringView & name) const
 	ICommand ** cmd = m_Commands.FindIf([command](const ICommand * cmd) { return cmd->GetName() == command.Get(); });
 	ASSERT(cmd);
 	(*cmd)->Run();
+	m_LastRunCommand = *cmd;
 }
 
 // CreateCommand
 //------------------------------------------------------------------------------
-/*virtual*/ ICommand * IService::CreateCommand(const AStringView & cls, const AStringView & name)
+/*virtual*/ ICommand * IService::CreateCommand(const AStringView & name)
 {
 	ICommand * command = GetCommand(name);
 	if (!command)
 	{
-		command = static_cast<ICommand*>(ObjectPool::Instance().CreateObject(cls.Get()));
+		command = static_cast<ICommand*>(ObjectPool::Instance().CreateObject("ICommand"));
 		command->SetProperty("Name", AString(name.Get()));
 		m_Commands.Append(command);
 	}
-	return command->GetName() == cls.Get() ? command : nullptr;
+	return command;
 }
 
 //------------------------------------------------------------------------------

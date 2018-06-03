@@ -38,7 +38,7 @@ public:
 
 	UIOutputPanel();
 
-	virtual void OnFrameUpdate();	
+	virtual void OnFrameUpdate();
 	bool IsValid();
 
 private:

@@ -71,13 +71,10 @@ void WorkerThread::WaitForStop()
 	while (m_ShouldExit == false)
 	{
 		bool didSomeWork = Update();
-		if (didSomeWork)
+		if (!didSomeWork)
 		{
-			continue; // try to build some more
+			Thread::Sleep(1); // no work to do right now, wait and try again later
 		}
-
-		// no work to do right now
-		Thread::Sleep(1); // wait and try again later
 	}
 
 	m_Exited = true;
@@ -85,15 +82,5 @@ void WorkerThread::WaitForStop()
 
 /*static*/ bool WorkerThread::Update()
 {
-	// get task from scheduler
-	Task * task = s_TaskScheduler->PopTask();
-
-	if (task)
-	{
-		LDEBUG("WorkerThread", "Run task\n");
-		uint32 result = task->Run();
-		return true;
-	}
-
-	return false;
+	return s_TaskScheduler->PollStaging();
 }

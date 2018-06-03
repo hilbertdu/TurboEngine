@@ -42,8 +42,8 @@ void EngineCore::Init()
 
 	RegisterAllEvents();
 
-	m_AssetManager->SetRoot("I:\\Projects\\H42");
-	m_AssetManager->RefreshRoot();
+	SetRootDir("K:\\H42\\trunk");
+
 	m_TaskScheduler->InitWorker(1);
 	m_UISystem->InitGUI();
 
@@ -70,6 +70,8 @@ void EngineCore::Init()
 void EngineCore::SetRootDir(const AStringView & root)
 {
 	m_RootDir = root.Get();
+	m_AssetManager->SetRoot(m_RootDir);
+	m_AssetManager->RefreshRoot();
 }
 
 // GetRootDir
@@ -113,6 +115,14 @@ bool EngineCore::Load()
 		return true;
 	}
 	return false;
+}
+
+// Tick
+//------------------------------------------------------------------------------
+void EngineCore::Tick()
+{
+	m_TaskScheduler->PollCancelled();
+	m_TaskScheduler->PollCompleted();	
 }
 
 //------------------------------------------------------------------------------

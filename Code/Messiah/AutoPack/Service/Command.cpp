@@ -14,20 +14,41 @@
 //------------------------------------------------------------------------------
 /*virtual*/ uint32 ICommand::Run()
 {
-	EngineCore::Instance().GetTaskScheduler()->PushTask(m_Task);
-	return 0;
+	if (!m_Task.Get() || m_Task->IsFinished() || m_Task->IsCancelled())
+	{
+		m_Task = TNEW(ExeCommandTask(m_Executable, m_Parameters, m_WorkingDir, m_Environment));
+		EngineCore::Instance().GetTaskScheduler()->AddTask(m_Task);
+		return 0;
+	}
+	return 1;
 }
 
 // Cancel
 //------------------------------------------------------------------------------
 /*virtual*/ uint32 ICommand::Cancel()
 {
-	return 0;
+	if (!m_Task.Get())
+	{
+		EngineCore::Instance().GetTaskScheduler()->CancelTask(m_Task);
+		m_Task = nullptr;
+		return 0;
+	}
+	return 1;
+}
+
+// Constructor
+//------------------------------------------------------------------------------
+ExeCommandTask::ExeCommandTask(const AStringView & exe, const AStringView & args, const AStringView & dir, const AStringView & env)
+	: m_Executable(exe.Get())
+	, m_Arguments(args.Get())
+	, m_WorkingDir(dir.Get())
+	, m_Environment(env.Get())
+{
 }
 
 // Execute
 //------------------------------------------------------------------------------
-/*virtual*/ uint32 ExeCommandTask::Run()
+/*virtual*/ uint32 ExeCommandTask::Excute()
 {
 	bool spawnOK = m_Process.Spawn(m_Executable.Get(),
 		m_Arguments.IsEmpty() ? nullptr : m_Arguments.Get(), 
@@ -36,7 +57,7 @@
 
 	if (!spawnOK)
 	{
-		LERROR("Command", "Failed to spwan process '%s'\n", m_Executable.Get());
+		LERROR("Command", "Failed to spwan process '%s', (%d)\n", m_Executable.Get(), Platform::GetLastErrorNo());
 		return false;
 	}
 

@@ -42,14 +42,17 @@ public:
 	inline ICommand*				GetCommand(const AStringView & name);
 	inline const ICommand*			GetCommand(const AStringView & name) const;
 	inline const Array<ICommand*> & GetCommands() const { return m_Commands; }
+	inline const ICommand*			GetLastRunCommand() const { return m_LastRunCommand; }
 
-	virtual ICommand * CreateCommand(const AStringView & cls, const AStringView & name);
+	virtual ICommand * CreateCommand(const AStringView & name);
 
 protected:
 	AString m_Name;
 	AString m_Description;
 	AString m_Author;
 	Array<ICommand*> m_Commands;
+
+	ICommand* m_LastRunCommand;
 
 	TREFLECTION_DECLARE(IService, IObject)
 };

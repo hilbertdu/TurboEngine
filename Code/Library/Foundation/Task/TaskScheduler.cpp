@@ -17,8 +17,6 @@ TaskScheduler::TaskScheduler()
 //------------------------------------------------------------------------------
 TaskScheduler::~TaskScheduler()
 {
-	for (auto item : m_Workers) { TDELETE_SAFE(item); }
-	for (auto item : m_TaskQueue) { TDELETE_SAFE(item); }	
 }
 
 // InitWorker
@@ -27,7 +25,7 @@ void TaskScheduler::InitWorker(uint16 count /* = 1 */)
 {
 	for (uint32 idx = 0; idx < count; ++idx)
 	{
-		WorkerThread * worker = TNEW(WorkerThread);
+		StrongPtr<WorkerThread> worker(TNEW(WorkerThread));
 		m_Workers.Append(worker);
 		worker->Init(this);
 	}
@@ -35,37 +33,120 @@ void TaskScheduler::InitWorker(uint16 count /* = 1 */)
 
 // PushTask
 //------------------------------------------------------------------------------
-void TaskScheduler::PushTask(Task * task)
+void TaskScheduler::AddTask(const StrongPtr<Task> & task)
 {
 	LockGuard<SpinLock> mh(m_Lock);
 
-	m_TaskQueue.Append(task);
+	m_StagingTasks.Append(task);
 }
 
 // PushTasks
 //------------------------------------------------------------------------------
-void TaskScheduler::PushTasks(Array<Task*> task)
+void TaskScheduler::AddTasks(const Array<StrongPtr<Task>> & tasks)
 {
 	LockGuard<SpinLock> mh(m_Lock);
 
-	m_TaskQueue.Append(task);
+	m_StagingTasks.Append(tasks);
 }
 
-// PopTask
+// CancelTask
 //------------------------------------------------------------------------------
-Task * TaskScheduler::PopTask()
+void TaskScheduler::CancelTask(const StrongPtr<Task> & task)
 {
-	LockGuard<SpinLock> mh(m_Lock);
+	task->SetStatus(Task::Status::STATUS_CANCELLED);
+}
 
-	if (m_TaskQueue.IsEmpty())
+// PollStaging
+//------------------------------------------------------------------------------
+bool TaskScheduler::PollStaging(uint8 count)
+{
+	while (count-- > 0)
 	{
-		return nullptr;
+		StrongPtr<Task> stagingTask;
+		{
+			LockGuard<SpinLock> mh(m_Lock);
+
+			if (m_StagingTasks.IsEmpty())
+			{
+				return false;
+			}
+
+			stagingTask = m_StagingTasks.TopItem();
+			m_StagingTasks.PopFront();
+		}
+
+		LDEBUG("TaskScheduler", "Task on started\n");
+		stagingTask->SetStatus(Task::Status::STATUS_RUNNING);
+		stagingTask->OnStarted();
+		uint32 result = stagingTask->Excute();
+		stagingTask->SetStatus(result == 0 ? Task::Status::STATUS_OK : Task::Status::STATUS_FAILED);
 	}
+	return true;
+}
 
-	Task * task = m_TaskQueue.TopItem();
-	m_TaskQueue.PopFront();
+// PollFinished
+//------------------------------------------------------------------------------
+bool TaskScheduler::PollCompleted(uint8 count)
+{
+	while (count-- > 0)
+	{
+		StrongPtr<Task> completedTask;
+		{
+			LockGuard<SpinLock> mh(m_Lock);
 
-	return task;
+			for (auto iter = m_StagingTasks.Begin(); iter != m_StagingTasks.End(); ++iter)
+			{
+				if ((*iter)->IsFinished())
+				{
+					m_CompletedTasks.Append((*iter));
+				}
+			}
+
+			if (m_CompletedTasks.IsEmpty())
+			{
+				return false;
+			}
+
+			completedTask = m_CompletedTasks.TopItem();
+			m_CompletedTasks.PopFront();
+		}
+		LDEBUG("TaskScheduler", "Task on finished\n");
+		completedTask->OnFinished();
+		completedTask->SetStatus(Task::Status::STATUS_INVALID);
+	}
+	return true;
+}
+
+// PollCancelled
+//------------------------------------------------------------------------------
+bool TaskScheduler::PollCancelled(uint8 count)
+{
+	while (count-- > 0)
+	{
+		StrongPtr<Task> cancelledTask;
+		{
+			LockGuard<SpinLock> mh(m_Lock);
+
+			for (auto iter = m_StagingTasks.Begin(); iter != m_StagingTasks.End(); ++iter)
+			{
+				if ((*iter)->IsCancelled())
+				{
+					m_CancelledTasks.Append((*iter));
+				}
+			}
+
+			if (m_CancelledTasks.IsEmpty())
+			{
+				return false;
+			}
+
+			cancelledTask = m_CancelledTasks.TopItem();
+			m_CancelledTasks.PopFront();
+		}
+		LDEBUG("TaskScheduler", "Task on cancelled\n");
+		cancelledTask->OnCancelled();		
+	}
+	return true;
 }
 
 //------------------------------------------------------------------------------

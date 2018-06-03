@@ -62,10 +62,10 @@ void UICommands::UpdateService()
 			ImGui::EndCombo();
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("remove")) { OnServiceRemove(); }
+		if (ImGui::Button("remove##service")) { OnServiceRemove(); }
 		UpdateRemoveService();
 		ImGui::SameLine();
-		if (ImGui::Button("add...")) { OnServiceAddNew(); }
+		if (ImGui::Button("add...##service")) { OnServiceAddNew(); }
 		UpdateAddNewService();
 
 		if (m_FocusedService)
@@ -112,12 +112,24 @@ void UICommands::UpdateCommand()
 			ImGui::EndCombo();
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("remove")) { OnServiceRemove(); }
+		if (ImGui::Button("remove##command")) { OnCommandRemove(); }
+		UpdateRemoveCommand();
 		ImGui::SameLine();
-		if (ImGui::Button("add...")) { OnServiceAddNew(); }
+		if (ImGui::Button("add...##command")) { OnCommandAddNew(); }
+		UpdateAddNewCommand();
 
 		if (m_FocusedCommand)
 		{
+			ImGui::Text("Executable:");
+			ImGui::SameLine(80);
+			auto exec = m_FocusedCommand->GetProperty<AString>("Executable");
+			ImGui::Text(exec.Get());
+
+			ImGui::Text("Arguments:");
+			ImGui::SameLine(80);
+			auto args = m_FocusedCommand->GetProperty<AString>("Parameters");
+			ImGui::Text(args.Get());
+
 			ImGui::Text("Description:");
 			ImGui::SameLine(80);
 			auto desc = m_FocusedCommand->GetDescription();
@@ -127,6 +139,18 @@ void UICommands::UpdateCommand()
 			ImGui::SameLine(80);
 			auto author = m_FocusedCommand->GetAuthor();
 			ImGui::Text(author.IsEmpty() ? "No author" : author.Get());
+
+			// TODO: show task state
+			if (ImGui::Button("run##command", ImVec2(60, 0))) 
+			{ 
+				m_FocusedService->RunCommand(m_FocusedCommand->GetName());
+				//m_FocusedCommand->Run();
+			}
+			ImGui::SameLine(80);
+			if (ImGui::Button("cancel##command", ImVec2(60, 0))) 
+			{ 
+				m_FocusedCommand->Cancel(); 
+			}
 		}
 		ImGui::PopItemWidth();
 	}
@@ -155,7 +179,7 @@ void UICommands::UpdateAddNewService()
 		ImGui::InputText("##InputAuthor", author, IM_ARRAYSIZE(author));
 
 		ImGui::Separator();
-		static bool valid = true;
+		bool valid = true;
 		static AStackString<64> errorMsg;
 		if (ImGui::Button("OK", ImVec2(120, 0)))
 		{
@@ -169,6 +193,9 @@ void UICommands::UpdateAddNewService()
 				service->SetDescription(description);
 				service->SetAuthor(author);
 				ImGui::CloseCurrentPopup();
+				name[0] = description[0] = author[0] = '\0';
+
+				m_FocusedService = service;
 			}
 			else
 			{
@@ -188,7 +215,11 @@ void UICommands::UpdateAddNewService()
 
 		ImGui::SetItemDefaultFocus();
 		ImGui::SameLine();
-		if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+		if (ImGui::Button("Cancel", ImVec2(120, 0))) 
+		{ 
+			ImGui::CloseCurrentPopup(); 
+			name[0] = description[0] = author[0] = '\0';
+		}
 		ImGui::EndPopup();
 	}
 }
@@ -218,41 +249,93 @@ void UICommands::UpdateAddNewCommand()
 {
 	if (ImGui::BeginPopupModal("Add New Command", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
 	{
-		if (ImGui::BeginCombo("##AddCommandTypeList", m_FocusedService ? m_FocusedService->GetName().Get() : ""))
-		{
-			//if (ImGui::Selectable(command->GetName().Get(), isSelected))
-		}
-
 		ImGui::Text("Name:");
 		ImGui::SameLine(80);
-
 		static char name[64]{ 0 };
 		ImGui::InputText("##InputCommand", name, IM_ARRAYSIZE(name));
 
+		ImGui::Text("Exec Path:");
+		ImGui::SameLine(80);
+		static char execPath[256]{ 0 };
+		ImGui::InputText("##InputCmdExecPath", execPath, IM_ARRAYSIZE(execPath));
+
+		// Parameters
+		ImGui::Text("Parameters:");
+		ImGui::SameLine(80);
+		static char parameter[256]{ 0 };
+		ImGui::InputText("##InputCmdParameter", parameter, IM_ARRAYSIZE(parameter));
+
 		ImGui::Text("Description:");
 		ImGui::SameLine(80);
-
 		static char description[2048]{ 0 };
 		ImGui::InputTextMultiline("##InputDescription", description, IM_ARRAYSIZE(description));
 
 		ImGui::Text("Author:");
 		ImGui::SameLine(80);
-
 		static char author[64]{ 0 };
 		ImGui::InputText("##InputAuthor", author, IM_ARRAYSIZE(author));
 
 		ImGui::Separator();
+		static AStackString<64> errorMsg;
 		if (ImGui::Button("OK", ImVec2(120, 0)))
 		{
-			//ICommand * command = m_FocusedService->CreateCommand();
-			//service->SetDescription(description);
-			//service->SetAuthor(author);
-			ImGui::CloseCurrentPopup();
+			bool valid = true;
+			AStringView dir("");
+			if (StringHelper::StrLen(name) == 0 || StringHelper::StrLen(execPath) == 0)
+			{
+				valid = false;
+				errorMsg = "Please input a valid name or exec path!";
+			}
+			else if (!CheckExecValid(execPath, ""))
+			{
+				if (CheckExecValid(execPath, EngineCore::Instance().GetRootDir()))
+				{
+					dir = EngineCore::Instance().GetRootDir();
+				}
+				else
+				{
+					valid = false;
+					errorMsg = "Executable file is not exists!";
+				}
+			}
+
+			if (valid)
+			{
+				ICommand * command = m_FocusedService->CreateCommand(name);
+				command->SetParameters(parameter);
+				command->SetExecutable(execPath);
+				command->SetWorkingDir(dir);
+				command->SetDescription(description);
+				command->SetAuthor(author);				
+
+				ImGui::CloseCurrentPopup();
+				name[0] = execPath[0] = parameter[0] = description[0] = author[0] = '\0';
+
+				m_FocusedCommand = command;
+			}
+			else 
+			{ 
+				ImGui::OpenPopup("Error Input"); 
+			}
+		}
+
+		if (ImGui::BeginPopupModal("Error Input", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			ImGui::Text(errorMsg.Get());
+			if (ImGui::Button("Close"))
+			{
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::EndPopup();
 		}
 
 		ImGui::SetItemDefaultFocus();
 		ImGui::SameLine();
-		if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+		if (ImGui::Button("Cancel", ImVec2(120, 0))) 
+		{ 
+			ImGui::CloseCurrentPopup(); 
+			name[0] = execPath[0] = parameter[0] = description[0] = author[0] = '\0';
+		}
 		ImGui::EndPopup();
 	}
 }
@@ -285,6 +368,20 @@ void UICommands::OnCommandRemove()
 	if (m_FocusedCommand)
 	{
 		ImGui::OpenPopup("Remove Command?");
+	}
+}
+
+// CheckExecValid
+//------------------------------------------------------------------------------
+bool UICommands::CheckExecValid(const AStringView & exec, const AStringView & dir)
+{
+	if (dir.IsEmpty())
+	{ 
+		return FileIO::FileExists(exec.Get());
+	}
+	else
+	{
+		return FileIO::FileExists((dir + "\\" + exec).Get());
 	}
 }
 

@@ -8,8 +8,8 @@
 class Platform
 {
 public:
-	static void*	LoadDynamicLibrary(const char * name, const char * directory = nullptr);
-	static int		GetLastErrorNo();
+	static void* LoadDynamicLibrary(const char * name, const char * directory = nullptr);
+	static int	 GetLastErrorNo();
 };
 
 //------------------------------------------------------------------------------

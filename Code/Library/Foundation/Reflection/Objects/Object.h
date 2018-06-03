@@ -65,12 +65,15 @@ private:
 template<class T>
 bool IObject::SetProperty(const char * name, T&& prop)
 {
-	return ((TReflection::MetaStruct*)GetMetaTypeV())->SetProperty(this, name, prop);
+	return ((TReflection::MetaStruct*)GetMetaTypeV())->SetProperty(this, name, std::forward<T>(prop));
 }
 
 template<class T>
 const T IObject::GetProperty(const char * name) const
 {
+	T prop;
+	((TReflection::MetaStruct*)GetMetaTypeV())->GetProperty(this, name, prop);
+	return prop;
 }
 
 template<class T>

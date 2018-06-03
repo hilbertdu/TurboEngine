@@ -23,14 +23,12 @@ UIOutputPanel::UIOutputPanel()
 //------------------------------------------------------------------------------
 void UIOutputPanel::PollOutput()
 {
-	if (!IsValid()) return;
-
 	auto services = EngineCore::Instance().GetServiceManager()->GetServices();
 	for (auto item : services)
 	{
 		for (auto cmd : item->GetCommands())
 		{
-			if (cmd->TryLockOutput())
+			if (cmd->IsRunning() && cmd->TryLockOutput())
 			{
 				ImGuiLogger & logger = ObtainLogger(m_CurService, m_CurCommand);
 				const AStringView & str = cmd->FetchOutput(logger.m_StrIndex, 1024);
@@ -91,6 +89,7 @@ void UIOutputPanel::ImGuiLogger::Clear()
 {
 	m_Buf.clear();
 	m_LineOffsets.clear();
+	m_StrIndex = 0;
 }
 
 void UIOutputPanel::ImGuiLogger::Draw()
