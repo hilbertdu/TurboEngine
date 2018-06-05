@@ -1,0 +1,139 @@
+<count : 7> {
+	[
+		Idx = 0
+		Label = "Assets"
+		NextTab = -1
+		PrevTab = -1
+		Children = (-1.00, -1.00)
+		Parent = 6
+		Pos = (0.00, 405.00)
+		Size = (813.00, 357.00)
+		Status = 0
+		Location = ""
+		Active = true
+		Opened = true
+	]
+	[
+		Idx = 1
+		Label = "Property"
+		NextTab = -1
+		PrevTab = -1
+		Children = (-1.00, -1.00)
+		Parent = 6
+		Pos = (813.00, 405.00)
+		Size = (451.00, 357.00)
+		Status = 0
+		Location = ""
+		Active = true
+		Opened = true
+	]
+	[
+		Idx = 2
+		Label = "Commands"
+		NextTab = -1
+		PrevTab = -1
+		Children = (-1.00, -1.00)
+		Parent = 5
+		Pos = (0.00, 48.00)
+		Size = (301.00, 357.00)
+		Status = 0
+		Location = ""
+		Active = true
+		Opened = true
+	]
+	[
+		Idx = 3
+		Label = "Output"
+		NextTab = -1
+		PrevTab = -1
+		Children = (-1.00, -1.00)
+		Parent = 5
+		Pos = (301.00, 48.00)
+		Size = (963.00, 357.00)
+		Status = 0
+		Location = ""
+		Active = true
+		Opened = true
+	]
+	[
+		Idx = 4
+		Label = ""
+		NextTab = -1
+		PrevTab = -1
+		Children = (5.00, 6.00)
+		Parent = -1
+		Pos = (0.00, 48.00)
+		Size = (1264.00, 714.00)
+		Status = 0
+		Location = ""
+		Active = true
+		Opened = false
+	]
+	[
+		Idx = 5
+		Label = ""
+		NextTab = -1
+		PrevTab = -1
+		Children = (2.00, 3.00)
+		Parent = 4
+		Pos = (0.00, 48.00)
+		Size = (1264.00, 357.00)
+		Status = 0
+		Location = ""
+		Active = true
+		Opened = false
+	]
+	[
+		Idx = 6
+		Label = ""
+		NextTab = -1
+		PrevTab = -1
+		Children = (0.00, 1.00)
+		Parent = 4
+		Pos = (0.00, 405.00)
+		Size = (1264.00, 357.00)
+		Status = 0
+		Location = ""
+		Active = true
+		Opened = false
+	]
+}
+<count : 6> {
+	key = "UIMainToolBar"
+	value = ( <object id : 1, name : UIMainToolBar> 
+		[]
+	)
+	key = "UICommands"
+	value = ( <object id : 2, name : UICommands> 
+		[]
+	)
+	key = "UIOutputPanel"
+	value = ( <object id : 3, name : UIOutputPanel> 
+		[]
+	)
+	key = "UIAssetBrowser"
+	value = ( <object id : 4, name : UIAssetBrowser> 
+		[]
+	)
+	key = "UIFileProperty"
+	value = ( <object id : 5, name : UIFileProperty> 
+		[]
+	)
+	key = "UIMainMenu"
+	value = ( <object id : 6, name : UIMainMenu> 
+		[
+			ViewState = <count : 5> {
+				key = "UICommands"
+				value = true
+				key = "UIProfiler"
+				value = false
+				key = "UIOutputPanel"
+				value = true
+				key = "UIAssetBrowser"
+				value = true
+				key = "UIFileProperty"
+				value = true
+			}
+		]
+	)
+}

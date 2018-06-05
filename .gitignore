@@ -17,6 +17,8 @@ bin/
 *.tlog/
 *.opendb
 
+AutoPack/
+
 
 # Windows image file caches
 Thumbs.db
