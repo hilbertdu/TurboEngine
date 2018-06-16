@@ -4,13 +4,17 @@
 // Includes
 //------------------------------------------------------------------------------
 #include "TestFramework/UnitTest.h"
-#include "Foundation/Reflection/ReflectionMacros.h"
-#include "Foundation/Reflection/Serialization/SerializerText.h"
 #include "Foundation/Pattern/Delegate.h"
 #include "Foundation/FileIO/MemWStream.h"
 #include "Foundation/FileIO/MemRStream.h"
 #include "Foundation/Logging/Logger.h"
 #include "Foundation/Container/HashMap.h"
+#include "Foundation/Objects/ObjectPool.h"
+#include "Foundation/Objects/Object.h"
+#include "Foundation/Reflection/Reflection.h"
+#include "Foundation/Reflection/ReflectionMacros.h"
+#include "Foundation/Reflected/ReflectionDecl.h"
+#include "Foundation/Reflection/Serialization/SerializerText.h"
 
 
 // TestReflection
@@ -39,7 +43,7 @@ REGISTER_TESTS_END
 
 // TestStruct
 //------------------------------------------------------------------------------
-struct TestStruct : public RefBase<TestStruct>
+struct TestStruct : public RefObject<TestStruct>
 {
 public:
 	TestStruct() : m_MyInt(851) {}
@@ -74,6 +78,10 @@ public:
 	{
 	}
 
+	~TestObject()
+	{
+	}
+
 	void PopulateWithTestData(bool addChildRef = true)
 	{
 		m_Float = 99.0f;
@@ -105,7 +113,7 @@ public:
 		if (addChildRef)
 		{
 			m_StrTestMap["Test"] = (TestObject *)ObjectPool::Instance().CreateObject("TestObject");
-			m_StrTestMap["Test"]->PopulateWithTestData(false);
+			//m_StrTestMap["Test"]->PopulateWithTestData(false);
 		}
 	}
 
@@ -124,7 +132,7 @@ private: // ensure reflection can set private members
 	int64		m_Int64;
 	bool		m_Bool;
 	AString		m_AString;
-	TestStruct	m_TestStruct;
+	TestStruct	m_TestStruct;	
 
 	Array<float>						m_FloatArray;
 	Array<TestStruct>					m_StructArray;
@@ -180,6 +188,11 @@ void TestReflection::TestGetMetaType() const
 	MetaType<HashMap<int, float>>::MetaValueType b2 = 100;
 	MetaType<Array<Array<AString>>>::MetaValueType v1 = Array<AString>();
 	MetaType<HashMap<int, Array<AString>>>::MetaValueType v2 = Array<AString>();
+
+	LOUTPUT("MetaType IStruct: %s\n", MetaType<IStruct>::StaticName().m_Name.Get());
+	LOUTPUT("MetaType IClass: %s\n", MetaType<IClass>::StaticName().m_Name.Get());
+	LOUTPUT("MetaType IObject: %s\n", MetaType<IObject>::StaticName().m_Name.Get());
+	LOUTPUT("MetaType TestStruct: %s\n", MetaType<TestStruct>::StaticName().m_Name.Get());
 }
 
 // TestGetSet
@@ -222,7 +235,7 @@ void TestReflection::TestGetSet() const
 
 	{
 		TestObject * obj = (TestObject *)ObjectPool::Instance().CreateObject("TestObject");
-		TEST_ASSERT(info->SetProperty(&o, "TestObjectPtr", Ref<TestObject>(obj)));
+		TEST_ASSERT(info->SetProperty(&o, "TestObjectPtr", Ref<TestObject>(obj)));		// obj ref: 2, o->m_TestObjectPtr: 2
 		TEST_ASSERT(o.m_TestObjectPtr == obj);
 	}
 
@@ -321,9 +334,8 @@ void TestReflection::TestInheritence() const
 // TestClearDB
 //------------------------------------------------------------------------------
 void TestReflection::TestClearDB() const
-{	
-	TReflection::MetaTypeDB::Instance().Clear();
-	TReflection::MetaTypeDB::Instance().Shrink();
+{
+	TReflection::Finalization();
 	ObjectPool::Finalize();
 }
 

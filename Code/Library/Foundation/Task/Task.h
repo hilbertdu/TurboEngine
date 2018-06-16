@@ -36,6 +36,7 @@ public:
 	inline Status	GetStatus() const { return m_Status; }
 	inline bool		IsFinished() const { return m_Status == Status::STATUS_OK || m_Status == Status::STATUS_FAILED; }
 	inline bool		IsCancelled() const { return m_Status == Status::STATUS_CANCELLED; }
+	inline bool		IsRunning() const { return m_Status == Status::STATUS_RUNNING || m_Status == Status::STATUS_SUSPEND; }
 	inline bool		IsValid() const { return m_Status != Status::STATUS_INVALID; }
 
 	inline bool		AddChildren(Task * task) { task->m_Deps.Append(this); m_Chidren.Append(task); }

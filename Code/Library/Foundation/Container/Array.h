@@ -19,7 +19,7 @@
 template<class T, class Allocator = DefaultAllocator>
 class Array
 {
-public:
+public:	
 	typedef	T *			Iter;
 	typedef const T *	ConstIter;
 

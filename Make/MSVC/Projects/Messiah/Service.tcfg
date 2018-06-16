@@ -1,0 +1,22 @@
+<count : 1> {
+	( <object id : 1, name : IService> 
+		[
+			Name = "Test"
+			Description = "aa"
+			Author = "duli"
+			Commands = <count : 1> {
+				( <object id : 2, name : ICommand> 
+					[
+						Name = "Testc"
+						Executable = "D:\Projects\GitProjects\TurboEngine\Test\Test.bat"
+						Parameters = ""
+						WorkingDir = ""
+						Environment = ""
+						Description = "xxx"
+						Author = "afdsf"
+					]
+				)
+			}
+		]
+	)
+}

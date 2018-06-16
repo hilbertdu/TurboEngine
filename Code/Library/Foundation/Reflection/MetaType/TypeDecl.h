@@ -10,6 +10,7 @@
 //------------------------------------------------------------------------------
 #include "Foundation/Reflection/MetaType/TypeDeclMacro.h"
 
+
 namespace TReflection
 {
 #define REFLECTION_META_INIT_LIST \

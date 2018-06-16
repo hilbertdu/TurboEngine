@@ -32,6 +32,7 @@ public:
 
 	// free the pointer without deleting it
 	inline T * Release() { T * ptr = m_Pointer; m_Pointer = nullptr; return ptr; }
+
 private:
 	T * m_Pointer;
 };
@@ -81,6 +82,9 @@ private:
 
 // WeakPtr
 //------------------------------------------------------------------------------
+template<class T>
+class RefObject;
+
 template<class T, class Deletor = NewDeletor<T>>
 class WeakPtr
 {
@@ -108,11 +112,13 @@ public:
 
 	void Swap(WeakPtr& other);
 
-private:
+protected:
 	void AssignHolder(RefPointerHolder<T>* ptrHolder);
 	void ReleaseHolder();
 
 	RefPointerHolder<T>* m_RefPointHolder;
+
+	friend class RefObject<T>;
 };
 
 
@@ -320,7 +326,7 @@ StrongPtr<T, Deletor> WeakPtr<T, Deletor>::Lock()
 template<class T, class Deletor>
 void WeakPtr<T, Deletor>::Swap(WeakPtr& other)
 {
-	std::swap(m_RefPointHolder);
+	std::swap(m_RefPointHolder, other.m_RefPointHolder);
 }
 
 template<class T, class Deletor>

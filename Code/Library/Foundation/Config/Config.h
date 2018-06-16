@@ -24,5 +24,7 @@
 	#endif
 #endif
 
+//#define __COMPILE_DEBUG__
+
 //------------------------------------------------------------------------------
 #endif // FOUNDATION_CONFIG_CONFIG_H

@@ -46,9 +46,6 @@
     <Filter Include="Reflection\MetaType">
       <UniqueIdentifier>{4349ceba-19e2-44e7-9750-d6cf22d52c15}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Reflection\Objects">
-      <UniqueIdentifier>{ffe89c27-3e83-4baf-9b70-22f3037fc0de}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Template">
       <UniqueIdentifier>{e15de667-c7cb-49ad-bc9b-162823b9b61d}</UniqueIdentifier>
     </Filter>
@@ -78,6 +75,12 @@
     </Filter>
     <Filter Include="Config">
       <UniqueIdentifier>{294eb66f-ff5c-4c89-b8c1-0d005d94aa8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Reflected">
+      <UniqueIdentifier>{d9d4c5dc-4cc3-4e77-a712-cc6152eacd23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{e056db58-da89-4b79-acaf-a88c88a92652}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -176,9 +179,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeDecl.h">
       <Filter>Reflection\MetaType</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Objects\Object.h">
-      <Filter>Reflection\Objects</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Pattern\Event.h">
       <Filter>Pattern</Filter>
@@ -297,9 +297,6 @@
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Attributes\Attributes.h">
       <Filter>Reflection\Attributes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Objects\ObjectPool.h">
-      <Filter>Reflection\Objects</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Task\Worker.h">
       <Filter>Task</Filter>
     </ClInclude>
@@ -321,8 +318,26 @@
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\String\StringConvert.h">
       <Filter>String</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Platform\Config.h">
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Config\Config.h">
       <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflected\ReflectionDecl.h">
+      <Filter>Reflected</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Objects\Object.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Objects\ObjectPool.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Objects\RefObject.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Objects\ObjectFlag.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Template\CompileHelper.h">
+      <Filter>Template</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -349,9 +364,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Env\Assert.cpp">
       <Filter>Env</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Reflection\Reflection.inl">
-      <Filter>Reflection</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\FileIO\IOStream.cpp">
       <Filter>FileIO</Filter>
@@ -386,12 +398,6 @@
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Task\TaskScheduler.cpp">
       <Filter>Task</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Reflection\Objects\ObjectPool.cpp">
-      <Filter>Reflection\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Reflection\Objects\Object.cpp">
-      <Filter>Reflection\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerText.cpp">
       <Filter>Reflection\Serialization</Filter>
     </ClCompile>
@@ -406,6 +412,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Platform\Platform.cpp">
       <Filter>Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Reflection\Reflection.cpp">
+      <Filter>Reflection</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Reflected\ReflectionDecl.cpp">
+      <Filter>Reflected</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Objects\ObjectPool.cpp">
+      <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -432,6 +447,9 @@
     </None>
     <None Include="..\..\..\..\Code\Library\Foundation\String\StringConvert.inl">
       <Filter>String</Filter>
+    </None>
+    <None Include="..\..\..\..\Code\Library\Foundation\Objects\Object.inl">
+      <Filter>Objects</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

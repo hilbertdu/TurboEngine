@@ -6,7 +6,8 @@
 
 // Includes
 //------------------------------------------------------------------------------
-#include "Foundation/FileIO/IOStream.h"
+
+class IOStream;
 
 namespace TReflection
 {
@@ -36,9 +37,6 @@ namespace TReflection
 		virtual void Load(const IOStream* stream, void * object, const IMetaType * objectType, bool terminal = false) = 0;
 	};
 }
-
-#define STRAM_SCANF(STREAM, FORMAT, ...) sscanf_s((const char*)STREAM->GetCurData(), #FORMAT, __VA_ARGS__)
-#define STREAM_READ_SCANF(STREAM, FORMAT, ...) do { int pos; STRAM_SCANF(STREAM, FORMAT##%n, __VA_ARGS__, &pos); STREAM->Read(nullptr, pos); } while(0)
 
 
 #endif // FOUNDATION_REFLECTION_SERIALIZER_H

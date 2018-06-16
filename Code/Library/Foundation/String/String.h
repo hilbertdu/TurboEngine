@@ -13,6 +13,7 @@
 #include "Foundation/Memory/Mem.h"
 #include "Foundation/Math/Conversion.h"
 #include "Foundation/String/StringHelper.h"
+#include "Foundation/Template/Macros.h"
 
 #include <stdarg.h>
 #include <stdio.h>

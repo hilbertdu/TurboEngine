@@ -7,7 +7,7 @@
 		Children = (-1.00, -1.00)
 		Parent = 6
 		Pos = (0.00, 405.00)
-		Size = (813.00, 357.00)
+		Size = (944.00, 357.00)
 		Status = 0
 		Location = ""
 		Active = true
@@ -20,8 +20,8 @@
 		PrevTab = -1
 		Children = (-1.00, -1.00)
 		Parent = 6
-		Pos = (813.00, 405.00)
-		Size = (451.00, 357.00)
+		Pos = (944.00, 405.00)
+		Size = (320.00, 357.00)
 		Status = 0
 		Location = ""
 		Active = true
@@ -35,7 +35,7 @@
 		Children = (-1.00, -1.00)
 		Parent = 5
 		Pos = (0.00, 48.00)
-		Size = (301.00, 357.00)
+		Size = (309.00, 357.00)
 		Status = 0
 		Location = ""
 		Active = true
@@ -48,8 +48,8 @@
 		PrevTab = -1
 		Children = (-1.00, -1.00)
 		Parent = 5
-		Pos = (301.00, 48.00)
-		Size = (963.00, 357.00)
+		Pos = (309.00, 48.00)
+		Size = (955.00, 357.00)
 		Status = 0
 		Location = ""
 		Active = true

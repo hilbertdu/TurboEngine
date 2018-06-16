@@ -6,18 +6,19 @@
 
 // Includes
 //------------------------------------------------------------------------------
-#include "Foundation/FileIO/IOStream.h"
-#include "Foundation/Reflection/MetaType/Type.h"
-#include "Foundation/Reflection/MetaType/TypeStruct.h"
-#include "Foundation/Reflection/MetaType/TypeClass.h"
-#include "Foundation/Reflection/MetaType/TypeContainer.h"
-#include "Foundation/Reflection/Objects/Object.h"
-#include "Foundation/Reflection/Objects/ObjectPool.h"
+#include "Foundation/Container/HashMap.h"
 #include "Foundation/Reflection/Serialization/Serializer.h"
 
+class IOStream;
+class IObject;
 
 namespace TReflection
 {
+	class IMetaType;
+	class MetaStruct;
+	class MetaClass;
+	class IMetaContainer;
+
 	class TextSerializer : public ISerializer
 	{
 	public:

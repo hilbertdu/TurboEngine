@@ -5,7 +5,7 @@
 // Includes
 //------------------------------------------------------------------------------
 #include "Foundation/Platform/Types.h"
-#include "Foundation/Memory/Deletor.h"
+
 
 // RefCount class
 //------------------------------------------------------------------------------
@@ -49,24 +49,6 @@ private:
 };
 
 
-// RefBase class
-//------------------------------------------------------------------------------
-template<class T>
-class RefBase
-{
-public:
-	inline explicit RefBase() : m_RefCount(0) {}
-	inline virtual ~RefBase() {}
-
-	inline void IncRef() { m_RefCount.IncRefCount(); }
-	inline void DecRef() { if (m_RefCount.DecRefCount() == 0) Destroy(); }
-
-private:
-	inline void Destroy() { TDELETE(static_cast<T*>(this)); }
-
-	RefCount m_RefCount;
-};
-
 // Ref class
 //------------------------------------------------------------------------------
 template<class T>
@@ -75,7 +57,8 @@ class Ref
 public:
 	inline Ref() : m_Pointer(nullptr) {}	
 	inline Ref(T * ptr) : m_Pointer(ptr) { if (ptr) { ptr->IncRef(); } }
-	inline Ref(const Ref<T> & other) : m_Pointer(other.Get()) { if (m_Pointer) { m_Pointer->IncRef(); } }
+	Ref(const Ref<T> & other) : m_Pointer(other.Get()) { if (m_Pointer) { m_Pointer->IncRef(); } }
+	Ref(Ref<T> && other) : m_Pointer(other.m_Pointer) { other.m_Pointer = nullptr; }
 	inline ~Ref() { T * ptr = m_Pointer; if (ptr) { ptr->DecRef(); } }
 
 	// access the pointer
@@ -84,8 +67,10 @@ public:
 	inline T * operator ->() { return m_Pointer; }
 	inline T * operator ->() const { return m_Pointer; }
 
+	inline Ref & operator = (Ref other) { std::swap(m_Pointer, other.m_Pointer); return *this; }
+
 	template<class U>
-	inline void operator = (const Ref<U> & other) { Assign(other.m_Pointer); }
+	inline void operator = (Ref<U> other) { std::swap(m_Pointer, other.m_Pointer); }
 	template<class U>
 	inline void operator = (U * other) { Assign(other); }
 
@@ -97,17 +82,13 @@ public:
 private:
 	void Assign(T * ptr)
 	{
-		if (ptr)
-		{
-			ptr->IncRef();
-		}
+		if (ptr) ptr->IncRef();
 		T * old = m_Pointer;
 		m_Pointer = ptr;
-		if (old)
-		{
-			old->DecRef();
-		}
+		if (old) old->DecRef();
 	}
 
 	T * m_Pointer;
 };
+
+//------------------------------------------------------------------------------

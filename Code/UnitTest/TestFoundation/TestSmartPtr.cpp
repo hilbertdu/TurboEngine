@@ -8,6 +8,7 @@
 #include "Foundation/Platform/Types.h"
 #include "Foundation/Logging/Logger.h"
 #include "Foundation/Container/SmartPtr.h"
+#include "Foundation/Objects/RefObject.h"
 
 
 // TestMemPoolBlock
@@ -20,6 +21,7 @@ private:
 	void TestStrongPtr() const;
 	void TestWeakPtr() const;
 	void TestDeletor() const;
+	void TestRefProxy() const;
 };
 
 // Register Tests
@@ -28,6 +30,7 @@ REGISTER_TESTS_BEGIN(TestSmartPtr)
 	REGISTER_TEST(TestStrongPtr)
 	REGISTER_TEST(TestWeakPtr)
 	REGISTER_TEST(TestDeletor)
+	REGISTER_TEST(TestRefProxy)
 REGISTER_TESTS_END
 
 // TestStrongPtr
@@ -113,6 +116,34 @@ void TestSmartPtr::TestDeletor() const
 		auto& deletor = poolAllocator.GetDeletor();
 		StrongPtr<char, PoolDeletor<TAllocForm<32, 4>>> ptr2((char*)poolAllocator.Allocate(30), deletor);
 	}
+}
+
+
+// TestRefProxy
+//------------------------------------------------------------------------------
+class RefA : public RefObject<RefA>
+{
+public:
+	int m_Int = 100;
+};
+
+void TestSmartPtr::TestRefProxy() const
+{
+	{
+		RefA * a = new RefA();
+		RefProxy<RefA> a2 = a->GetRefProxy();
+		TEST_ASSERT(a2.Get() == a);
+		delete a;
+		TEST_ASSERT(a2.Get() == nullptr);
+	}
+
+	RefProxy<RefA> proxy_a;
+	{
+		RefA a;
+		proxy_a = a.GetRefProxy();
+		TEST_ASSERT(proxy_a.Get() == &a);
+	}
+	TEST_ASSERT(proxy_a.Get() == nullptr);
 }
 
 //------------------------------------------------------------------------------

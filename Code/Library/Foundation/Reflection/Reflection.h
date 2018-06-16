@@ -7,26 +7,35 @@
 // Includes
 //------------------------------------------------------------------------------
 #include "Foundation/Reflection/MetaType/Type.h"
+#include "Foundation/Reflection/Attributes/Attributes.h"
+#include "Foundation/Reflection/ReflectionMacros.h"
+
 
 namespace TReflection
 {
 	class IStruct;
 	class IClass;
 	class IMetaType;
+	class MetaStruct;
+	class MetaClass;
+	class MetaTypeDB;
+	class ISerializer;
 
-	static void Initialization();
-	static void InitSerializerLoad(Name name, SerializeType sType, SerializerLoad loadFunc);
-	static void InitSerializerSave(Name name, SerializeType sType, SerializerSave saveFunc);
+	void Initialization();
+	void InitSerializerLoad(Name name, SerializeType sType, SerializerLoad loadFunc);
+	void InitSerializerSave(Name name, SerializeType sType, SerializerSave saveFunc);
+
+	void Finalization();
 
 	template<class T>
-	static IMetaType* GetMetaType();
+	IMetaType* GetMetaType();
 
-	static IStruct* CreateStruct(const char * name);
-	static IClass*  CreateClass(const char * name);
+	IMetaType* GetMetaType(Name name);
+
+	IStruct* CreateStruct(const char * name);
+	IClass*  CreateClass(const char * name);
 };
 
-
-#include "Foundation/Reflection/Reflection.inl"
 
 //------------------------------------------------------------------------------
 #endif // FOUNDATION_REFLECTION_H

@@ -120,6 +120,7 @@ namespace TReflection
 		SerializerSave GetSave(SerializeType sType) const { return m_Serializer.m_SaveFunc[sType]; }
 
 		virtual void* Create() const { return nullptr; }
+		virtual void  Destory(void* ptr) const {}
 
 		// TODO: attribute interface
 		IAttribute * GetAttribute() const { return nullptr; }

@@ -33,11 +33,21 @@
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\App\Main.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Engine\EngineCore.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Engine\Serializer.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Event\EventSystem.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Game\MessiahGame.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Manager\AssetManager.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Manager\ResourceManager.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Manager\ServiceManager.cpp" />
-    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Reflected\ReflectionDecl.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Reflected\ReflectionDecl.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</PreprocessToFile>
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</PreprocessToFile>
+      <PreprocessSuppressLineNumbers Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessSuppressLineNumbers>
+      <PreprocessSuppressLineNumbers Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</PreprocessSuppressLineNumbers>
+      <PreprocessSuppressLineNumbers Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessSuppressLineNumbers>
+      <PreprocessSuppressLineNumbers Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</PreprocessSuppressLineNumbers>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Service\Command.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Service\Service.cpp" />
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Setting\Setting.cpp" />
@@ -157,6 +167,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External;$(SolutionDir)..\..\Code\Messiah</AdditionalIncludeDirectories>
+      <AdditionalOptions>/d1 reportSingleClassLayout[TReflection::MetaType&lt;IService&gt;] %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -174,6 +185,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External;$(SolutionDir)..\..\Code\Messiah</AdditionalIncludeDirectories>
+      <AdditionalOptions>/d1 reportSingleClassLayout[TReflection::MetaType&lt;IService&gt;] %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -191,6 +203,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External;$(SolutionDir)..\..\Code\Messiah</AdditionalIncludeDirectories>
+      <AdditionalOptions>/d1 reportSingleClassLayout[TReflection::MetaType&lt;IService&gt;] %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -210,6 +223,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;$(SolutionDir)..\..\Code\External;$(SolutionDir)..\..\Code\Messiah</AdditionalIncludeDirectories>
+      <AdditionalOptions>/d1 reportSingleClassLayout[TReflection::MetaType&lt;IService&gt;] %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>

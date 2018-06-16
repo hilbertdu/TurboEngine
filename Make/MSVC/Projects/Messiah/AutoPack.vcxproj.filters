@@ -28,9 +28,6 @@
     <Filter Include="UI\Basic">
       <UniqueIdentifier>{a3c3350f-55d2-434c-b8f9-5c6891872686}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Reflection">
-      <UniqueIdentifier>{f83dd4e5-10f9-40d2-9528-2bc4d31f1098}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Setting">
       <UniqueIdentifier>{abba70ef-3f22-4bee-b7dc-b0d0d908a368}</UniqueIdentifier>
     </Filter>
@@ -42,6 +39,9 @@
     </Filter>
     <Filter Include="UI\Popups">
       <UniqueIdentifier>{b3ed57fe-d7a5-419c-85f8-fd5ed40c4ea2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Reflected">
+      <UniqueIdentifier>{f83dd4e5-10f9-40d2-9528-2bc4d31f1098}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -76,7 +76,7 @@
       <Filter>UI\Basic</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Reflected\ReflectionDecl.cpp">
-      <Filter>Reflection</Filter>
+      <Filter>Reflected</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Service\Command.cpp">
       <Filter>Service</Filter>
@@ -113,6 +113,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\UI\Panels\GameView.cpp">
       <Filter>UI\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Code\Messiah\AutoPack\Event\EventSystem.cpp">
+      <Filter>Event</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -177,7 +180,7 @@
       <Filter>Service</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Reflected\ReflectionDecl.h">
-      <Filter>Reflection</Filter>
+      <Filter>Reflected</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\Code\Messiah\AutoPack\Setting\Setting.h">
       <Filter>Setting</Filter>

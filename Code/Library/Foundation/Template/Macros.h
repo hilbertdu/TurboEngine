@@ -41,5 +41,11 @@
 
 #define MACRO_VA_MAPPER(PREFIX, ...)	MACRO_EXPAND(MACRO_VA_SELECT(MACRO_VA_UNPACK, PREFIX, __VA_ARGS__))
 
+#if defined __COMPILE_DEBUG__
+	#define StaticPrint(msg) __pragma(message(msg))
+#else
+	#define StaticPrint(msg)
+#endif
+
 //------------------------------------------------------------------------------
 #endif // FOUNDATION_TEMPLATE_MACROS_H

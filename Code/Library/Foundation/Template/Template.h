@@ -4,6 +4,10 @@
 #ifndef FOUNDATION_TEMPLATE_STRING_H
 #define FOUNDATION_TEMPLATE_STRING_H
 
+// Includes
+//------------------------------------------------------------------------------
+#include <tuple>
+
 // String
 //------------------------------------------------------------------------------
 template<char... CHAR>
@@ -26,6 +30,32 @@ struct Sequence
 template<uint32 N, typename... T>
 using Selector = typename std::tuple_element<N, std::tuple<T...>>::type;
 
+
+// Function traits
+//------------------------------------------------------------------------------
+template<class F>
+struct FunctionTraits;
+
+// Function pointer
+template<class R, class... Args>
+struct FunctionTraits<R(*)(Args...)> : public FunctionTraits<R(Args...)>
+{};
+
+template<class R, class... Args>
+struct FunctionTraits<R(Args...)>
+{
+	using ReturnType = R;
+	using ArgsType = std::tuple<Args...>;
+
+	static constexpr SIZET arity = sizeof...(Args);
+
+	template <SIZET N>
+	struct Argument
+	{
+		static_assert(N < arity, "error: invalid parameter index.");
+		using Type = typename std::tuple_element<N, std::tuple<Args...>>::type;
+	};
+};
 
 //------------------------------------------------------------------------------
 #endif // FOUNDATION_TEMPLATE_STRING_H

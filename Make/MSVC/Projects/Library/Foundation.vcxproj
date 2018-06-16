@@ -90,6 +90,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;</AdditionalIncludeDirectories>
+      <AdditionalOptions>/d1 reportSingleClassLayoutMetaType&lt;IService&gt; %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -99,6 +100,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/d1 reportSingleClassLayoutMetaType&lt;IService&gt; %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -109,6 +111,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;</AdditionalIncludeDirectories>
+      <AdditionalOptions>/d1 reportSingleClassLayoutMetaType&lt;IService&gt; %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -123,6 +126,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Library;</AdditionalIncludeDirectories>
+      <AdditionalOptions>/d1 reportSingleClassLayoutMetaType&lt;IService&gt; %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -143,6 +147,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Config\Config.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Container\AnyClass.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Container\Array.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Container\List.h" />
@@ -167,6 +172,10 @@
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Math\Vector2.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Memory\Deletor.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Misc\Generator.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Objects\Object.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Objects\ObjectFlag.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Objects\ObjectPool.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Objects\RefObject.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Pattern\Delegate.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Pattern\Event.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Pattern\Property.h" />
@@ -179,13 +188,13 @@
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Memory\MemPool.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Memory\MemPoolBlock.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Pattern\Singleton.h" />
-    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Platform\Config.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Platform\Misc.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Platform\Platform.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Platform\Types.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Process\Lock.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Process\Process.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Process\Thread.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflected\ReflectionDecl.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Attributes\Attribute.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Attributes\Attributes.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Container\Iterator.h" />
@@ -200,8 +209,6 @@
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeDeclMacro.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeEnum.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\MetaType\TypeStruct.h" />
-    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Objects\Object.h" />
-    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Objects\ObjectPool.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Reflection.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\ReflectionMacros.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Reflection\Serialization\Serializer.h" />
@@ -216,6 +223,7 @@
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Task\Task.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Task\TaskScheduler.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Task\Worker.h" />
+    <ClInclude Include="..\..\..\..\Code\Library\Foundation\Template\CompileHelper.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Template\Macros.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Template\Template.h" />
     <ClInclude Include="..\..\..\..\Code\Library\Foundation\Time\Timer.h" />
@@ -249,13 +257,13 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <FileType>Document</FileType>
     </ClInclude>
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Objects\ObjectPool.cpp" />
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Platform\Platform.cpp" />
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Process\Lock.cpp" />
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Process\Process.cpp" />
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Process\Thread.cpp" />
-    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Reflection\Objects\Object.cpp" />
-    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Reflection\Objects\ObjectPool.cpp" />
-    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Reflection\Reflection.inl" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Reflected\ReflectionDecl.cpp" />
+    <ClCompile Include="..\..\..\..\Code\Library\Foundation\Reflection\Reflection.cpp" />
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Reflection\Serialization\SerializerText.cpp" />
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Task\Task.cpp" />
     <ClCompile Include="..\..\..\..\Code\Library\Foundation\Task\TaskScheduler.cpp" />
@@ -268,6 +276,7 @@
     <None Include="..\..\..\..\Code\Library\Foundation\Container\HashTable.inl" />
     <None Include="..\..\..\..\Code\Library\Foundation\Container\RBTree.inl" />
     <None Include="..\..\..\..\Code\Library\Foundation\Memory\Allocator.inl" />
+    <None Include="..\..\..\..\Code\Library\Foundation\Objects\Object.inl" />
     <None Include="..\..\..\..\Code\Library\Foundation\String\String.inl" />
     <None Include="..\..\..\..\Code\Library\Foundation\String\StringConvert.inl" />
     <None Include="..\..\..\..\Code\Library\Foundation\String\StringHelper.inl" />

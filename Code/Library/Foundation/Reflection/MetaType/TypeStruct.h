@@ -7,10 +7,9 @@
 
 // Includes
 //------------------------------------------------------------------------------
-#include "Foundation/Reflection/MetaType/TypeDeclMacro.h"
+#include "Foundation/Reflection/ReflectionMacros.h"
 #include "Foundation/Reflection/Members/Field.h"
 #include "Foundation/Reflection/Members/Method.h"
-#include "Foundation/Container/Array.h"
 
 
 namespace TReflection
@@ -23,7 +22,7 @@ namespace TReflection
 		using MetaType = MetaStruct;
 		static constexpr MetaFlag s_MetaFlag = E_TYPE_STRUCT;
 	};
-
+	
 	class MetaStruct : public IMetaType, public FieldCollection, public MethodCollection
 	{
 	public:

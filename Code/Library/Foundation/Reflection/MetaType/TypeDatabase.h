@@ -6,10 +6,10 @@
 
 // Includes
 //------------------------------------------------------------------------------
-#include "Foundation/Reflection/MetaType/TypeDecl.h"
-#include "Foundation/Reflection/Serialization/Serializer.h"
 #include "Foundation/Container/HashMap.h"
 #include "Foundation/Pattern/Singleton.h"
+#include "Foundation/Reflection/MetaType/TypeDecl.h"
+
 
 namespace TReflection
 {
@@ -58,7 +58,7 @@ namespace TReflection
 		IMetaType* CreateMetaType()
 		{
 			ASSERT(GetMetaType<T>() == nullptr);
-			IMetaType* metaType = TNEW(MetaType<T>);
+			MetaType<T> * metaType = TNEW(MetaType<T>);
 			Register(metaType);
 			return metaType;
 		}

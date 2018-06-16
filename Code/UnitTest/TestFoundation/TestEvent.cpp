@@ -21,7 +21,7 @@ private:
 
 	void TestDelegate() const;
 	void TestDelegatePerformance() const;
-	void TestEvent() const;
+	void TestEventSignal() const;
 	void TestRemoveOwner() const;
 	void TestAnyDelegate() const;
 };
@@ -31,7 +31,7 @@ private:
 REGISTER_TESTS_BEGIN(TestDelegateEvent)
 	REGISTER_TEST(TestDelegate)
 	REGISTER_TEST(TestDelegatePerformance)
-	REGISTER_TEST(TestEvent)
+	REGISTER_TEST(TestEventSignal)
 	REGISTER_TEST(TestRemoveOwner)
 	REGISTER_TEST(TestAnyDelegate)
 REGISTER_TESTS_END
@@ -100,7 +100,7 @@ public:
 	EventType event;
 };
 
-TestEvent* g_Event = new TestEvent();
+TestEvent* g_Event = nullptr;
 
 class TestListener
 {
@@ -170,7 +170,8 @@ void TestDelegateEvent::TestDelegate() const
 		TEST_ASSERT(!delegate.IsValid());
 	}
 	{
-		Signature<void(int)>::Delegate delegate;
+		Signature<void(int)>::Delegate delegate([](int a) {
+		});
 		delegate.BindLambda([](int a) {
 			LOUTPUT("Test lambda: %d\n", a);
 		});
@@ -241,27 +242,27 @@ void TestDelegateEvent::TestDelegatePerformance() const
 
 // TestWeakPtr
 //------------------------------------------------------------------------------
-void TestDelegateEvent::TestEvent() const
+void TestDelegateEvent::TestEventSignal() const
 {
 	{
 		Signature<void(int)>::Event event;
 		int64 id1 = event.Add(&Test1_0);
-		//int64 id2 = event.Add(&Test1_1);
+		int64 id2 = event.Add(&Test1_1);
 
-		//int64 id3 = event.Add([](int a) {
-		//	LOUTPUT("Test event lambda: %d\n", a);
-		//});
-		//
-		//TestA a;
-		//int64 id4 = event.Add(Signature<void(int)>::Delegate(&a, &TestA::Test1));
+		int64 id3 = event.Add([](int a) {
+			LOUTPUT("Test event lambda: %d\n", a);
+		});
+
+		TestA a;
+		int64 id4 = event.Add(Signature<void(int)>::Delegate(&a, &TestA::Test1));
 
 		event.Signal(100);
 		event.Remove(id1);
-		//event.Signal(200);
-		//event.Remove(id2);
-		//event.Signal(300);
-		//event.Remove(id3);
-		//event.Signal(400);
+		event.Signal(200);
+		event.Remove(id2);
+		event.Signal(300);
+		event.Remove(id3);
+		event.Signal(400);
 	}
 	{
 		Signature<void(const char*)>::Event event;
@@ -277,6 +278,7 @@ void TestDelegateEvent::TestEvent() const
 //------------------------------------------------------------------------------
 void TestDelegateEvent::TestRemoveOwner() const
 {
+	g_Event = new TestEvent();
 	using Delegate1 = Signature<void(int, float)>::Delegate;
 	{
 		TestListener listener1;

@@ -7,20 +7,15 @@
 // Includes
 //------------------------------------------------------------------------------
 #include "Foundation/Pattern/Singleton.h"
-#include "Foundation/Container/HashMap.h"
-#include "Foundation/FileIO/MemRStream.h"
-#include "Foundation/FileIO/MemWStream.h"
-#include "Foundation/Reflection/Objects/Object.h"
+#include "Foundation/Objects/ObjectFlag.h"
 
 
 class IObject;
-namespace TReflection { class IMetaType; };
+namespace TReflection { class IMetaType; }
 
 class ObjectPool : public Singleton<ObjectPool>
 {
 public:
-	typedef HashMap<UINTPTR, IObject*> ObjectMap;
-
 	ObjectPool();
 	~ObjectPool();
 

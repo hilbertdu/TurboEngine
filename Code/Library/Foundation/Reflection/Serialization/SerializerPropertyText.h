@@ -6,6 +6,8 @@
 
 // Includes
 //------------------------------------------------------------------------------
+#include "Foundation/FileIO/IOStream.h"
+
 
 namespace TReflection
 {

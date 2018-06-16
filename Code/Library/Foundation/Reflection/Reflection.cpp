@@ -3,9 +3,13 @@
 
 // Includes
 //------------------------------------------------------------------------------
-#include "Foundation/Reflection/MetaType/TypeDatabase.h"
-#include "Foundation/Reflection/MetaType/TypeStruct.h"
+#include "Foundation/Reflection/MetaType/TypeDecl.h"
 #include "Foundation/Reflection/MetaType/TypeClass.h"
+#include "Foundation/Reflection/MetaType/TypeDatabase.h"
+#include "Foundation/Reflection/Reflection.h"
+
+
+extern void BindReflectionFoundation();
 
 
 namespace TReflection
@@ -16,6 +20,7 @@ namespace TReflection
 	{
 		MetaTypeDB::Initialize();
 		MetaTypeDB::Instance().RegisterAll();
+		BindReflectionFoundation();
 	}
 
 	/*static*/ void InitSerializerLoad(Name name, SerializeType sType, SerializerLoad loadFunc)
@@ -28,10 +33,23 @@ namespace TReflection
 		MetaTypeDB::Instance().GetMetaType(name)->SetSave(sType, saveFunc);
 	}
 
+	// Finalization
+	//------------------------------------------------------------------------------
+	/*static*/ void Finalization()
+	{
+		MetaTypeDB::Instance().Clear();
+		MetaTypeDB::Finalize();
+	}
+
 	template<class T>
 	/*static*/ IMetaType* GetMetaType()
 	{
 		return MetaTypeDB::Instance().GetMetaType<T>();
+	}
+
+	IMetaType* GetMetaType(Name name)
+	{
+		return MetaTypeDB::Instance().GetMetaType(name);
 	}
 
 	// CreateStruct
